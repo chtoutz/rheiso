@@ -33,6 +33,8 @@ This project was generated with [electron-vue](https://github.com/SimulatedGREG/
 #### Other sources and thanks :
 ``` bash
 ## CORE
+https://vuejs.org/
+https://github.com/SimulatedGREG/electron-vue
 https://github.com/mawie81/electron-window-state
 
 ## DESIGN

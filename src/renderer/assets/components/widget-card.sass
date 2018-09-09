@@ -1,0 +1,88 @@
+$widget-content-margin-mobile: 20px !default
+$widget-content-spacing-mobile: 140px !default
+$widget-content-spacing-tablet: 40px !default
+
+$widget-close-dimensions: 40px !default
+$widget-close-right: 20px !default
+$widget-close-top: 20px !default
+
+$widget-card-spacing: 40px !default
+
+$widget-card-head-background-color: $background !default
+$widget-card-head-border-bottom: 1px solid $border !default
+$widget-card-head-padding: 8px !default
+$widget-card-head-radius: $radius-large !default
+
+$widget-card-title-color: $text-strong !default
+$widget-card-title-line-height: 1 !default
+$widget-card-title-size: $size-6 !default
+
+$widget-card-foot-radius: $radius-large !default
+$widget-card-foot-border-top: 1px solid $border !default
+
+$widget-card-body-background-color: $white !default
+$widget-card-body-padding: 0px !default
+
+.widget-card
+  margin: 0 $widget-content-margin-mobile
+  min-height: calc(57.5vh - #{$widget-content-spacing-mobile})
+  max-height: calc(100vh - #{$widget-content-spacing-mobile}) !important
+  overflow: auto
+  position: relative
+  // Responsiveness
+  +tablet
+    margin: 0 auto
+    max-height: calc(100vh - #{$widget-content-spacing-tablet})
+
+.widget-close
+  +delete
+  background: none
+  height: $widget-close-dimensions
+  position: fixed
+  right: $widget-close-right
+  top: $widget-close-top
+  width: $widget-close-dimensions
+
+.widget-card
+  display: flex
+  flex-direction: column
+  max-height: calc(100vh - #{$widget-card-spacing})
+  overflow: hidden
+
+.widget-card-head,
+.widget-card-foot
+  align-items: center
+  background-color: $widget-card-head-background-color
+  display: flex
+  flex-shrink: 0
+  justify-content: flex-start
+  padding: $widget-card-head-padding
+  position: relative
+
+.widget-card-head
+  border-bottom: $widget-card-head-border-bottom
+  border-top-left-radius: $widget-card-head-radius
+  border-top-right-radius: $widget-card-head-radius
+
+.widget-card-title
+  color: $widget-card-title-color
+  flex-grow: 1
+  flex-shrink: 0
+  font-size: $widget-card-title-size
+  line-height: $modal-card-title-line-height
+
+.widget-card-foot
+  border-bottom-left-radius: $widget-card-foot-radius
+  border-bottom-right-radius: $widget-card-foot-radius
+  border-top: $widget-card-foot-border-top
+  .button
+    &:not(:last-child)
+      margin-right: 10px
+
+.widget-card-body
+  +overflow-touch
+  background-color: $widget-card-body-background-color
+  flex-grow: 1
+  flex-shrink: 1
+  overflow: auto
+  padding: $widget-card-body-padding
