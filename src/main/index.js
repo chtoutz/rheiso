@@ -1,6 +1,7 @@
 'use strict'
 
 import { app, BrowserWindow } from 'electron'
+import windowStateKeeper from 'electron-window-state'
 
 /**
  * Set `__static` path to static files in production
@@ -16,13 +17,20 @@ const winURL = process.env.NODE_ENV === 'development'
   : `file://${__dirname}/index.html`
 
 function createWindow () {
-  /**
-   * Initial window options
-   */
+  // Load the previous state with fallback to defaults
+  let mainWindowState = windowStateKeeper({
+    defaultWidth: 1000,
+    defaultHeight: 800
+  })
+
+  // Create the window using the state information
   mainWindow = new BrowserWindow({
-    height: 563,
-    useContentSize: true,
-    width: 1000
+    'x': mainWindowState.x,
+    'y': mainWindowState.y,
+    'useContentSize': true,
+    'width': mainWindowState.width,
+    'height': mainWindowState.height,
+    'file': 'main-window-state'
   })
 
   mainWindow.loadURL(winURL)
@@ -30,6 +38,11 @@ function createWindow () {
   mainWindow.on('closed', () => {
     mainWindow = null
   })
+
+  // Let us register listeners on the window, so we can update the state
+  // automatically (the listeners will be removed when the window is closed)
+  // and restore the maximized or full screen state
+  mainWindowState.manage(mainWindow)
 }
 
 app.on('ready', createWindow)
@@ -45,6 +58,13 @@ app.on('activate', () => {
     createWindow()
   }
 })
+
+// ipcMain.on('draw.duct', (event, arg) => {
+//   event.sender.send('draw.duct', 'pong')
+// })
+// ipcMain.on('draw.circle', (event, arg) => {
+//   event.sender.send('draw.circle', 'pong')
+// })
 
 /**
  * Auto Updater
