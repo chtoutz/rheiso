@@ -26,7 +26,7 @@
                 <a>photovoltaïque</a>
                 <a>archives</a>
               </p>
-              <router-link class="panel-block is-active has-text-link" :to="{name: 'project', params: { projectId: 1789 }}">
+              <router-link class="panel-block is-active has-text-link" :to="{name: 'projects', params: { projectId: 1789 }}">
                 <span class="panel-icon">
                   <i class="fa fa-bolt"></i>
                 </span>
@@ -38,54 +38,6 @@
                 </span>
                 300067-MARCOULE BAT 017
               </router-link>
-              <a class="panel-block">
-                <span class="panel-icon">
-                  <!-- <i class="fa fa-sun-o"></i> -->
-                </span>
-                400001-NARBONNE
-              </a>
-              <a class="panel-block">
-                <span class="panel-icon">
-                  <!-- <i class="fa fa-exchange"></i> -->
-                </span>
-                400013-GREEN PEACE
-              </a>
-              <a class="panel-block">
-                <span class="panel-icon">
-                  <!-- <i class="fa fa-exchange"></i> -->
-                </span>
-                300054-EKIUM BAT 228
-              </a>
-              <a class="panel-block is-active has-text-link">
-                <span class="panel-icon">
-                  <i class="fa fa-sun-o"></i>
-                </span>
-                300067-MARCOULE BAT 017
-              </a>
-              <a class="panel-block is-active has-text-link">
-                <span class="panel-icon">
-                  <i class="fa fa-exchange"></i>
-                </span>
-                400001-NARBONNE
-              </a>
-              <a class="panel-block">
-                <span class="panel-icon">
-                  <!-- <i class="fa fa-bolt"></i> -->
-                </span>
-                400013-GREEN PEACE
-              </a>
-              <a class="panel-block">
-                <span class="panel-icon">
-                  <!-- <i class="fa fa-bolt"></i> -->
-                </span>
-                300054-EKIUM BAT 228
-              </a>
-              <a class="panel-block">
-                <span class="panel-icon">
-                  <!-- <i class="fa fa-bolt"></i> -->
-                </span>
-                300067-MARCOULE BAT 017
-              </a>
               <a class="panel-block">
                 <span class="panel-icon">
                   <!-- <i class="fa fa-sun-o"></i> -->
@@ -138,7 +90,7 @@
       <hr>
 
       <div id="libraries-home">
-        <h1 class="title">Nouveau document</h1>
+        <h1 class="title">Nouveau document ou Projets récents</h1>
 
             <!-- Create new... (Word, Excel, Schéma, PDF) shortcut -->
             <div class="tile is-ancestor">
@@ -167,18 +119,19 @@
             <br>
 
         <p class="content"><i>Tiles</i> avec fa-icons de "Word", "Excel", "AutoCAD", "PDF" pour création rapide de Notes de calcul, Nomenclature/liste équipements, Schéma isométrique/fonctionnel.</p>
-        <p>Sur clic icône -> redirection vers page Libs complète : faire genre de dossiers d'apps Android / iOS contenant les trames internes/clients (MS Office, CAO), les matériels et équipements (gestion stock ?)</p>
+        <p class="content">Sur clic icône -> redirection vers page Libs complète : faire genre de dossiers d'apps Android / iOS contenant les trames internes/clients (MS Office, CAO), les matériels et équipements (gestion stock ?)</p>
+        <p class="content">OU BIEN garder la forme mais avec des preview de PID des projets créés et ouverts récemment (les 5 derniers). Dans ce cas, supprimer la liste des projets ci-dessus et ne la laisser que dans le dashboard des projets.</p>
       </div>
     </main>
   </section>
 </template>
 
 <script>
-  import SystemInformation from './Dashboard/SystemInformation'
+  // import SystemInformation from './Home/SystemInformation'
 
   export default {
     name: 'dasbhoard',
-    components: { SystemInformation },
+    // components: { SystemInformation },
     data () {
       return {
         project: { projectId: 1789 }

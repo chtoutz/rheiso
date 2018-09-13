@@ -4,19 +4,19 @@
       <div class="container is-fluid">
         <div class="tabs is-boxed is-fullwidth">
           <ul>
-            <li :class="{'is-active': $route.name === 'dashboard'}">
-              <router-link :to="{name: 'dashboard'}">
-                <span class="icon is-small"><i class="fa fa-dashboard"></i></span>
-                <span>Dashboard</span>
+            <li :class="{'is-active': $route.name === 'home'}">
+              <router-link :to="{name: 'home'}">
+                <span class="icon is-small"><i class="fa fa-home"></i></span>
+                <span>Accueil</span>
               </router-link>
             </li>
-            <li :class="{'is-active': $route.name === 'project'}">
-              <router-link :to="{name: 'project', params: project}">
+            <li :class="{'is-active': $route.name === 'projects' || $route.name === 'project'}">
+              <router-link :to="{name: 'projects', params: {}}">
                 <span class="icon is-small"><i class="fa fa-briefcase"></i></span>
-                <span>Projet</span>
+                <span>Projets</span>
               </router-link>
             </li>
-            <!-- <li :class="{'is-active': $route.name === 'dashboard'}">
+            <!-- <li :class="{'is-active': $route.name === 'home'}">
               <a>
                 <span class="icon is-small"><i class="fa fa-check-square-o"></i></span>
                 <span>Tâches</span>
@@ -28,7 +28,7 @@
                 <span>Bibliothèques</span>
               </a>
             </li>
-            <!-- <li :class="{'is-active': $route.name === 'dashboard'}">
+            <!-- <li :class="{'is-active': $route.name === 'home'}">
               <a>
                 <span class="icon is-small"><i class="fa fa-file"></i></span>
                 <span>Mes documents</span>
@@ -82,7 +82,6 @@ export default {
       active: 'livrables',
       // TODO: Get project info from localStorage or LokiJS
       scrolled: false,
-      project: { projectId: 1789 },
       logoSrc: '/static/icon.png'
     }
   },
