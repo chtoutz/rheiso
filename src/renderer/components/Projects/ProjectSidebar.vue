@@ -4,7 +4,7 @@
       General
     </p>
     <ul class="menu-list">
-      <li><a>Dashboard</a></li>
+      <li><a>Accueil</a></li>
       <li><a>Customers</a></li>
     </ul>
     <p class="menu-label">
@@ -38,6 +38,6 @@
 
 <script>
 export default {
-  name: 'project-sidebar'
+  name: 'projects-sidebar'
 }
 </script>
