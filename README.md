@@ -36,6 +36,7 @@ This project was generated with [electron-vue](https://github.com/SimulatedGREG/
 https://vuejs.org/
 https://github.com/SimulatedGREG/electron-vue
 https://github.com/mawie81/electron-window-state
+https://github.com/sindresorhus/conf
 
 ## DESIGN
 https://bulma.io/

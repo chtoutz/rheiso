@@ -7,8 +7,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'dashboard',
-      component: require('@/components/Dashboard').default,
+      name: 'home',
+      component: require('@/components/Home').default,
       meta: { sidebar: false, header: true }
     },
     {
@@ -23,33 +23,40 @@ export default new Router({
         default: require('@/components/Settings').default,
         sidebar: require('@/components/Settings/SettingsSidebar').default
       },
-      meta: { sidebar: true }
-    },
-    {
-      path: '/project/:projectId',
-      name: 'project',
-      components: {
-        default: require('@/components/Project').default,
-        sidebar: require('@/components/Project/ProjectSidebar').default
-      },
-      meta: {
-        // breadcrumb: true,
-        sidebar: true
-      },
+      meta: { sidebar: true },
       children: [
         // {
-        //   path: 'panel',
-        //   name: 'widget-panel',
-        //   component: require('@/components/Widget/Panel').default
-        // },
-        // TODO: for later, allow custom layouts stored in DB looking like example in store/Layouts.db
-        // {
-        //   path: ':layout',
-        //   name: 'project-layout',
-        //   component: require('@/components/Layout').default
+        //   path:
         // }
       ]
     },
+    {
+      path: '/projects',
+      name: 'projects',
+      component: require('@/components/Projects').default
+      // children: [
+      //   // TODO: for later, allow custom layouts stored in DB looking like example in store/Layouts.db
+      //   {
+      //     path: ':projectId',
+      //     meta: { sidebar: true, breadcrumb: true },
+      //   components: {
+      //     default: require('@/components/Projects/Explore').default,
+      //     sidebar: require('@/components/Projects/ProjectSidebar').default,
+      //     breadcrumb: require('@/components/Projects/ProjectBreadcrumb').default
+      //   }
+      //   }
+      // ]
+    },
+    // {
+    //   path: '/project/:projectId',
+    //   name: 'project',
+    //   meta: { sidebar: true, breadcrumb: true },
+    //   components: {
+    //     default: require('@/components/Projects/Explore').default,
+    //     sidebar: require('@/components/Projects/ProjectSidebar').default,
+    //     breadcrumb: require('@/components/Projects/ProjectBreadcrumb').default
+    //   }
+    // },
     {
       path: '*',
       redirect: '/'
