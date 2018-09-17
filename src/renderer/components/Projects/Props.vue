@@ -51,7 +51,9 @@ export default {
   props: {
     project: {
       type: Object,
-      default: {}
+      default: {
+        title: 'ok'
+      }
     }
   }
 }

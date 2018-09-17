@@ -31,21 +31,21 @@ export default new Router({
       ]
     },
     {
-      path: '/projects',
+      path: '/projects/:projectId',
       name: 'projects',
-      component: require('@/components/Projects').default,
-      children: [
-        // TODO: for later, allow custom layouts stored in DB looking like example in store/Layouts.db
-        {
-          path: ':projectId',
-          meta: { sidebar: true, breadcrumb: true },
-          components: {
-            default: require('@/components/Projects/Explore').default,
-            sidebar: require('@/components/Projects/ProjectSidebar').default,
-            breadcrumb: require('@/components/Projects/ProjectBreadcrumb').default
-          }
-        }
-      ]
+      component: require('@/components/Projects').default
+      // children: [
+      //   // TODO: for later, allow custom layouts stored in DB looking like example in store/Layouts.db
+      //   {
+      //     path: ':projectId',
+      //     meta: { sidebar: true, breadcrumb: true },
+      //     components: {
+      //       default: require('@/components/Projects/Explore').default,
+      //       sidebar: require('@/components/Projects/ProjectSidebar').default,
+      //       breadcrumb: require('@/components/Projects/ProjectBreadcrumb').default
+      //     }
+      //   }
+      // ]
     },
     // {
     //   path: '/project/:projectId',

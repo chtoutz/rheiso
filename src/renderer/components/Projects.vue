@@ -1,29 +1,33 @@
 <template>
-  <!-- <div class="column">
-    <div class="container is-fluid"> -->
-      <section class="section">
-        <breadcrumb :items="breadcrumb"></breadcrumb>
-        <dashboard v-if="!$route.params.projectId"></dashboard>
-        <explore v-if="$route.params.projectId"></explore>
+  <div class="column">
+    <!-- <div class="container is-fluid"> -->
+    <breadcrumb :items="breadcrumb"></breadcrumb>
+    <div class="columns">
+      <div class="column is-one-fifth">
         <sidebar v-if="$route.params.projectId"></sidebar>
-      </section>
-    <!-- </div>
-  </div> -->
+      </div>
+
+      <div class="column">
+        <div class="container is-fluid">
+          <explore v-if="$route.params.projectId"></explore>
+        </div>
+      </div>
+    </div>
+    <!-- </div> -->
+  </div>
 </template>
 
 <script>
 import Breadcrumb from '@/components/Projects/ProjectBreadcrumb'
-import Sidebar from '@/components/Projects/ProjectSidebar'
+import Sidebar from '@/components/Projects/ProjectsSidebar'
 import Explore from '@/components/Projects/Explore'
-import Dashboard from '@/components/Projects/Dashboard'
 
 export default {
   name: 'projects',
   components: {
     Breadcrumb,
     Explore,
-    Sidebar,
-    Dashboard
+    Sidebar
   },
   data () {
     return {

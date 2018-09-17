@@ -9,7 +9,7 @@
           </router-link>
         </li>
         <li :class="{'is-active': $route.name === 'projects' || $route.name === 'project'}">
-          <router-link :to="{name: 'projects', params: {}}">
+          <router-link :to="{name: 'projects', params: {projectId: activeProject._id || 123}}">
             <span class="icon is-small"><i class="fa fa-briefcase"></i></span>
             <span>Projet <span>{{ activeProject.name ? `- ${activeProject.name}` : '(vide)' }}</span></span>
           </router-link>

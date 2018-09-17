@@ -57,5 +57,7 @@ export default {
 }
 </script>
 
-<style lang="css">
+<style lang="sass" scoped>
+.breadcrumb
+  padding: 10px 20px
 </style>
