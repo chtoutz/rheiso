@@ -1,61 +1,57 @@
 <template>
   <header>
-    <section>
-      <div class="container is-fluid">
-        <div class="tabs is-boxed is-fullwidth">
-          <ul>
-            <li :class="{'is-active': $route.name === 'home'}">
-              <router-link :to="{name: 'home'}">
-                <span class="icon is-small"><i class="fa fa-home"></i></span>
-                <span>Accueil</span>
-              </router-link>
-            </li>
-            <li :class="{'is-active': $route.name === 'projects' || $route.name === 'project'}">
-              <router-link :to="{name: 'projects', params: {}}">
-                <span class="icon is-small"><i class="fa fa-briefcase"></i></span>
-                <span>Projets</span>
-              </router-link>
-            </li>
-            <!-- <li :class="{'is-active': $route.name === 'home'}">
-              <a>
-                <span class="icon is-small"><i class="fa fa-check-square-o"></i></span>
-                <span>Tâches</span>
-              </a>
-            </li> -->
-            <li :class="{'is-active': $route.name === 'libs'}">
-              <a>
-                <span class="icon is-small"><i class="fa fa-hdd-o"></i></span>
-                <span>Bibliothèques</span>
-              </a>
-            </li>
-            <!-- <li :class="{'is-active': $route.name === 'home'}">
-              <a>
-                <span class="icon is-small"><i class="fa fa-file"></i></span>
-                <span>Mes documents</span>
-              </a>
-            </li> -->
-            <li :class="{'is-active': $route.name === 'settings'}">
-              <router-link :to="{name: 'settings'}">
-                <span class="icon is-small"><i class="fa fa-cogs"></i></span>
-                <span>Paramètres</span>
-              </router-link>
-            </li>
-            <li :class="{'is-active': $route.name === 'admin'}">
-              <a>
-                <span class="icon is-small"><i class="fa fa-lock"></i></span>
-                <span>Administration</span>
-              </a>
-            </li>
-            <li :class="{'is-active': $route.name === 'profile'}">
-              <a>
-                <span class="icon is-small"><i class="fa fa-user"></i></span>
-                <span>Mon compte</span>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </section>
+    <nav class="tabs is-boxed is-fullwidth" id="main-tabs">
+      <ul>
+        <li :class="{'is-active': $route.name === 'home'}">
+          <router-link :to="{name: 'home'}">
+            <span class="icon is-small"><i class="fa fa-home"></i></span>
+            <span>Accueil</span>
+          </router-link>
+        </li>
+        <li :class="{'is-active': $route.name === 'projects' || $route.name === 'project'}">
+          <router-link :to="{name: 'projects', params: {}}">
+            <span class="icon is-small"><i class="fa fa-briefcase"></i></span>
+            <span>Projet <span>{{ activeProject.name ? `- ${activeProject.name}` : '(vide)' }}</span></span>
+          </router-link>
+        </li>
+        <!-- <li :class="{'is-active': $route.name === 'home'}">
+          <a>
+            <span class="icon is-small"><i class="fa fa-check-square-o"></i></span>
+            <span>Tâches</span>
+          </a>
+        </li> -->
+        <li :class="{'is-active': $route.name === 'libs'}">
+          <a>
+            <span class="icon is-small"><i class="fa fa-hdd-o"></i></span>
+            <span>Bibliothèques</span>
+          </a>
+        </li>
+        <!-- <li :class="{'is-active': $route.name === 'home'}">
+          <a>
+            <span class="icon is-small"><i class="fa fa-file"></i></span>
+            <span>Mes documents</span>
+          </a>
+        </li> -->
+        <li :class="{'is-active': $route.name === 'settings'}">
+          <router-link :to="{name: 'settings'}">
+            <span class="icon is-small"><i class="fa fa-cogs"></i></span>
+            <span>Paramètres</span>
+          </router-link>
+        </li>
+        <li :class="{'is-active': $route.name === 'admin'}">
+          <a>
+            <span class="icon is-small"><i class="fa fa-lock"></i></span>
+            <span>Administration</span>
+          </a>
+        </li>
+        <li :class="{'is-active': $route.name === 'profile'}">
+          <a>
+            <span class="icon is-small"><i class="fa fa-user"></i></span>
+            <span>Mon compte</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
 
     <section class="section hero" v-if="$route.meta.header">
       <div class="header-body">
@@ -77,11 +73,7 @@ export default {
   name: 'app-header',
   data () {
     return {
-      // logoSrc: '/static/favicon.ico',
-      // scrolled: false
-      active: 'livrables',
-      // TODO: Get project info from localStorage or LokiJS
-      scrolled: false,
+      activeProject: {},
       logoSrc: '/static/icon.png'
     }
   },
@@ -96,7 +88,7 @@ export default {
   //     return this.$route.name === 'dashboard'
   //   }
   // },
-  created () {
+  mounted () {
     // TODO: Check if a project is selected. If not, display projects in listed panel with recent and favorites. All projects are listed from a root directory containing all projects.
     // var header = document.querySelector('header')
     // var headerHeight = getComputedStyle(header).height.split('px')[0]
@@ -105,5 +97,7 @@ export default {
 }
 </script>
 
-<style lang="css">
+<style lang="sass">
+#main-tabs
+  padding: 0.9rem
 </style>
