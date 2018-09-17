@@ -12,7 +12,7 @@
         </div>
         <div class="field is-grouped">
           <p class="control is-expanded">
-            <input class="input" type="text" v-model="settings.general.projectsRoot">
+            <input class="input" type="text" name="general.projectsRoot" v-model="settings.general.projectsRoot" placeholder="~/Documents/rheoiso-projects">
           </p>
           <p class="control">
             <a class="button is-info" v-on:click="selectProjectsRoot">
@@ -79,8 +79,12 @@ export default {
   name: 'settings',
   data () {
     return {
-      store: this.$store.state.Settings,
-      settings: {
+      store: this.$store.state.Settings
+    }
+  },
+  computed: {
+    settings () {
+      return {
         general: {},
         plugins: {},
         projects: {}
@@ -88,7 +92,17 @@ export default {
     }
   },
   mounted () {
-    this.settings = this.store.get()
+    let notification = {
+      title: 'Test réglages',
+      direction: 'Down',
+      message: 'Notification test pour la page des réglages',
+      duration: 4500
+    }
+    this.$openNotification(notification)
+    // this.$store.commit('ADD_NOTIFICATION', notification)
+    // this.$electron.ipcRenderer.send('addNotification', notification)
+    // this.$emit('notification', notification)
+    // this.settings = this.store.store
     // console.log(this.$store.state.Settings)
     // setTimeout(this.settings.set('general.projectsRoot', '~/Documents/Appz/okok/'), 1000)
   },
@@ -106,8 +120,8 @@ export default {
         // ]
       }
       this.$electron.remote.dialog.showOpenDialog(dialog, function (filePaths, bookmarks) {
-        console.log(filePaths)
-        if (filePaths.length === 1) {
+        if (filePaths && filePaths.length === 1) {
+          console.log(filePaths)
           _self.store.set('general.projectsRoot', filePaths[0])
           _self.settings.general.projectsRoot = filePaths[0]
           // TODO: Check if input is an accessible read/write directory

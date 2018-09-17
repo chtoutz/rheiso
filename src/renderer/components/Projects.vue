@@ -1,10 +1,14 @@
 <template>
-  <section class="section">
-    <breadcrumb :items="breadcrumb"></breadcrumb>
-    <dashboard v-if="!$route.params.projectId"></dashboard>
-    <explore v-if="$route.params.projectId"></explore>
-    <sidebar v-if="$route.params.projectId"></sidebar>
-  </section>
+  <!-- <div class="column">
+    <div class="container is-fluid"> -->
+      <section class="section">
+        <breadcrumb :items="breadcrumb"></breadcrumb>
+        <dashboard v-if="!$route.params.projectId"></dashboard>
+        <explore v-if="$route.params.projectId"></explore>
+        <sidebar v-if="$route.params.projectId"></sidebar>
+      </section>
+    <!-- </div>
+  </div> -->
 </template>
 
 <script>

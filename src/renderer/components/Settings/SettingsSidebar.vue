@@ -15,7 +15,13 @@
       <li><a>Interface</a></li>
       <li><a>Unités</a></li>
       <li><a>Raccourcis clavier</a></li>
-      <li><a>Paquets</a></li>
+      <li><a>Arborescence projets</a></li>
+    </ul>
+    <p class="menu-label">
+      Paquets
+    </p>
+    <ul class="menu-list">
+      <li><a>Extensions</a></li>
       <li><a>Thèmes</a></li>
       <li><a>Mises à jour</a></li>
     </ul>

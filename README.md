@@ -36,13 +36,25 @@ This project was generated with [electron-vue](https://github.com/SimulatedGREG/
 https://vuejs.org/
 https://github.com/SimulatedGREG/electron-vue
 https://github.com/mawie81/electron-window-state
-https://github.com/sindresorhus/conf
+https://github.com/sindresorhus/conf (or replace with https://github.com/sindresorhus/electron-store ?)
+https://github.com/louischatriot/nedb
+https://lodash.com/
 
 ## DESIGN
 https://bulma.io/
 https://fontawesome.com/
+https://github.com/vue-bulma/notification
 
 ## DRAWING
+https://github.com/thomasdesmoulin/dxf-parsing
+
 http://svgjs.com/
 https://github.com/otm/svg.math.js
+https://github.com/svgdotjs/svg.topath.js
+https://github.com/svgdotjs/svg.panzoom.js
+https://github.com/fuzzyma/svg.select.js
+https://github.com/amatiash/svg.intersections.js
+https://github.com/svgdotjs/svg.filter.js
+https://github.com/fuzzyma/svg.draw.js
+https://github.com/loredanacirstea/svg.connectable.js
 ```

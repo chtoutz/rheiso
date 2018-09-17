@@ -1,7 +1,7 @@
 const Conf = require('conf')
-const config = new Conf({configName: 'settings'})
+const settings = new Conf({configName: 'rheiso-settings'})
 
-const state = config
+const state = settings
 
 const mutations = {
   // EDIT_SETTING (name, value) {
