@@ -4,12 +4,12 @@
     <breadcrumb :items="breadcrumb"></breadcrumb>
     <div class="columns">
       <div class="column is-one-fifth">
-        <sidebar v-if="$route.params.projectId"></sidebar>
+        <sidebar></sidebar>
       </div>
 
       <div class="column">
         <div class="container is-fluid">
-          <explore v-if="$route.params.projectId"></explore>
+          <router-view></router-view>
         </div>
       </div>
     </div>

@@ -4,16 +4,26 @@
       General
     </p>
     <ul class="menu-list">
-      <li><a>Accueil</a></li>
+      <li>
+        <router-link
+          :to="{ name: 'projects.explore', params: $route.params }"
+          :class="{'is-active': $route.name === 'projects.explore'}"
+        >Résumé</router-link>
+      </li>
       <li><a>Customers</a></li>
     </ul>
     <p class="menu-label">
-      Administration
+      Vues du projet
     </p>
     <ul class="menu-list">
-      <li><a class="is-active">Team Settings</a></li>
       <li>
-        <a>Arborescence</a>
+        <router-link
+          :to="{ name: 'projects.drawing', params: $route.params }"
+          :class="{'is-active': $route.name === 'projects.drawing'}"
+        >Plans</router-link>
+      </li>
+      <li>
+        <a>Arborescences</a>
         <ul>
           <li><a>Fichiers locaux</a></li>
           <li><a>Dossier des Ouvrages Exécutés</a></li>
