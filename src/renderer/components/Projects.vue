@@ -80,5 +80,5 @@ export default {
 
 <style lang="sass" scoped>
 #projects-sidebar
-  padding-left: 20px
+  padding-left: 1rem
 </style>

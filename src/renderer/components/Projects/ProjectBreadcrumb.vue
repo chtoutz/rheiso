@@ -20,7 +20,7 @@ export default {
         },
         {
           to: {name: 'projects'},
-          text: 'Projets'
+          text: this.$route.params.projectId
         }
       ]
     }
@@ -29,13 +29,13 @@ export default {
     let addItems = {}
     if (this.$route.params && this.$route.params.projectId) {
       addItems = {
-        to: {name: 'projects', params: {}},
+        to: {name: 'projects'},
         text: 'Projet en cours',
         active: true
       }
     } else {
       addItems = {
-        to: {name: 'projects', params: {}},
+        to: {name: 'projects'},
         text: 'Dashboard',
         active: true
       }

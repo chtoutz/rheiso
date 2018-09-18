@@ -79,7 +79,7 @@ export default {
   },
   computed: {
     projectRoute () {
-      return ['projects', 'projects.explore', 'projects.drawing'].includes(this.$route.name)
+      return ['projects', 'projects.explore', 'projects.drawing', 'projects.rooms'].includes(this.$route.name)
     }
   },
   methods: {

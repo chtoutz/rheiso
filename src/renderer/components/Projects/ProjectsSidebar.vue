@@ -13,7 +13,7 @@
       <li>
         <router-link
           :to="{ name: 'projects.explore', params: $route.params }"
-          :class="{'is-active': $route.name === 'projects.explore'}"
+          :class="{'is-active': $route.name === 'projects.settings'}"
         >Réglages</router-link>
       </li>
     </ul>
@@ -47,11 +47,11 @@
       <li><a>Authentication</a></li>
     </ul>
     <p class="menu-label">
-      Transactions
+      Extensions
     </p>
     <ul class="menu-list">
-      <li><a>Payments</a></li>
-      <li><a>Transfers</a></li>
+      <li><a>Electrik</a></li>
+      <li><a>Matérielz</a></li>
       <li><a>Balance</a></li>
     </ul>
   </aside>
