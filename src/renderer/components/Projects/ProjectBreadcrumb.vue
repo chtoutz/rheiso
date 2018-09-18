@@ -19,26 +19,19 @@ export default {
           text: 'Accueil'
         },
         {
-          to: {name: 'projects'},
+          to: {name: 'projects.explore', params: this.$route.params},
+          // TODO: Replace w/ activeProject.name
           text: this.$route.params.projectId
         }
       ]
     }
   },
   mounted () {
-    let addItems = {}
-    if (this.$route.params && this.$route.params.projectId) {
-      addItems = {
-        to: {name: 'projects'},
-        text: 'Projet en cours',
-        active: true
-      }
-    } else {
-      addItems = {
-        to: {name: 'projects'},
-        text: 'Dashboard',
-        active: true
-      }
+    let addItems = {
+      to: '',
+      // TODO: Replace with __n() translation of route name (e.g. "Plans", "Locaux"...)
+      text: this.$route.name,
+      active: true
     }
     this.items.push(addItems)
     // this.breadcrumb = [

@@ -37,6 +37,11 @@ export default new Router({
       children: [
         // TODO: for later, allow custom layouts stored in DB looking like example in store/Layouts.db
         {
+          path: 'rooms',
+          name: 'projects.rooms',
+          component: require('@/components/Projects/Rooms').default
+        },
+        {
           path: 'explore',
           name: 'projects.explore',
           component: require('@/components/Projects/Explore').default
