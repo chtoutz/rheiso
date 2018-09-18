@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <app-header></app-header>
-    <main class="columns is-gapless is-multiline">
-      <router-view name="default" id="main-view"></router-view>
+    <main id="main-view">
+      <router-view></router-view>
     </main>
   </div>
 </template>

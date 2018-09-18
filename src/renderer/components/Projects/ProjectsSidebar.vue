@@ -1,5 +1,5 @@
 <template>
-  <aside class="menu">
+  <aside class="menu" id="projects-sidebar">
     <p class="menu-label">
       General
     </p>
@@ -10,7 +10,12 @@
           :class="{'is-active': $route.name === 'projects.explore'}"
         >Résumé</router-link>
       </li>
-      <li><a>Customers</a></li>
+      <li>
+        <router-link
+          :to="{ name: 'projects.explore', params: $route.params }"
+          :class="{'is-active': $route.name === 'projects.explore'}"
+        >Réglages</router-link>
+      </li>
     </ul>
     <p class="menu-label">
       Vues du projet
@@ -21,6 +26,12 @@
           :to="{ name: 'projects.drawing', params: $route.params }"
           :class="{'is-active': $route.name === 'projects.drawing'}"
         >Plans</router-link>
+      </li>
+      <li>
+        <router-link
+          :to="{ name: 'projects.rooms', params: $route.params }"
+          :class="{'is-active': $route.name === 'projects.rooms'}"
+        >Locaux</router-link>
       </li>
       <li>
         <a>Arborescences</a>

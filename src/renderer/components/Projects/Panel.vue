@@ -48,8 +48,8 @@
         <a>photovoltaïque</a>
         <a>archives</a>
       </p> -->
-      <router-link class="panel-block is-activ" :to="{name: 'projects', params: { projectId: project._id }}" v-for="project in projects">
-        <span class="panel-icon has-text-info">
+      <router-link class="panel-block is-activ" :to="{name: 'projects', params: { projectId: project._id }}" v-for="project in projects" :key="project._id">
+        <span class="panel-icon has-text-info" @click="setActiveProject(project, $event)">
           <i class="fa fa-bolt"></i>
         </span>
         <span>{{project.name || '???'}}</span>
@@ -102,6 +102,11 @@ export default {
     // })
   },
   methods: {
+    setActiveProject (project, event) {
+      if (event) event.preventDefault()
+      // console.log(project)
+      this.$store.commit('setActiveProject', project)
+    },
     addProject () {
       const projectsRoot = this.settings.get('general.projectsRoot')
       // const srcPath = `${projectsRoot}/AFFAIRES`

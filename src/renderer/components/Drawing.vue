@@ -1,5 +1,5 @@
 <template>
-  <section class="section">
+  <section>
     <div class="">
       okok drawing.vue
     </div>
@@ -48,10 +48,10 @@
         </filter>
       </defs>
       <g>
-        <img src="http://www.moldfun.net/wp-content/uploads/2017/05/construction-de-maison-simple-immo-construction-plan-de-maison-simple-et-moderne-plan-des-maison-simple.png"/>
+        <img :src="dede"/>
         <br>
         <div class="blob">
-          <img src="http://www.moldfun.net/wp-content/uploads/2017/05/construction-de-maison-simple-immo-construction-plan-de-maison-simple-et-moderne-plan-des-maison-simple.png"/>
+          <img :src="dede"/>
         </div>
       </g>
     </svg>
@@ -61,6 +61,12 @@
 <script>
 export default {
   name: 'drawing',
+  data () {
+    return {
+      // dede: '/home/stutz/Documents/Appz/rheohub-data/plan.png'
+      dede: '~@/assets/plan.png'
+    }
+  },
   mounted () {
     console.log('drawing ok')
   }

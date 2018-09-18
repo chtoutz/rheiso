@@ -1,20 +1,20 @@
 <template>
-  <div class="column">
+  <section id="projects">
     <!-- <div class="container is-fluid"> -->
     <breadcrumb :items="breadcrumb"></breadcrumb>
-    <div class="columns">
-      <div class="column is-one-fifth">
+    <article class="columns">
+      <div class="column is-one-fifth" id="projects-sidebar">
         <sidebar></sidebar>
       </div>
 
       <div class="column">
-        <div class="container is-fluid">
+        <div class="container is-fluid" id="projects-children-view">
           <router-view></router-view>
         </div>
       </div>
-    </div>
+    </article>
     <!-- </div> -->
-  </div>
+  </section>
 </template>
 
 <script>
@@ -78,5 +78,7 @@ export default {
 }
 </script>
 
-<style lang="css">
+<style lang="sass" scoped>
+#projects-sidebar
+  padding-left: 20px
 </style>

@@ -8,7 +8,7 @@
             <span>Accueil</span>
           </router-link>
         </li>
-        <li :class="{'is-active': $route.name === 'projects' || $route.name === 'project'}">
+        <li :class="{ 'is-active': projectRoute }">
           <router-link :to="{name: 'projects', params: {projectId: activeProject._id || 123}}">
             <span class="icon is-small"><i class="fa fa-briefcase"></i></span>
             <span>Projet <span>{{ activeProject.name ? `- ${activeProject.name}` : '(vide)' }}</span></span>
@@ -75,6 +75,11 @@ export default {
     return {
       activeProject: {},
       logoSrc: '/static/icon.png'
+    }
+  },
+  computed: {
+    projectRoute () {
+      return ['projects', 'projects.explore', 'projects.drawing'].includes(this.$route.name)
     }
   },
   methods: {

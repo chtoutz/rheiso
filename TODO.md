@@ -2,12 +2,11 @@
 
 ## Core
 
-- [ ] normal **formatting**, @mentions, #1234 refs
 - [ ] incomplete
 - [x] completed
 
 ## Design
-- [ ] incomplete
+- [ ] Réorganiser les classes/id des root de components Vue (column, columns, section > article, etc.)
 
 
 ## Plugins

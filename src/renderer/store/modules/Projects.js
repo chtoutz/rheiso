@@ -8,6 +8,10 @@ const state = {
 }
 
 const mutations = {
+  setActiveProject (state, project) {
+    console.log(state, project)
+    state.active = project
+  }
   // EDIT_SETTING (name, value) {
   //   // TODO: Check if name has a dot to prevent modifying without a scope (e.g general/plugins...) for security ?
   //   config.set(name, value)
