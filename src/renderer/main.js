@@ -1,16 +1,38 @@
 import Vue from 'vue'
 import axios from 'axios'
+import Settings from 'electron-store'
 
 import App from './App'
 import router from './router'
 import store from './store'
 
-import './assets/styles.sass'
-
 import Notification from '@/components/Layout/Notification'
 
-const NotificationComponent = Vue.extend(Notification)
+/***************
+ * Load styles *
+ ***************/
 
+import './assets/styles.sass'
+
+/*****************
+ * Load settings *
+ *****************/
+
+let settingsData = {
+  name: 'rheiso-settings',
+  defaults: {
+    general: {},
+    plugins: {},
+    projects: {}
+  }
+}
+const settings = new Settings(settingsData)
+
+/**********************
+ * Load notifications *
+ **********************/
+
+const NotificationComponent = Vue.extend(Notification)
 const openNotification = (propsData = {
   title: '',
   message: '',
@@ -25,13 +47,19 @@ const openNotification = (propsData = {
   })
 }
 
-// Init db files loading from DataBase VueX store
+/**************************************************
+ * Init db files loading from DataBase VueX store *
+ **************************************************/
+
 store.commit('initDatabase')
-// Init notifications from Notifications VueX store
-// store.commit('initNotifications')
+
+/*********************
+ * Load core objects *
+ *********************/
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios
+Vue.settings = Vue.prototype.$settings = settings
 Vue.openNotification = Vue.prototype.$openNotification = openNotification
 Vue.config.productionTip = false
 

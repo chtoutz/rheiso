@@ -18,16 +18,13 @@ export default new Router({
     },
     {
       path: '/settings',
-      name: 'settings',
-      components: {
-        default: require('@/components/Settings').default,
-        sidebar: require('@/components/Settings/SettingsSidebar').default
-      },
-      meta: { sidebar: true },
+      component: require('@/components/Settings').default,
       children: [
-        // {
-        //   path:
-        // }
+        {
+          path: '',
+          name: 'settings',
+          component: require('@/components/Settings/GeneralSettings').default
+        }
       ]
     },
     {
