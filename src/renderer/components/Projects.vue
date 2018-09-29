@@ -1,15 +1,35 @@
 <template>
   <section id="projects">
     <!-- <div class="container is-fluid"> -->
-    <breadcrumb :items="breadcrumb"></breadcrumb>
+    <breadcrumb></breadcrumb>
+
     <article class="columns">
+
       <div class="column is-one-fifth" id="projects-sidebar">
         <sidebar></sidebar>
       </div>
 
-      <div class="column">
+      <div :class="['column', {'is-6': error}]">
         <div class="container is-fluid" id="projects-children-view">
-          <router-view></router-view>
+
+          <div v-if="loading" class="loading has-text-centered">
+            <span class='icon'>
+              <i class="fa fa-spinner fa-spin fa-3x"></i>
+            </span>
+          </div>
+
+          <div v-if="error" class="message is-danger">
+            <div class="message-header">
+              <p>Erreur:</p>
+            </div>
+            <div class="message-body">
+              {{ error }}
+            </div>
+          </div>
+
+          <div v-if="project">
+            <router-view></router-view>
+          </div>
         </div>
       </div>
     </article>
@@ -31,8 +51,10 @@ export default {
   },
   data () {
     return {
-      breadcrumb: [],
-      project: Object
+      DB: this.$store.state.DataBase,
+      loading: false,
+      error: null,
+      project: null
     }
   },
   // beforeRouteEnter (to, from, next) {
@@ -50,35 +72,36 @@ export default {
   //   })
   // },
   mounted () {
-    this.breadcrumb = [
-      {
-        to: {name: 'home'},
-        text: 'Accueil'
-      },
-      {
-        to: {name: 'projects', params: this.$route.params},
-        text: 'Projets',
-        active: true
-      }
-    ]
-    this.project = {projectId: this.$route.params}
+    this.fetchProject()
   },
   methods: {
-    // open (link) {
-    //   this.$electron.shell.openExternal(link)
-    // },
-    // setData (err, post) {
-    //   if (err) {
-    //     this.error = err.toString()
-    //   } else {
-    //     this.post = post
-    //   }
-    // }
+    fetchProject () {
+      this.project = this.error = null
+      this.loading = true
+      var _self = this
+      // Load project from DB based on current $route.projectId
+      this.DB.projects.findOne({ _id: this.$route.params.projectId }, function (err, docs) {
+        _self.loading = false
+        // err = 'okok'
+        if (err) {
+          _self.error = err.toString()
+        } else {
+          _self.project = docs
+        }
+      })
+    }
   }
+  // beforeRouteUpdate (to, from, next) {
+  //   console.log(to)
+  //   return next()
+  // }
 }
 </script>
 
 <style lang="sass" scoped>
 #projects-sidebar
   padding-left: 1rem
+
+.loading
+
 </style>

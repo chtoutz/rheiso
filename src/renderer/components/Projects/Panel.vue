@@ -48,7 +48,7 @@
         <a>photovoltaïque</a>
         <a>archives</a>
       </p> -->
-      <router-link class="panel-block is-activ" :to="{name: 'projects', params: { projectId: project._id }}" v-for="project in projects" :key="project._id">
+      <router-link class="panel-block" :to="{name: 'projects.explore', params: { projectId: project._id }}" v-for="project in projects" :key="project._id">
         <span class="panel-icon has-text-info" @click="setActiveProject(project, $event)">
           <i class="fa fa-bolt"></i>
         </span>
@@ -61,7 +61,7 @@
 
       </router-link>
     </nav>
-{{projects}}
+{{$store.state.Projects}}
   </article>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-  <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+  <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs" id="projects-breadcrumb">
     <ul>
       <li v-for="item in items" :class="{'is-active': item.active}">
         <router-link :to="item.to">{{ item.text }}</router-link>

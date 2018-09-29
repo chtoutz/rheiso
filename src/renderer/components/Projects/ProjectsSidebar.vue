@@ -1,7 +1,7 @@
 <template>
   <aside class="menu" id="projects-sidebar">
     <p class="menu-label">
-      General
+      Vues du projet
     </p>
     <ul class="menu-list">
       <li>
@@ -10,17 +10,6 @@
           :class="{'is-active': $route.name === 'projects.explore'}"
         >Résumé</router-link>
       </li>
-      <li>
-        <router-link
-          :to="{ name: 'projects.explore', params: $route.params }"
-          :class="{'is-active': $route.name === 'projects.settings'}"
-        >Réglages</router-link>
-      </li>
-    </ul>
-    <p class="menu-label">
-      Vues du projet
-    </p>
-    <ul class="menu-list">
       <li>
         <router-link
           :to="{ name: 'projects.drawing', params: $route.params }"
@@ -42,9 +31,12 @@
           <li><a>Affaire</a></li>
         </ul>
       </li>
-      <li><a>Invitations</a></li>
-      <li><a>Cloud Storage Environment Settings</a></li>
-      <li><a>Authentication</a></li>
+      <li>
+        <router-link
+          :to="{ name: 'projects.explore', params: $route.params }"
+          :class="{'is-active': $route.name === 'projects.settings'}"
+        >Réglages</router-link>
+      </li>
     </ul>
     <p class="menu-label">
       Extensions

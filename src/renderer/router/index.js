@@ -49,7 +49,7 @@ export default new Router({
         {
           path: 'drawing',
           name: 'projects.drawing',
-          component: require('@/components/Drawing').default
+          component: require('@/components/Projects/Drawing').default
         }
       ]
     },

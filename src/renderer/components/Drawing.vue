@@ -38,7 +38,7 @@
           <feGaussianBlur in="alpha-mask" stdDeviation="10"/>
           <feOffset dx="5" dy="5" result="offset-blur"/>
           <feFlood flood-color="#000" flood-opacity="0.6"/>  <!-- Lighten the shadow a little -->
-          <feComposite in2="offset-blur" operator="in" result="shadow"/>
+          <feComposite in="offset-blur" operator="in" result="shadow"/>
           <!-- Merge the three layers together -->
           <feMerge>
             <feMergeNode in="shadow"/>
@@ -48,10 +48,11 @@
         </filter>
       </defs>
       <g>
-        <img :src="dede"/>
+        <img :src="getImgUrl(dede)" alt="okok"/>
+        <!-- <img :src="dede"/> -->
         <br>
         <div class="blob">
-          <img :src="dede"/>
+          <img :src="getImgUrl(dede)" alt="okok"/>
         </div>
       </g>
     </svg>
@@ -64,7 +65,14 @@ export default {
   data () {
     return {
       // dede: '/home/stutz/Documents/Appz/rheohub-data/plan.png'
-      dede: '~@/assets/plan.png'
+      dede: 'logo'
+      // dede: '~@/assets/logo.png'
+    }
+  },
+  methods: {
+    getImgUrl (pet) {
+      var images = require.context('../assets/', false, /\.png$/)
+      return images('./' + pet + '.png')
     }
   },
   mounted () {
@@ -76,7 +84,6 @@ export default {
 <style lang="css">
 img {
   width: 400px;
-
 }
 
 .blob {
