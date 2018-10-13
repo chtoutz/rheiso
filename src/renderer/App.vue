@@ -1,11 +1,11 @@
 <template>
   <div id="app">
     <app-header></app-header>
-    <div id="main-view" class="columns">
-      <aside class="column is-2">
+    <div class="columns">
+      <aside class="column is-2" id="main-sidebar">
         <sidebar></sidebar>
       </aside>
-      <main class="column">
+      <main class="column" id="main-view">
         <router-view></router-view>
       </main>
     </div>
@@ -25,19 +25,21 @@
   }
 </script>
 
-<style lang="sass">
-  #main-view, aside
-    // height: 100vh
+<style lang="sass" >
+  #main-view, #main-sidebar
     height: calc(100vh - 70px)
-    // min-height: calc(100vh - 83px) To use if top second navbar is displayed (layouts tab, open drawings...)
-    width: 100vw
-  aside
-    /*opacity: 0.6;*/
-    // height: 100vh
-    // position: relative
-    margin-bottom: 0
-    padding: 0
-    background: radial-gradient(ellipse at top left, rgba(255, 255, 255, 1) 40%, rgba(229, 229, 229, .9) 100%)
+  #main-sidebar
+    background: rgba(230,240,255,0.4)
+    border: 2px dashed transparent
+    box-shadow: 0px 0px 1px 1px rgba(0,0,0,0.15)
+    border-radius: 4px
+    -webkit-border-radius: 4px
+    transition: all .3s ease-in-out
+    -webkit-transition: all .3s ease-in-out
+    -moz-transition: all .3s ease-in-out
+    -o-transition: all .3s ease-in-out
+    // margin-bottom: 0
+    // background: radial-gradient(ellipse at bottom left, rgba(255, 255, 255, 0.8) 40%, rgba(182, 173, 173, 0.6) 100%)
     // Custom scrollbars style
     // ::-webkit-scrollbar
     //   width: 0.4em

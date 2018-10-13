@@ -1,5 +1,5 @@
 <template>
-  <aside class="menu" id="projects-sidebar">
+  <div class="submenu" id="projects-sidebar" v-if="$route.params.projectId">
     <p class="menu-label">
       Vues du projet
     </p>
@@ -38,15 +38,7 @@
         >Réglages</router-link>
       </li>
     </ul>
-    <p class="menu-label">
-      Extensions
-    </p>
-    <ul class="menu-list">
-      <li><a>Electrik</a></li>
-      <li><a>Matérielz</a></li>
-      <li><a>Balance</a></li>
-    </ul>
-  </aside>
+  </div>
 </template>
 
 <script>
