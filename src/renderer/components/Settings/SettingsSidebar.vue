@@ -1,5 +1,5 @@
 <template>
-  <aside class="menu">
+  <div class="submenu">
     <p class="menu-label">
       Projets ouverts
     </p>
@@ -17,24 +17,7 @@
       <li><a>Raccourcis clavier</a></li>
       <li><a>Arborescence projets</a></li>
     </ul>
-    <p class="menu-label">
-      Paquets
-    </p>
-    <ul class="menu-list">
-      <li><a>Extensions</a></li>
-      <li><a>Thèmes</a></li>
-      <li><a>Mises à jour</a></li>
-    </ul>
-    <p class="menu-label">
-      Extensions
-    </p>
-    <ul class="menu-list">
-      <li><a>Projects</a></li>
-      <li><a>Bilans Thermiques</a></li>
-      <li><a>Bilans Aérauliques</a></li>
-      <li><a>Isométriques</a></li>
-    </ul>
-  </aside>
+  </div>
 </template>
 
 <script>

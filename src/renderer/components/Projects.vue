@@ -3,37 +3,28 @@
     <!-- <div class="container is-fluid"> -->
     <breadcrumb></breadcrumb>
 
-    <article class="columns">
+    <div class="container is-fluid" id="projects-children-view">
 
-      <div class="column is-one-fifth" id="projects-sidebar">
-        <sidebar></sidebar>
+      <div v-if="loading" class="loading has-text-centered">
+        <span class='icon'>
+          <i class="fa fa-spinner fa-spin fa-3x"></i>
+        </span>
       </div>
 
-      <div :class="['column', {'is-6': error}]">
-        <div class="container is-fluid" id="projects-children-view">
-
-          <div v-if="loading" class="loading has-text-centered">
-            <span class='icon'>
-              <i class="fa fa-spinner fa-spin fa-3x"></i>
-            </span>
-          </div>
-
-          <div v-if="error" class="message is-danger">
-            <div class="message-header">
-              <p>Erreur:</p>
-            </div>
-            <div class="message-body">
-              {{ error }}
-            </div>
-          </div>
-
-          <div v-if="project">
-            <router-view></router-view>
-          </div>
+      <div v-if="error" class="message is-danger">
+        <div class="message-header">
+          <p>Erreur:</p>
+        </div>
+        <div class="message-body">
+          {{ error }}
         </div>
       </div>
-    </article>
-    <!-- </div> -->
+
+      <div v-if="project">
+        <router-view></router-view>
+      </div>
+    </div>
+
   </section>
 </template>
 
@@ -102,6 +93,5 @@ export default {
 #projects-sidebar
   padding-left: 1rem
 
-.loading
-
+// .loading
 </style>

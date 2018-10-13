@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, ipcMain } from 'electron'
 import windowStateKeeper from 'electron-window-state'
 
 /**
@@ -64,6 +64,9 @@ app.on('activate', () => {
 // })
 // ipcMain.on('draw.circle', (event, arg) => {
 //   event.sender.send('draw.circle', 'pong')
+// })
+// ipcMain.on('open-preferences', () => {
+//   win.loadURL(`file://${__dirname}/settings.html`)
 // })
 
 /**

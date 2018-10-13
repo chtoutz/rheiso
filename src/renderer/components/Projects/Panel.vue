@@ -48,86 +48,118 @@
         <a>photovoltaïque</a>
         <a>archives</a>
       </p> -->
-      <router-link class="panel-block" :to="{name: 'projects.explore', params: { projectId: project._id }}" v-for="project in projects" :key="project._id">
+      <!-- <router-link class="panel-block" :to="{name: 'projects.explore', params: { projectId: project._id }}" v-for="project in projects" :key="project._id">
         <span class="panel-icon has-text-info" @click="setActiveProject(project, $event)">
           <i class="fa fa-bolt"></i>
         </span>
         <span>{{project.name || '???'}}</span>
-        <!-- <span class=" is-pulled-right">
+      </router-link> -->
+      <div class="panel-block project-item" v-for="project in projects" :key="project._id">
+        <a class="panel-icon has-text-info project-action" @click="setActiveProject(project)">
+          <i class="fa fa-bolt"></i> &nbsp;
+        </a>
+        <span>{{project.name || '???'}}</span>
+        <a class=" is-pulled-right">
           <span class="icon has-text-danger">
             <i class="fa fa-trash"></i>
           </span>
-        </span> -->
+        </a>
 
-      </router-link>
+      </div>
     </nav>
-{{$store.state.Projects}}
+{{$settings.get()}}
   </article>
 </template>
 
 <script>
 // import fs from 'fs'
+import fs from 'fs'
 import path from 'path'
-// import _ from 'lodash'
+import _ from 'lodash'
 
 export default {
   name: 'projects-panel',
   data () {
     return {
-      projects: [],
-      DB: this.$store.state.DataBase,
-      settings: this.$store.state.Settings
+      projects: []
+      // DB: this.$store.state.DataBase,
+      // settings: this.$store.state.Settings
     }
   },
   mounted () {
     var _self = this
-    this.DB.projects.find({}, function (err, docs) {
+    this.$DB.projects.find({}, function (err, projects) {
       if (err) {
         console.log(err)
       }
-      _self.projects = docs
+      _self.projects = projects
     })
+    // this.$DB.projects.remove({}, { multi: true }, function (err, numRemoved) {
+    //   if (err) {
+    //     // de
+    //   }
+    // })
     // console.log(_.uniqueId())
-    // console.log(`${this.$store.state.Settings.get('general.projectsRoot')}/AFFAIRES`)
-    // const srcPath = `${projectsRoot}/AFFAIRES`
-    // const projectsRoot = this.settings.get('general.projectsRoot')
-    // fs.readdir(projectsRoot, function (err, files) {
+    // console.log(`${this.$store.state.Settings.get('general.projectsSource')}/AFFAIRES`)
+    // const srcPath = `${projectsSource}/AFFAIRES`
+    // const projectsSource = this.settings.get('general.projectsSource')
+    // fs.readdir(projectsSource, function (err, files) {
     //   if (err) {
     //     alert(err)
     //   } else {
-    //     _self.projects = files.filter(file => fs.statSync(path.join(projectsRoot, file)).isDirectory())
+    //     _self.projects = files.filter(file => fs.statSync(path.join(projectsSource, file)).isDirectory())
     //     // console.log(files)
     //     _self.projects = []
     //   }
     // })
   },
   methods: {
-    setActiveProject (project, event) {
-      if (event) event.preventDefault()
+    setActiveProject (project) {
+      this.$settings.set('activeProject', project)
+      // if (event) event.preventDefault()
       // console.log(project)
-      this.$store.commit('setActiveProject', project)
+      // this.$store.commit('setActiveProject', project)
     },
+    // On "+" click, add a new project to database
     addProject () {
-      const projectsRoot = this.settings.get('general.projectsRoot')
-      // const srcPath = `${projectsRoot}/AFFAIRES`
-      let _self = this
-      _self.$electron.remote.dialog.showOpenDialog({ properties: ['openDirectory'], defaultPath: projectsRoot }, function (projectPath) {
-        if (projectPath && projectPath.length === 1) {
-          projectPath = projectPath[0]
-          console.log(projectPath)
-          let project = {
-            path: projectPath,
-            name: path.basename(projectPath)
-          }
-          _self.DB.projects.insert(project, function (err, docs) {
+      // Declare vars
+      const projectsSource = this.$settings.get('general.projectsSource')
+      const _self = this
+      let projects = []
+      // let err = []
+      // Show open dialog to select the project(s) path (default directory when open : projectsSource from $settings)
+      const dialog = { properties: ['openDirectory', 'multiSelections'], defaultPath: projectsSource }
+      _self.$electron.remote.dialog.showOpenDialog(dialog, function (projectsPath) {
+        // With the selected project(s) path...
+        if (projectsPath && projectsPath.length) {
+          // ... Push it in the local projects var, with name extracted from the path last part...
+          _.forEach(projectsPath, function (projectPath) {
+            // TODO: Check if readable directory (and writable ?)
+            let project = {
+              name: path.basename(projectPath),
+              sourcepath: projectPath
+            }
+            project.datapath = path.join(_self.$settings.get('general.projectsSaving'), project.name)
+            projects.push(project)
+            // Try to create folder containing future project data (drawings, database, libs, reports...)
+            fs.mkdir(project.datapath, (err) => {
+              if (err && err.code !== 'EEXIST') console.log('err')
+            })
+          })
+          // ... Inform in debug what projects were successfully created on disk...
+          let projNames = _.map(projects, 'name')
+          console.debug(`Selected projects ${projNames.join(', ')}.`)
+          // ... Insert in into $DB...
+          _self.$DB.projects.insert(projects, function (err, docs) {
             if (err) {
               console.log(err)
             }
-            _self.projects = docs
+            // ... And eventually display correcty added projects into view !
+            // _self.projects.unshift(docs)
+            // console.log(_.concat(_self.projects, projects))
+            _self.$set(_self.projects, _.concat(_self.projects, projects))
             // console.log(docs)
           })
-          // _self.store.set('general.projectsRoot', projectDir[0])
-          // _self.settings.general.projectsRoot = projectDir[0]
         }
       })
     }
@@ -135,5 +167,17 @@ export default {
 }
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
+.project-action {
+  /*display: none;*/
+  visibility: hidden;
+  font-size: 1.2rem;
+}
+.project-item:hover .project-action {
+  /*display: block;*/
+  visibility: visible;
+}
+.is-pulled-right {
+  float: right;
+}
 </style>
