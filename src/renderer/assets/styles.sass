@@ -1,7 +1,11 @@
 // 1. Import the initial variables
-@import "~bulma/sass/utilities/initial-variables"
-@import "~bulma/sass/utilities/functions"
+@import "bulma/sass/utilities/_all.sass"
+// @import "~bulma/sass/utilities/initial-variables"
+// @import "~bulma/sass/utilities/functions"
+
 @import "~font-awesome/css/font-awesome.min.css"
+
+// @import "bulma/sass/layout/_all.sass"
 
 // 2. Set your own initial variables
 // Update blue
@@ -23,6 +27,14 @@
 //   "github": ($github, $github-invert)
 // );
 // $colors: map-merge($colors, $addColors);
+$menu-item-hover-background-color: $white-ter
+// $menu-item-hover-color: $white
+// $menu-item-color: $grey-dark
+// $menu-list-border-left: $grey-darker
+$menu-label-color: $grey-darker
+$menu-item-active-color: $text
+// $menu-item-active-background-color: rgba($grey-light, 0.5)
+$menu-item-active-background-color: $white-bis
 
 // 6. Import the rest of Bulma
 @import "~bulma/bulma"

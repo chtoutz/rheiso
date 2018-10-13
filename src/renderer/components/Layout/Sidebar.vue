@@ -1,8 +1,13 @@
 <template>
   <nav class="menu">
-    <!-- <p class="menu-label">
-      Projet actif
-    </p> -->
+    <!-- <router-link
+    class="menu-label"
+      :to="{ name: 'projects.explore', params: $route.params }"
+      :class="{'is-active': $route.name === 'projects.explore'}"
+    >Résumé</router-link> -->
+    <!-- <div class="submenu">
+
+    </div> -->
     <project-sidebar-dropdown></project-sidebar-dropdown>
     <settings-sidebar></settings-sidebar>
     <projects-sidebar></projects-sidebar>

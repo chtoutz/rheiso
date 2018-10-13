@@ -1,9 +1,15 @@
 <template>
-  Settings des projets ouverts.
+  <div class="">
+    Settings des projets ouverts.
+  </div>
 </template>
 
 <script>
 export default {
+  name: 'projects-settings',
+  props: {
+    settings: Object
+  }
 }
 </script>
 

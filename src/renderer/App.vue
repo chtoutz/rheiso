@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <app-header></app-header>
+    <!-- <app-header></app-header> -->
+    <navbar></navbar>
     <div class="columns">
       <aside class="column is-2" id="main-sidebar">
         <sidebar></sidebar>
@@ -14,24 +15,28 @@
 
 <script>
   import AppHeader from '@/components/Layout/AppHeader'
+  import Navbar from '@/components/Layout/Navbar'
   import Sidebar from '@/components/Layout/Sidebar'
 
   export default {
     components: {
       AppHeader,
+      Navbar,
       Sidebar
       // 'breadcrumb': Breadcrumb
     }
   }
 </script>
 
-<style lang="sass" >
+<style lang="sass">
+  @import "~bulma/sass/utilities/initial-variables"
   #main-view, #main-sidebar
-    height: calc(100vh - 70px)
+    height: calc(100vh - 52px)
   #main-sidebar
-    background: rgba(230,240,255,0.4)
+    background: rgba($grey-light,0.4)
+    // background: $grey-lighter
     border: 2px dashed transparent
-    box-shadow: 0px 0px 1px 1px rgba(0,0,0,0.15)
+    outline: 0px 0px 1px 1px rgba(0,0,0,0.15)
     border-radius: 4px
     -webkit-border-radius: 4px
     transition: all .3s ease-in-out
@@ -47,5 +52,5 @@
     //   -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3)
     // ::-webkit-scrollbar-thumb
     //   background-color: darkgrey
-    //   outline: 1px solid slategrey
+    // outline: 1px solid slategrey
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <section id="settings">
+  <section class="section" id="settings">
     <div class="container is-fluid">
       <router-view :settings="settings" @selectFolder="setFolder"></router-view>
     </div>
@@ -32,7 +32,7 @@ export default {
     let notification = {
       title: 'Test réglages',
       type: 'primary',
-      direction: 'Down',
+      // direction: 'Down',
       message: 'Notification test pour la page des réglages',
       duration: 4500
     }

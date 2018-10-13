@@ -24,6 +24,11 @@ export default new Router({
           path: '',
           name: 'settings',
           component: require('@/components/Settings/GeneralSettings').default
+        },
+        {
+          path: 'projects',
+          name: 'settings.projects',
+          component: require('@/components/Settings/ProjectsSettings').default
         }
       ]
     },
