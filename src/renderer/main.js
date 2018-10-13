@@ -18,10 +18,14 @@ import './assets/styles.sass'
  * Load settings *
  *****************/
 
+// TODO: Create and call a boot loader that applies default values for all general settings (projects folder, shortcuts...), init database (?)
 let settingsData = {
   name: 'rheiso-settings',
   defaults: {
-    general: {},
+    general: {
+      projectsSource: '',
+      projectsSaving: ''
+    },
     plugins: {},
     projects: {}
   }
@@ -58,6 +62,7 @@ store.commit('initDatabase')
  *********************/
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
+Vue.DB = Vue.prototype.$DB = store.state.DataBase
 Vue.http = Vue.prototype.$http = axios
 Vue.settings = Vue.prototype.$settings = settings
 Vue.openNotification = Vue.prototype.$openNotification = openNotification
