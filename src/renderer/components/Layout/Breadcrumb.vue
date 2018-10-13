@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  name: 'app-breadcrumb',
+  name: 'breadcrumb',
   props: {
     items: {type: Array, required: false}
   }

@@ -2,7 +2,6 @@
 <template>
   <transition
     :name="transition"
-    mode="in-out"
     appear
     :appear-active-class="enterClass"
     :enter-active-class="enterClass"

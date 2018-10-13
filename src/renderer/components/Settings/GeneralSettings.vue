@@ -1,35 +1,35 @@
 <template>
-  <div class="">
+  <div class="" id="settings-general">
     <h2 class="title">Réglages généraux</h2>
     <form class="" method="post">
 
       <h3 class="subtitle">Emplacements et fichiers</h3>
 
       <div class="field">
-        <label class="label">Sources</label>
+        <label class="label">Répertoire des sources</label>
         <p class="help">Le dossier où sont situés les projets que vous souhaitez importer dans RheIso</p>
       </div>
       <div class="field is-grouped">
         <p class="control is-expanded">
-          <input class="input" type="text" name="general.projectsRoot" v-model="settings.general.projectsRoot" placeholder="~/Documents/rheoiso-projects">
+          <input class="input" type="text" name="general.projectsSource" v-model="settings.general.projectsSource" placeholder="~/Documents/projects">
         </p>
         <p class="control">
-          <a class="button" @click="$emit('selectFolder', 'general.projectsRoot')" title="Sélectionner un dossier">
+          <a class="button" @click="$emit('selectFolder', 'general.projectsSource')" title="Sélectionner un dossier">
             <span class="icon"><i class="fa fa-arrow-right"></i></span>
           </a>
         </p>
       </div>
 
       <div class="field">
-        <label class="label">Sorties</label>
+        <label class="label">Répertoire des projets</label>
         <p class="help">Lorsqu'un projet est importé, un dossier est créé dans ce répertoire avec les composants RheIso propres au projet (arborescence des fichiers, bases de données, dessins vectoriels...). Vous pouvez ensuite exporter ce dossier sous forme d'une archive cryptée.</p>
       </div>
       <div class="field is-grouped">
         <p class="control is-expanded">
-          <input class="input" type="text" name="general.projectsRoot" v-model="settings.general.projectsRoot" placeholder="~/Documents/rheoiso-projects">
+          <input class="input" type="text" name="general.projectsSaving" v-model="settings.general.projectsSaving" placeholder="~/Documents/rheoiso-projects">
         </p>
         <p class="control">
-          <a class="button is-rounded" @click="selectProjectsRoot" title="Sélectionner un dossier">
+          <a class="button is-rounded" @click="$emit('selectFolder', 'general.projectsSaving')" title="Sélectionner un dossier">
             <span class="icon"><i class="fa fa-arrow-right"></i></span>
           </a>
         </p>
@@ -42,8 +42,8 @@
           <!-- <span class="icon is-small is-left">
             <i class="fa fa-user"></i>
           </span> -->
-          <span class="icon is-small is-right" @click="selectProjectsRoot">
-            <i class="fa fa-check" @click="selectProjectsRoot"></i>
+          <span class="icon is-small is-right" @click="$emit('selectFolder', 'general.projectsSource')">
+            <i class="fa fa-check" @click="$emit('selectFolder', 'general.projectsSource')"></i>
           </span>
         </div>
         <!-- <p class="help is-success">This username is available</p> -->
@@ -76,6 +76,14 @@
           <button class="button is-link">Sauvegarder</button>
         </div>
         <div class="control">
+          <a class="button" @click="restoreDefs">
+            <span class="icon">
+              <i class="fa fa-undo"></i>
+            </span>
+            <span>Restaurer par défaut</span>
+          </a>
+        </div>
+        <div class="control">
           <button class="button is-text">Annuler</button>
         </div>
       </div>
@@ -92,67 +100,47 @@
 <script>
 export default {
   name: 'settings-general',
-  // data () {
-  //   return {
-  //     settings: this.$settings.store
-  //   }
-  // },
   props: {
     settings: Object
   },
-  // computed: {
-  //   test (setting) {
-  //     return this.$settings.get(setting)
-  //   }
-  // },
-  watch: {
-    // whenever question changes, this function will run
-    settings: function (newQuestion, oldQuestion) {
-      console.log(newQuestion)
-    }
-  },
   methods: {
-    test (setting) {
-      let isTyping = false
-      setTimeout(function () {
-        isTyping = true
-      }, 1000)
-      if (!isTyping) {
-        console.log('ok')
-      }
-    },
-    selectProjectsRoot () {
+    restoreDefs () {
       let _self = this
-      const dialog = {
-        properties: ['openDirectory']
-        // defaultPath: this.project.rootPath,
-        // filters: [
-        //   {name: 'PDF', extensions: ['pdf']},
-        //   {name: 'Vectoriel', extensions: ['dwg', 'dxf', 'svg']},
-        //   {name: 'Images', extensions: ['jpg', 'png', 'gif']},
-        //   {name: 'Tous les fichiers', extensions: ['*']}
-        // ]
+      let options = {
+        type: 'question',
+        title: 'Restaurer les paramètres par défaut ?',
+        message: 'Cette opération va supprimer tous vos paramètres actuels et restaurer les paramètres par défaut de l\'application, et est rréversible. Souhaitez-vous continuer ?',
+        buttons: ['OK', 'Annuler'],
+        cancelId: 1,
+        defaultId: 0
       }
-      this.$electron.remote.dialog.showOpenDialog(dialog, function (filePaths, bookmarks) {
-        if (filePaths && filePaths.length === 1) {
-          console.log(filePaths)
-          _self.store.set('general.projectsRoot', filePaths[0])
-          // _self.settings.general.projectsRoot = filePaths[0]
-          // TODO: Check if input is an accessible read/write directory
-          // if (true) {
-          //   this.settings.set('general.projectsRoot', filePaths[0])
-          // }
+      this.$electron.remote.dialog.showMessageBox(options, function (response, chkbx) {
+        if (response === 0) {
+          _self.$settings.clear()
+          // TODO: Use default settings object (to be stored somewhere) and populate $settings with it
         }
       })
-    },
-    loadSetting (event, scope, name) {
-      console.log(scope, name)
-      console.log(event.target.files[0])
-      // settings.general.projectsRoot
     }
+    // selectProjectsRoot () {
+    //   let _self = this
+    //   this.$electron.remote.dialog.showOpenDialog(dialog, function (filePaths, bookmarks) {
+    //     if (filePaths && filePaths.length === 1) {
+    //       console.log(filePaths)
+    //       _self.store.set('general.projectsSource', filePaths[0])
+    //       // _self.settings.general.projectsSource = filePaths[0]
+    //       // TODO: Check if input is an accessible read/write directory
+    //       // if (true) {
+    //       //   this.settings.set('general.projectsSource', filePaths[0])
+    //       // }
+    //     }
+    //   })
+    // }
   }
 }
 </script>
 
-<style lang="css">
+<style lang="sass">
+// #settings-general
+//   overflow: scroll
+//   position: fixed
 </style>

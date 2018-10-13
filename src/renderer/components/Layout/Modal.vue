@@ -54,7 +54,7 @@
 
 <script>
 export default {
-  name: 'app-modal'
+  name: 'modal'
 }
 </script>
 

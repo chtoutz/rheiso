@@ -9,10 +9,14 @@
           </router-link>
         </li>
         <li :class="{ 'is-active': projectRoute }">
-          <router-link :to="{name: 'projects', params: {projectId: activeProject._id || 123}}">
+          <router-link :to="{name: 'projects', params: {projectId: activeProject._id }}" v-if="activeProject._id">
             <span class="icon is-small"><i class="fa fa-briefcase"></i></span>
             <span>Projet <span>{{ activeProject.name ? `- ${activeProject.name}` : '(vide)' }}</span></span>
           </router-link>
+          <a v-else>
+            <span class="icon is-small"><i class="fa fa-briefcase"></i></span>
+            <span>Projet <span>{{ activeProject.name ? `- ${activeProject.name}` : '(vide)' }}</span></span>
+          </a>
         </li>
         <!-- <li :class="{'is-active': $route.name === 'home'}">
           <a>
@@ -52,19 +56,6 @@
         </li>
       </ul>
     </nav>
-
-    <section class="section hero" v-if="$route.meta.header">
-      <div class="header-body">
-        <div class="container has-text-centered">
-          <img id="logo" src="~@/assets/logo.png" alt="electron-vue">
-          <p class="content">
-            <span class="is-light">Connecté en tant que </span> <strong class="is-dark">Valentin STUTZ</strong>
-            &nbsp;
-            <span class="icon is-small"><i title="Fermer la session" class="fa fa-power-off file-label"></i></span>
-          </p>
-        </div>
-      </div>
-    </section>
   </header>
 </template>
 
