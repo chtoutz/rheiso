@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar" role="navigation" aria-label="main navigation">
+  <nav class="navbar is-light" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <a class="navbar-item" href="https://bulma.io">
         <span class="icon">
@@ -16,12 +16,18 @@
 
     <div id="navbar" class="navbar-menu">
       <div class="navbar-start">
-        <a class="navbar-item">
-          Home
-        </a>
+        <router-link :to="{name: 'home'}" class="navbar-item">
+          <span class="icon is-small"><i class="fa fa-home"></i></span>
+          Accueil
+        </router-link>
+      </li>
 
         <a class="navbar-item">
-          Documentation
+          <div class="field">
+            <div class="control">
+              <input class="input is-rounded" type="text" placeholder="Primary input">
+            </div>
+          </div>
         </a>
 
         <div class="navbar-item has-dropdown is-hoverable">

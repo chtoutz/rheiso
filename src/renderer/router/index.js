@@ -33,7 +33,7 @@ export default new Router({
       ]
     },
     {
-      path: '/projects/:projectId',
+      path: '/projects',
       name: 'projects',
       component: require('@/components/Projects').default,
       children: [

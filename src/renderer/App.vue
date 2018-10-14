@@ -10,6 +10,9 @@
         <router-view></router-view>
       </main>
     </div>
+    <!-- <div class="columns">
+      <debug></debug>
+    </div> -->
   </div>
 </template>
 
@@ -17,13 +20,19 @@
   import AppHeader from '@/components/Layout/AppHeader'
   import Navbar from '@/components/Layout/Navbar'
   import Sidebar from '@/components/Layout/Sidebar'
+  import Debug from '@/components/Debug'
 
   export default {
     components: {
       AppHeader,
       Navbar,
-      Sidebar
+      Sidebar,
+      Debug
       // 'breadcrumb': Breadcrumb
+    },
+    mounted () {
+      // let settings = this.$settings
+      // this.$store.commit('loadActiveProject', settings)
     }
   }
 </script>
@@ -32,9 +41,10 @@
   @import "~bulma/sass/utilities/initial-variables"
   #main-view, #main-sidebar
     height: calc(100vh - 52px)
+    // height: calc(100vh - 180px)
   #main-sidebar
+    overflow-y: auto
     background: rgba($grey-light,0.4)
-    // background: $grey-lighter
     border: 2px dashed transparent
     outline: 0px 0px 1px 1px rgba(0,0,0,0.15)
     border-radius: 4px

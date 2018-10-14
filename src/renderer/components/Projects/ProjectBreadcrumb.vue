@@ -19,9 +19,9 @@ export default {
           text: 'Accueil'
         },
         {
-          to: {name: 'projects.explore', params: this.$route.params},
+          to: {name: 'projects.explore'},
           // TODO: Replace w/ activeProject.name
-          text: this.$route.params.projectId
+          text: this.$settings.get('activeProject.name')
         }
       ]
     }

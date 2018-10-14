@@ -30,19 +30,16 @@
 
 <script>
 import Breadcrumb from '@/components/Projects/ProjectBreadcrumb'
-import Sidebar from '@/components/Projects/ProjectsSidebar'
 import Explore from '@/components/Projects/Explore'
 
 export default {
   name: 'projects',
   components: {
     Breadcrumb,
-    Explore,
-    Sidebar
+    Explore
   },
   data () {
     return {
-      DB: this.$store.state.DataBase,
       loading: false,
       error: null,
       project: null
@@ -63,21 +60,22 @@ export default {
   //   })
   // },
   mounted () {
-    this.fetchProject()
+    this.fetchProject(this.$settings.get('activeProject._id'))
   },
   methods: {
-    fetchProject () {
+    fetchProject (projId) {
       this.project = this.error = null
       this.loading = true
       var _self = this
       // Load project from DB based on current $route.projectId
-      this.DB.projects.findOne({ _id: this.$route.params.projectId }, function (err, docs) {
+      this.$DB.projects.findOne({ _id: projId }, function (err, res) {
         _self.loading = false
         // err = 'okok'
         if (err) {
           _self.error = err.toString()
         } else {
-          _self.project = docs
+          _self.project = res
+          console.log(`Loaded project ${res}`)
         }
       })
     }
@@ -90,8 +88,4 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-#projects-sidebar
-  padding-left: 1rem
-
-// .loading
 </style>

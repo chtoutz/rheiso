@@ -9,8 +9,8 @@
 
     </div> -->
     <project-sidebar-dropdown></project-sidebar-dropdown>
-    <settings-sidebar></settings-sidebar>
     <projects-sidebar></projects-sidebar>
+    <settings-sidebar></settings-sidebar>
     <repos-sidebar></repos-sidebar>
   </nav>
 </template>
@@ -46,7 +46,7 @@ export default {
 
 <style lang="css" scoped>
   .menu {
-    padding-left: 12px;
+    margin-left: 12px;
   }
   .submenu {
     margin-top: 12px
