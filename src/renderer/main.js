@@ -21,6 +21,7 @@ import './assets/styles.sass'
 // TODO: Create and call a boot loader that applies default values for all general settings (projects folder, shortcuts...), init database (?)
 let settingsData = {
   name: 'rheiso-settings',
+  encryptionKey: 'InG€ocachingWeTru$t',
   defaults: {
     general: {
       projectsSource: '',
