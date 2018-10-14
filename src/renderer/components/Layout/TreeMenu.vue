@@ -53,6 +53,7 @@ export default {
   .label-wrapper {
     // padding-bottom: 8px;
     margin-bottom: 8px;
+    border-bottom: 1px solid #ccc;
     .has-children {
       cursor: pointer;
       // border-bottom: 1px solid #ccc;
