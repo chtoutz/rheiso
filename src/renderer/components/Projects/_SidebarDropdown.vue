@@ -5,7 +5,7 @@
         <div class="dropdown is-hoverable" id="projects-dropdown">
           <div class="dropdown-trigger">
             <a class="button is-fullwidth is-rounded" aria-haspopup="true" aria-controls="projects-list">
-              <span>{{ $settings.get('activeProject.name') || 'Sélectionner un projet' }}</span>
+              <span>{{ activeProject.name || 'Sélectionner un projet' }}</span>
               <span class="icon is-small">
                 <i class="fa fa-angle-down" aria-hidden="true"></i>
               </span>
@@ -39,18 +39,20 @@
 
 <script>
 export default {
-  name: 'project-sidebar-dropdown',
+  name: 'projects-sidebar-dropdown',
   data () {
     return {
+      activeProject: {},
       projects: []
     }
   },
-  computed: {
-    activeProject () {
-      // return this.$settings.get('activeProject.name')
-    }
-  },
+  // computed: {
+  //   activeProject () {
+  //     // return this.$settings.get('activeProject.name')
+  //   }
+  // },
   mounted () {
+    this.activeProject = this.$settings.get('activeProject')
     var _self = this
     // this.$watch(() => {
     //   return _self.$settings.get('activeProject.name')
@@ -67,6 +69,7 @@ export default {
   methods: {
     setActiveProject (project) {
       // console.log(project)
+      this.activeProject = project
       this.$settings.set('activeProject', project)
       // this.$store.commit('setActiveProject', project)
       console.log(`Project "${project.name}" set as active`)

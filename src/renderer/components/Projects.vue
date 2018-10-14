@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import Breadcrumb from '@/components/Projects/ProjectBreadcrumb'
+import Breadcrumb from '@/components/Projects/_ProjectBreadcrumb'
 import Explore from '@/components/Projects/Explore'
 
 export default {

@@ -7,13 +7,9 @@
 </template>
 
 <script>
-import Sidebar from '@/components/Settings/SettingsSidebar'
 
 export default {
   name: 'settings',
-  components: {
-    Sidebar
-  },
   data () {
     return {
       settings: this.$settings.store

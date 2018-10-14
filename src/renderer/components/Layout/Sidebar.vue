@@ -8,7 +8,7 @@
     <!-- <div class="submenu">
 
     </div> -->
-    <project-sidebar-dropdown></project-sidebar-dropdown>
+    <projects-sidebar-dropdown></projects-sidebar-dropdown>
     <projects-sidebar></projects-sidebar>
     <settings-sidebar></settings-sidebar>
     <repos-sidebar></repos-sidebar>
@@ -16,9 +16,9 @@
 </template>
 
 <script>
-import SettingsSidebar from '@/components/Settings/SettingsSidebar'
-import ProjectsSidebar from '@/components/Projects/ProjectsSidebar'
-import ProjectSidebarDropdown from '@/components/Projects/SidebarDropdown'
+import SettingsSidebar from '@/components/Settings/_SettingsSidebar'
+import ProjectsSidebar from '@/components/Projects/_ProjectsSidebar'
+import ProjectsSidebarDropdown from '@/components/Projects/_SidebarDropdown'
 import ReposSidebar from '@/components/Repos/ReposSidebar'
 // TODO: Populate menu with submenus from installed AND active plugins, and load them dynamically when all are ready to show
 // One submenu = one component which receives below mixin
@@ -28,7 +28,7 @@ export default {
   components: {
     SettingsSidebar,
     ProjectsSidebar,
-    ProjectSidebarDropdown,
+    ProjectsSidebarDropdown,
     ReposSidebar
   },
   data () {

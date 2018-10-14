@@ -8,8 +8,7 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: require('@/components/Home').default,
-      meta: { sidebar: false, header: true }
+      component: require('@/components/Home').default
     },
     {
       path: '/drawing',
@@ -55,21 +54,6 @@ export default new Router({
         }
       ]
     },
-    // {
-    //   path: '/drawing',
-    //   name: 'projects-drawing',
-    //   component: require('@/components/Drawing').default
-    // },
-    // {
-    //   path: '/project/:projectId',
-    //   name: 'project',
-    //   meta: { sidebar: true, breadcrumb: true },
-    //   components: {
-    //     default: require('@/components/Projects/Explore').default,
-    //     sidebar: require('@/components/Projects/ProjectSidebar').default,
-    //     breadcrumb: require('@/components/Projects/ProjectBreadcrumb').default
-    //   }
-    // },
     {
       path: '*',
       redirect: '/'

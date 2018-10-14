@@ -1,11 +1,12 @@
 <template>
-  <nav class="navbar is-light" role="navigation" aria-label="main navigation">
+  <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
-      <a class="navbar-item" href="https://bulma.io">
+      <router-link :to="{name: 'home'}" class="navbar-item">
         <span class="icon">
           <i class="fa fa-home"></i>
         </span>
-      </a>
+        <span>Accueil</span>
+      </router-link>
 
       <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbar">
         <span aria-hidden="true"></span>
@@ -16,12 +17,6 @@
 
     <div id="navbar" class="navbar-menu">
       <div class="navbar-start">
-        <router-link :to="{name: 'home'}" class="navbar-item">
-          <span class="icon is-small"><i class="fa fa-home"></i></span>
-          Accueil
-        </router-link>
-      </li>
-
         <a class="navbar-item">
           <div class="field">
             <div class="control">
@@ -54,6 +49,14 @@
       </div>
 
       <div class="navbar-end">
+        <div class="navbar-item">
+          <a class="has-text-light">
+            <span class="icon">
+              <i class="fa fa-bell"></i> &nbsp;
+              <span class="tag is-rounded">6</span>
+            </span>
+          </a>
+        </div>
         <div class="navbar-item">
           <div class="buttons">
             <a class="button is-primary">
