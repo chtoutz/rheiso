@@ -24,13 +24,16 @@
         >Locaux</router-link>
       </li>
       <li>
-        <a>Arborescences</a>
-        <ul>
+        <router-link
+          :to="{ name: 'projects.filetree' }"
+          :class="{'is-active': $route.name === 'projects.filetree'}"
+        >Arborescence</router-link>
+        <!-- <ul>
           <li><a>Fichiers locaux</a></li>
           <li><a>Dossier des Ouvrages Exécutés</a></li>
           <li><a>Chantier</a></li>
           <li><a>Affaire</a></li>
-        </ul>
+        </ul> -->
       </li>
       <li>
         <router-link

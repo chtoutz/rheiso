@@ -1,5 +1,5 @@
 <template>
-  <div id="tasks-home">
+  <div id="projects-tasks">
     <nav class="panel">
       <p class="panel-heading">
         Tâches

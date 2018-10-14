@@ -48,6 +48,11 @@ export default new Router({
           component: require('@/components/Projects/Explore').default
         },
         {
+          path: 'filetree',
+          name: 'projects.filetree',
+          component: require('@/components/Projects/Filetree').default
+        },
+        {
           path: 'drawing',
           name: 'projects.drawing',
           component: require('@/components/Projects/Drawing').default
