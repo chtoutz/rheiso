@@ -44,6 +44,7 @@ https://lodash.com/
 https://bulma.io/
 https://fontawesome.com/
 https://github.com/vue-bulma/notification
+https://vuejsdevelopers.com/2017/10/23/vue-js-tree-menu-recursive-components/
 
 ## DRAWING
 https://github.com/thomasdesmoulin/dxf-parsing

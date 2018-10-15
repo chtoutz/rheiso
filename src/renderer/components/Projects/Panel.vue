@@ -67,7 +67,7 @@
 
       </div>
     </nav>
-{{$settings.get()}}
+{{$settings.get('setActiveProject')}}
   </article>
 </template>
 

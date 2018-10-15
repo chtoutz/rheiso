@@ -118,16 +118,16 @@ export default {
 
 <style lang="scss">
 // @import '~bulma/sass/utilities/initial-variables';
-// @import '~bulma/sass/utilities/mixins';
+@import '~bulma/sass/utilities/_all';
 .notifications {
   position: fixed;
   top: 50px;
   right: 0;
   z-index: 1024 + 233;
   pointer-events: none;
-  // @include tablet() {
-  max-width: 320px;
-  // }
+  @include mobile() {
+    max-width: 320px;
+  }
   .notification {
     margin: 20px;
   }

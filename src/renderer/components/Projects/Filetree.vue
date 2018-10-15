@@ -1,5 +1,14 @@
 <template>
   <div id="projects-filetree" class="boxx">
+    <div class="level">
+      <div class="level-left">
+        <h2 class="title">Fichiers locaux <small class="subtitle">{{ $route.params.filetree }}.js</small></h2>
+      </div>
+      <div class="level-right" v-if="tree">
+        <span class="heading">Mis à jour il y a deux jours</span>
+      </div>
+    </div>
+
     <!-- Main container -->
     <nav class="level">
       <!-- Left side -->
@@ -25,25 +34,15 @@
 
       <!-- Right side -->
       <div class="level-right">
+
         <p class="level-item">
-          <div class="select is-rounded is-primary">
-            <select>
-              <option>Fichiers locaux</option>
-              <option>DOE</option>
-              <option>Affaires</option>
-            </select>
-          </div>
+          <a class="button is-primary">
+            <span class="icon"><i class="fa fa-plus"></i></span>
+          </a>
         </p>
-        <p class="level-item"><a class="button is-primary">New</a></p>
       </div>
     </nav>
-    <!-- <div class="box" id="filetree">
-      <tree-menu
-         :children="tree.children"
-         :depth="0"
-         :name="tree.name"
-         ></tree-menu>
-    </div> -->
+
     <div class="tile has-text-centered is-ancestor">
       <div class="tile is-parent is-2">
         <a class="tile is-child box">
@@ -57,7 +56,7 @@
           <p class="heading">Fichiers locaux</p>
         </router-link>
       </div>
-      <div class="tile is-parent is-2">
+      <!-- <div class="tile is-parent is-2">
         <router-link :to="{name: 'home'}" class="tile is-child box">
           <span class="icon is-large"><i class="fa fa-folder-open fa-3x"></i></span>
           <p class="heading">Etudes</p>
@@ -80,7 +79,9 @@
           <span class="icon is-large"><i class="fa fa-folder-open fa-3x"></i></span>
           <p class="heading">Affaire</p>
         </router-link>
-      </div>
+      </div> -->
+
+      <!-- Keep in ming for apps specific icons -->
       <!-- <div class="tile is-parent is-2">
         <a class="tile is-child box">
           <span class="icon has-text-grey is-large"><i class="fa fa-folder-o fa-3x"></i></span>
@@ -112,7 +113,29 @@
         </a>
       </div> -->
     </div>
-    <div class="tile has-text-centered is-ancestor">
+    <div v-if="!tree">
+      <div class="message is-info">
+        <div class="message-body">
+          Il semblerait que les fichiers de ce projet n'aient pas encore été importés. Vous pouvez essayer de scanner le dossier du projet actif à l'aide du bouton ci-dessous : <br>
+        </div>
+      </div>
+      <div class="has-text-centered">
+        <a class="button is-medium" @click="importFiles">
+          <span class="icon">
+            <i class="fa fa-arrow-circle-down"></i>
+          </span>
+          <span>Importer</span>
+        </a>
+      </div>
+    </div>
+    <div class="box" id="filetree" v-else>
+      <tree-menu
+         :children="tree.children"
+         :depth="0"
+         :name="tree.name"
+         ></tree-menu>
+    </div>
+    <!-- <div class="tile has-text-centered is-ancestor">
       <div class="tile is-parent is-2">
         <router-link :to="{name: 'home'}" class="tile is-child box">
           <span class="icon is-large"><i class="fa fa-folder-open fa-3x"></i></span>
@@ -125,30 +148,15 @@
           <p class="heading">Jeu de fichiers 2</p>
         </router-link>
       </div>
-      <div class="tile is-parent is-2">
-        <router-link :to="{name: 'home'}" class="tile is-child box">
-          <span class="icon is-large"><i class="fa fa-folder-open fa-3x"></i></span>
-          <p class="heading">Jeu de fichiers 3</p>
-        </router-link>
-      </div>
-      <div class="tile is-parent is-2">
-        <router-link :to="{name: 'home'}" class="tile is-child box">
-          <span class="icon is-large"><i class="fa fa-folder-open fa-3x"></i></span>
-          <p class="heading">Jeu de fichiers 4</p>
-        </router-link>
-      </div>
-      <div class="tile is-parent is-2">
-        <router-link :to="{name: 'home'}" class="tile is-child box">
-          <span class="icon is-large"><i class="fa fa-folder-open fa-3x"></i></span>
-          <p class="heading">Jeu de fichiers 5</p>
-        </router-link>
-      </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
+import fs from 'fs'
 import TreeMenu from '@/components/Layout/TreeMenu'
+import ProjectsMixin from '@/mixins/Projects'
+
 // Use _.take(filetrees, 2) and add it in the first row, after "Add filetree" and "Local filetree" tiles
 // Then  _.chunk(_.drop(filetrees, 2), 4) to display the other filetrees in next lines tiles
 export default {
@@ -156,49 +164,85 @@ export default {
   components: {
     TreeMenu
   },
+  mixins: [ProjectsMixin],
+  // TODO: Move this computed into the ProjectsMixin.vue
+  // computed: {
+  //   filetreePath () {
+  //     return `${this.$settings.get('setActiveProject.datapath')}/${this.$route.params.filetree}.js`
+  //   }
+  // },
   data () {
     return {
-      tree: {
-        name: 'root',
-        children: [
-          {
-            name: 'item1',
-            children: [
-              {
-                name: 'item1.1'
-              },
-              {
-                name: 'item1.2',
-                children: [
-                  {
-                    name: 'item1.2.1'
-                  },
-                  {
-                    name: 'item1.2.1item1.2.1item1.2.1item1.2.1item1.2.1it em1.2.1item1.2.1item1.2.1item1.2.1item1.2.1item1.2.1i tem1.2.1item1.2.1item1.2.1item1.2.1item1.2.1item1.2.1item1.2.1item1.2.1item1.2.1item1.2.1item1.2.1item1.2.1item1.2.1item1.2 .1item1.2.1item1.2.1  '
-                  },
-                  {
-                    name: 'item1.2.1'
-                  },
-                  {
-                    name: 'item1.2.1'
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            name: 'item2'
-          }
-        ]
-      }
+      tree: null
+      // tree: {
+      //   name: 'root',
+      //   children: [
+      //     {
+      //       name: 'item1',
+      //       children: [
+      //         {
+      //           name: 'item1.1'
+      //         },
+      //         {
+      //           name: 'item1.2',
+      //           children: [
+      //             {
+      //               name: 'item1.2.1'
+      //             },
+      //             {
+      //               name: 'item1.2.1item1.2.1item1.2.1item1.2.1item1.2.1it em1.2.1item1.2.1item1.2.1item1.2.1item1.2.1item1.2.1i '
+      //             },
+      //             {
+      //               name: 'item1.2.1'
+      //             },
+      //             {
+      //               name: 'item1.2.1'
+      //             }
+      //           ]
+      //         }
+      //       ]
+      //     },
+      //     {
+      //       name: 'item2'
+      //     }
+      //   ]
+      // }
     }
+  },
+  mounted () {
+    // If the filename in URL doesn't exist, redirect to local config
+    fs.access(this.filetreePath, fs.constants.F_OK, (err) => {
+      if (err) {
+        console.log(`Fichier ${this.filetreePath} inexistant, redirection vers les fichiers locaux`)
+        this.$router.replace({name: 'projects.filetree', params: {filetree: 'local'}})
+      }
+    })
+    fs.readFile(this.filetreePath, (err, file) => {
+      if (err) {
+        // TODO: Only show if filetree is not local
+        // console.log(err.message)
+        if (this.$route.params.filetree !== 'local') {
+          this.$openNotification({
+            title: 'Erreur lors de la lecture',
+            type: 'danger',
+            message: err.toString(),
+            duration: 0
+          })
+        }
+      }
+    })
   }
+  // methods: {
+  //   importFiles () {
+  //     console.log('Importing')
+  //   }
+  // }
 }
 </script>
 
 <style lang="css" scoped>
 #filetree {
-  overflow: auto
+  overflow-y: auto
 }
 /* span.icon {
   margin-bottom: 20px

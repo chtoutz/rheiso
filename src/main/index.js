@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, BrowserWindow, ipcMain } from 'electron'
+import { app, BrowserWindow } from 'electron'
 import windowStateKeeper from 'electron-window-state'
 
 /**

@@ -25,9 +25,9 @@
       </li>
       <li>
         <router-link
-          :to="{ name: 'projects.filetree' }"
+          :to="{ name: 'projects.filetree', params: {filetree: 'local'} }"
           :class="{'is-active': $route.name === 'projects.filetree'}"
-        >Arborescence</router-link>
+        >Fichiers</router-link>
         <!-- <ul>
           <li><a>Fichiers locaux</a></li>
           <li><a>Dossier des Ouvrages Exécutés</a></li>
