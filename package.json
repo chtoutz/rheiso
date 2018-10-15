@@ -59,6 +59,7 @@
     "axios": "^0.18.0",
     "babili-webpack-plugin": "^0.1.2",
     "bulma": "^0.7.1",
+    "directory-tree": "^2.1.0",
     "electron-store": "^2.0.0",
     "electron-window-state": "^5.0.0",
     "font-awesome": "^4.7.0",
