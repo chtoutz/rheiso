@@ -31,6 +31,7 @@
 <script>
 import Breadcrumb from '@/components/Projects/_ProjectBreadcrumb'
 import Explore from '@/components/Projects/Explore'
+import ProjectsMixin from '@/mixins/Projects'
 
 export default {
   name: 'projects',
@@ -38,6 +39,7 @@ export default {
     Breadcrumb,
     Explore
   },
+  mixins: [ProjectsMixin],
   data () {
     return {
       loading: false,
@@ -75,7 +77,7 @@ export default {
           _self.error = err.toString()
         } else {
           _self.project = res
-          console.log(`Loaded project ${res}`)
+          console.log(`Loaded project ${res.name}`)
         }
       })
     }
