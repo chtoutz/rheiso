@@ -67,7 +67,7 @@
 
       </div>
     </nav>
-{{$settings.get('setActiveProject')}}
+{{$settings.get()}}
   </article>
 </template>
 
@@ -133,6 +133,7 @@ export default {
         // With the selected project(s) path...
         if (projectsPath && projectsPath.length) {
           // ... Push it in the local projects var, with name extracted from the path last part...
+          // TODO: Use async instead of _ (better waterfalls...)
           _.forEach(projectsPath, function (projectPath) {
             // TODO: Check if readable directory (and writable ?)
             let project = {

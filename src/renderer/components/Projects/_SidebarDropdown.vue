@@ -52,7 +52,7 @@ export default {
   //   }
   // },
   mounted () {
-    this.activeProject = this.$settings.get('activeProject')
+    this.activeProject = this.$settings.get('activeProject', {})
     var _self = this
     // this.$watch(() => {
     //   return _self.$settings.get('activeProject.name')

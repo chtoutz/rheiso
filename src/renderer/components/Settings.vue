@@ -1,7 +1,7 @@
 <template>
   <section class="section" id="settings">
     <div class="container is-fluid">
-      <router-view :settings="settings" @selectFolder="setFolder"></router-view>
+      <router-view :settings="settings" @selectFolder="setFolder" @saveSettings="saveSettings"></router-view>
     </div>
   </section>
 </template>
@@ -54,6 +54,11 @@ export default {
           _self.settings.general.projectsSource = filePaths[0]
         }
       })
+    },
+    saveSettings (newSettings) {
+      // TODO: Check if correct settings object (using lodash merge ?)
+      // // TODO: Display notification
+      this.$settings.store = newSettings
     },
     selectProjectsRoot () {
       let _self = this

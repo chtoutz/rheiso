@@ -73,7 +73,7 @@
       <h3 class="subtitle">Raccourcis clavier</h3>
       <div class="field is-grouped">
         <div class="control">
-          <button class="button is-link">Sauvegarder</button>
+          <a class="button is-link" @click="$emit('saveSettings', settings)">Sauvegarder</a>
         </div>
         <div class="control">
           <a class="button" @click="restoreDefs">
@@ -84,16 +84,17 @@
           </a>
         </div>
         <div class="control">
-          <button class="button is-text">Annuler</button>
+          <a class="button is-text">Annuler</a>
         </div>
       </div>
 
       <div class="field">
         <div class="control">
-          <p>settings : {{ $settings.path }}</p>
+          <p>settings file : {{ $settings.path }}</p>
         </div>
       </div>
     </form>
+    {{settings}}
   </div>
 </template>
 
