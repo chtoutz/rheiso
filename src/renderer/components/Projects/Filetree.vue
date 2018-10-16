@@ -173,70 +173,42 @@ export default {
   // },
   data () {
     return {
-      tree: null
-      // tree: {
-      //   name: 'root',
-      //   children: [
-      //     {
-      //       name: 'item1',
-      //       children: [
-      //         {
-      //           name: 'item1.1'
-      //         },
-      //         {
-      //           name: 'item1.2',
-      //           children: [
-      //             {
-      //               name: 'item1.2.1'
-      //             },
-      //             {
-      //               name: 'item1.2.1item1.2.1item1.2.1item1.2.1item1.2.1it em1.2.1item1.2.1item1.2.1item1.2.1item1.2.1item1.2.1i '
-      //             },
-      //             {
-      //               name: 'item1.2.1'
-      //             },
-      //             {
-      //               name: 'item1.2.1'
-      //             }
-      //           ]
-      //         }
-      //       ]
-      //     },
-      //     {
-      //       name: 'item2'
-      //     }
-      //   ]
-      // }
+      tree: null,
+      filetrees: []
     }
   },
   mounted () {
     // If the filename in URL doesn't exist, redirect to local config
+    // // TODO: Move into a $route guard ?
     fs.access(this.filetreePath, fs.constants.F_OK, (err) => {
       if (err) {
         console.log(`Fichier ${this.filetreePath} inexistant, redirection vers les fichiers locaux`)
         this.$router.replace({name: 'projects.filetree', params: {filetree: 'local'}})
       }
     })
-    fs.readFile(this.filetreePath, (err, file) => {
-      if (err) {
-        // TODO: Only show if filetree is not local
-        // console.log(err.message)
-        if (this.$route.params.filetree !== 'local') {
-          this.$openNotification({
-            title: 'Erreur lors de la lecture',
-            type: 'danger',
-            message: err.toString(),
-            duration: 0
-          })
+    this.loadFiletrees(this.filetreesDirectory)
+    // Then read latest current filetree and load it into this.tree
+    this.loadTree(this.filetreePath)
+  },
+  methods: {
+    loadTree (filetreePath) {
+      // let latestTree = this.filetreePath
+      fs.readFile(filetreePath, (err, file) => {
+        if (err) {
+          // TODO: Only show if filetree is not local
+          // console.log(err.message)
+          if (this.$route.params.filetree !== 'local') {
+            this.$openNotification({
+              title: 'Erreur lors de la lecture',
+              type: 'danger',
+              message: err.toString(),
+              duration: 0
+            })
+          }
         }
-      }
-    })
+      })
+    }
   }
-  // methods: {
-  //   importFiles () {
-  //     console.log('Importing')
-  //   }
-  // }
 }
 </script>
 
