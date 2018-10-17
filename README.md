@@ -39,6 +39,7 @@ https://github.com/mawie81/electron-window-state
 https://github.com/sindresorhus/conf (or replace with https://github.com/sindresorhus/electron-store ?)
 https://github.com/louischatriot/nedb
 https://lodash.com/
+http://momentjs.com/docs/
 
 ## DESIGN
 https://bulma.io/

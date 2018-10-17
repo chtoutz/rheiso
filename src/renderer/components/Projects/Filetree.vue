@@ -153,6 +153,8 @@
 </template>
 
 <script>
+import _ from 'lodash'
+// import dirTree from 'directory-tree'
 import fs from 'fs'
 import TreeMenu from '@/components/Layout/TreeMenu'
 import ProjectsMixin from '@/mixins/Projects'
@@ -173,12 +175,15 @@ export default {
   // },
   data () {
     return {
-      tree: null,
-      filetrees: []
+      tree: null
+      // filetrees: []
     }
   },
   mounted () {
-    // If the filename in URL doesn't exist, redirect to local config
+    // First, load all files in filetrees directory
+    // this.loadFiletrees()
+
+    // If the filename in URL doesn't match any of the files, redirect to local config
     // // TODO: Move into a $route guard ?
     fs.access(this.filetreePath, fs.constants.F_OK, (err) => {
       if (err) {
@@ -186,12 +191,24 @@ export default {
         this.$router.replace({name: 'projects.filetree', params: {filetree: 'local'}})
       }
     })
-    this.loadFiletrees(this.filetreesDirectory)
+    // let filetrees = _.groupBy(this.filetrees, (file) => {
+    //   return file.name.match(/\w+/)
+    // })
+    if (this.filetrees[this.$route.params.filetree]) {
+      let tree = _.last(this.filetrees[this.$route.params.filetree])
+      this.loadTree(tree.path)
+    }
+
+    // console.log(filetrees[this.$route.params.filetree])
+    // console.log(dirTree(this.filetreesDirectory + '/ok'))
+    // console.log(this.tree)
+    // console.log(tree)
     // Then read latest current filetree and load it into this.tree
-    this.loadTree(this.filetreePath)
+    // this.loadTree(this.filetreePath)
   },
   methods: {
     loadTree (filetreePath) {
+      console.log(filetreePath)
       // let latestTree = this.filetreePath
       fs.readFile(filetreePath, (err, file) => {
         if (err) {
@@ -205,6 +222,8 @@ export default {
               duration: 0
             })
           }
+        } else {
+          this.tree = JSON.parse(file)
         }
       })
     }

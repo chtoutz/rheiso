@@ -1,5 +1,5 @@
 <template>
-  <div class="tree-menu" :class="treeMenuClasses">
+  <div class="tree-menu">
     <div class="label-wrapper" @click="toggleChildren">
       <div :style="indent" :class="labelClasses">
         <i v-if="children" class="fa" :class="iconClasses"></i>

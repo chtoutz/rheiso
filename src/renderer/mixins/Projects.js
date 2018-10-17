@@ -21,6 +21,20 @@ export default {
     },
     filetreePath () {
       return `${this.filetreesDirectory}/${this.filetreesName}`
+    },
+    filetrees () {
+      // Collect all files in filetrees directory
+      let files = dirTree(this.filetreesDirectory)
+      // If there is at least one valid JSON...
+      if (files.children) {
+        // Return an object containing all versions of a filetree, grouped by filetree name (filepath before the '-DATE.json')
+        return _.groupBy(files.children, (file) => {
+          return file.name.match(/\w+/)
+        })
+      } else {
+        // Or return empty array
+        return []
+      }
     }
   },
   methods: {
@@ -38,7 +52,8 @@ export default {
       // console.log(tree)
     },
     // Push this.filetrees with content of project dataPath/filetrees JSON files, then group them by name
-    loadFiletrees (path) {
+    loadFiletrees () {
+      let path = this.filetreesDirectory
       let filetreeFiles = dirTree(path)
       let filetrees = _.groupBy(filetreeFiles.children, (child) => {
         let groupedFiles = child.name.match(/\w+/)
