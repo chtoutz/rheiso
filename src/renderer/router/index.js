@@ -50,7 +50,7 @@ export default new Router({
         {
           path: 'filetree/:filetree',
           name: 'projects.filetree',
-          component: require('@/components/Projects/Filetree').default
+          component: require('@/components/Projects/Files').default
         },
         {
           path: 'drawing',

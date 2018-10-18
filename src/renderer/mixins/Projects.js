@@ -23,9 +23,9 @@ export default {
       return `${this.filetreesDirectory}/${this.filetreesName}`
     },
     filetrees () {
-      // Collect all files in filetrees directory
-      let files = dirTree(this.filetreesDirectory)
-      // If there is at least one valid JSON...
+      // Collect all files in filetrees directory, filter to only JSON
+      let files = dirTree(this.filetreesDirectory, { extensions: /\.json/ })
+      // If there is at least one JSON file...
       if (files.children) {
         // Return an object containing all versions of a filetree, grouped by filetree name (filepath before the '-DATE.json')
         return _.groupBy(files.children, (file) => {

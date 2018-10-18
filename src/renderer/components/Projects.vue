@@ -30,14 +30,12 @@
 
 <script>
 import Breadcrumb from '@/components/Projects/_ProjectBreadcrumb'
-import Explore from '@/components/Projects/Explore'
 import ProjectsMixin from '@/mixins/Projects'
 
 export default {
   name: 'projects',
   components: {
-    Breadcrumb,
-    Explore
+    Breadcrumb
   },
   mixins: [ProjectsMixin],
   data () {

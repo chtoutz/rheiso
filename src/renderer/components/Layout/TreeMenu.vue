@@ -1,38 +1,34 @@
 <template>
-  <div class="tree-menu">
-    <div class="label-wrapper" @click="toggleChildren">
-      <div :style="indent" :class="labelClasses">
-        <i v-if="children" class="fa" :class="iconClasses"></i>
-        {{ name }}
-        <!-- <div class="field is-grouped is-grouped-multiline">
-          <div class="control">
-            <div class="tags has-addons">
-              <span class="tag" v-if="children"><i class="fa" :class="iconClasses"></i></span>
-              <span class="tag"><span class="tree-menu-name" :class="nameClasses">{{ name }}</span></span>
-            </div>
-          </div>
-        </div> -->
-        <!-- <span :class="nameClasses">{{ name }}</span> -->
-      </div>
-    </div>
-    <tree-menu
-      v-if="showChildren"
-      v-for="child in children"
-      :children="child.children"
-      :name="child.name"
-      :depth="depth + 1"
-    >
-    </tree-menu>
-  </div>
+  <li>
+    <a :class="itemClasses" @click="toggleChildren">
+      <i v-if="children" class="fa" :class="iconClasses"></i>
+      {{ name }}
+    </a>
+    <ul v-if="children && children.length && showChildren">
+      <projects-file-menu
+        v-for="child in children"
+        :children="child.children"
+        :key="child.name"
+        :name="child.name"
+      >
+      </projects-file-menu>
+    </ul>
+    <ul v-if="children && !children.length && showChildren">
+      <li>(Vide)</li>
+    </ul>
+  </li>
 </template>
 
 <script>
+// TODO: Move this file into components/Layout/ and use it to generale the main left sidebar
+// TODO: Remove the depth prop ?
 export default {
-  name: 'tree-menu',
+  name: 'projects-file-menu',
   props: [ 'children', 'name', 'depth' ],
   data () {
     return {
-      showChildren: true
+      showChildren: false,
+      isSelected: false
     }
   },
   computed: {
@@ -47,33 +43,18 @@ export default {
         'has-children': this.children,
         'is-file': !this.children
       }
-    },
-    indent () {
-      return { transform: `translate(${this.depth * 50}px)` }
     }
   },
   methods: {
     toggleChildren () {
       this.showChildren = !this.showChildren
+    },
+    toggleSelected () {
+      this.isSelected = !this.isSelected
     }
   }
 }
 </script>
 
-<style lang="scss">
-.tree-menu {
-  .label-wrapper {
-    padding-bottom: 8px;
-    margin-bottom: 8px;
-    // border-bottom: 1px solid #ccc;
-    .has-children {
-      cursor: pointer;
-      // border-bottom: 1px solid #ccc;
-    }
-    // .is-file {
-    //   padding-left: 10px;
-    //   border-left: 1px solid grey;
-    // }
-  }
-}
+<style lang="css">
 </style>
