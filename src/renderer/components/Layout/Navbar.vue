@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+  <nav class="navbar is-dark is-fixed-top" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <router-link :to="{name: 'home'}" class="navbar-item">
         <span class="icon">

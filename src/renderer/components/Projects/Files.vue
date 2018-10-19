@@ -1,5 +1,5 @@
 <template>
-  <div id="projects-files" class="boxx">
+  <div id="projects-files">
     <div class="level">
       <div class="level-left">
         <h2 class="title">Jeu de fichiers : {{ $route.params.filetree }} <small class="subtitle">123 éléments</small></h2>
@@ -74,74 +74,16 @@
 
     <div id="files" v-else>
       <div class="columns">
-        <aside class="column is-7" id="files-sidebar">
-          <nav class="panel">
-            <p class="panel-heading">
-              Jeux de fichiers
-            </p>
-            <div class="panel-block">
-              <p class="control has-icons-left">
-                <input class="input is-small" type="text" placeholder="search">
-                <span class="icon is-small is-left">
-                  <i class="fas fa-search" aria-hidden="true"></i>
-                </span>
-              </p>
-            </div>
-            <p class="panel-tabs">
-              <a class="is-active">all</a>
-              <a>public</a>
-              <a>private</a>
-              <a>sources</a>
-              <a>forks</a>
-            </p>
-            <div class="panel-menu">
-              <div class="menu">
-                <ul class="menu-list">
-                  <tree-menu
-                     v-for="child in tree.children"
-                     :key="child.name"
-                     :children="tree.children"
-                     :depth="0"
-                     :name="tree.name"
-                   ></tree-menu>
-                </ul>
-              </div>
-            </div>
-            <div class="panel-block">
-              <button class="button is-link is-outlined is-fullwidth">
-                reset all filters
-              </button>
-            </div>
-          </nav>
+        <aside class="column is-8" id="files-sidebar">
+          <filetree :tree="tree"></filetree>
         </aside>
-        <main class="column" id="main-view">
-          <router-view></router-view>
+        <main class="column props" id="files-props">
+          <props :selected="selectedFiles"></props>
         </main>
       </div>
-
-      <!-- {{tree.children}} -->
-      <!-- <div class="box">
-        <tree-menu
-           :children="tree.children"
-           :depth="0"
-           :name="tree.name"
-           ></tree-menu>
-      </div> -->
     </div>
-    <!-- <div class="tile has-text-centered is-ancestor">
-      <div class="tile is-parent is-2">
-        <router-link :to="{name: 'home'}" class="tile is-child box">
-          <span class="icon is-large"><i class="fa fa-folder-open fa-3x"></i></span>
-          <p class="heading">Jeu de fichiers 1</p>
-        </router-link>
-      </div>
-      <div class="tile is-parent is-2">
-        <router-link :to="{name: 'home'}" class="tile is-child box">
-          <span class="icon is-large"><i class="fa fa-folder-open fa-3x"></i></span>
-          <p class="heading">Jeu de fichiers 2</p>
-        </router-link>
-      </div>
-    </div> -->
+    <!-- <code>{{selectedFiles}}</code> -->
+
   </div>
 </template>
 
@@ -150,33 +92,44 @@ import _ from 'lodash'
 // import dirTree from 'directory-tree'
 import fs from 'fs'
 import TreeMenu from '@/components/Layout/TreeMenu'
+import Props from '@/components/Projects/Props'
+import Filetree from '@/components/Projects/Filetree'
 import ProjectsMixin from '@/mixins/Projects'
 
+// TODO: Replace the left sidebar panel with a great and beautiful card, put in a separate component
 // Use _.take(filetrees, 2) and add it in the first row, after "Add filetree" and "Local filetree" tiles
 // Then  _.chunk(_.drop(filetrees, 2), 4) to display the other filetrees in next lines tiles
 export default {
-  name: 'projects-filetree',
+  name: 'projects-files',
   components: {
-    TreeMenu
+    TreeMenu,
+    Props,
+    Filetree
   },
   mixins: [ProjectsMixin],
   // computed: {
-  //   test () {
-  //     return `${this.$settings.get('setActiveProject.datapath')}/${this.$route.params.filetree}.js`
+  //   selected () {
+  //     return _.filter(this.tree, 'selected')
   //   }
   // },
   data () {
     return {
-      tree: null
+      tree: null,
+      selectedFiles: []
       // filetrees: []
     }
   },
   mounted () {
     let tree
+    let treename
     if (this.filetrees[this.$route.params.filetree]) {
-      tree = _.last(this.filetrees[this.$route.params.filetree])
-      this.loadTree(tree.path)
+      treename = this.$route.params.filetree
+    } else {
+      treename = 'local'
     }
+    tree = _.last(this.filetrees[treename])
+    this.loadTree(tree.path)
+    // _.filter(this.tree.children, 'selected')
 
     // If the filename in URL doesn't match any of the files, redirect to local config
     // // TODO: Move into a $route guard ?
@@ -192,12 +145,13 @@ export default {
   },
   methods: {
     loadTree (filetreePath) {
-      fs.readFile(filetreePath, (err, file) => {
+      let _self = this
+      fs.readFile(filetreePath, 'utf8', (err, file) => {
         if (err) {
           // TODO: Only show if filetree is not local
-          // console.log(err.message)
-          if (this.$route.params.filetree !== 'local') {
-            this.$openNotification({
+          console.log(err.message)
+          if (_self.$route.params.filetree !== 'local') {
+            _self.$openNotification({
               title: 'Erreur lors de la lecture',
               type: 'danger',
               message: err.toString(),
@@ -205,7 +159,9 @@ export default {
             })
           }
         } else {
-          this.tree = JSON.parse(file)
+          console.log('Tree loaded')
+          // console.log(JSON.parse(file))
+          _self.tree = JSON.parse(file)
         }
       })
     }
@@ -218,6 +174,7 @@ export default {
 .panel-menu
   max-height: 600px
   overflow: auto
+  padding: 1em
   border-left: 1px solid $border
   border-right: 1px solid $border
   border-bottom: 1px solid $border

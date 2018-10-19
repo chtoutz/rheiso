@@ -1,17 +1,18 @@
 <template>
   <li>
-    <a :class="itemClasses" @click="toggleChildren">
+    <a :class="itemClasses" @click="toggleChildren" @click.ctrl="toggleSelected">
       <i v-if="children" class="fa" :class="iconClasses"></i>
       {{ name }}
     </a>
     <ul v-if="children && children.length && showChildren">
-      <projects-file-menu
+      <tree-menu
         v-for="child in children"
         :children="child.children"
         :key="child.name"
         :name="child.name"
+        :selected="child.selected"
       >
-      </projects-file-menu>
+      </tree-menu>
     </ul>
     <ul v-if="children && !children.length && showChildren">
       <li>(Vide)</li>
@@ -21,14 +22,12 @@
 
 <script>
 // TODO: Move this file into components/Layout/ and use it to generale the main left sidebar
-// TODO: Remove the depth prop ?
 export default {
-  name: 'projects-file-menu',
-  props: [ 'children', 'name', 'depth' ],
+  name: 'tree-menu',
+  props: [ 'children', 'name', 'selected' ],
   data () {
     return {
-      showChildren: false,
-      isSelected: false
+      showChildren: false
     }
   },
   computed: {
@@ -38,23 +37,28 @@ export default {
         'fa-minus-square-o': this.showChildren
       }
     },
-    labelClasses () {
+    itemClasses () {
       return {
-        'has-children': this.children,
+        'is-selected': this.selected,
         'is-file': !this.children
       }
     }
   },
   methods: {
+    // TODO: Do not call 'this.showChildren = !this.showChildren' in toggleSelected
     toggleChildren () {
       this.showChildren = !this.showChildren
     },
     toggleSelected () {
-      this.isSelected = !this.isSelected
+      this.showChildren = !this.showChildren
+      this.selected = !this.selected
     }
   }
 }
 </script>
 
-<style lang="css">
+<style lang="sass" scoped>
+@import "~bulma/sass/utilities/_all"
+.is-selected, .is-selected:hover
+  background-color: rgba($primary, 0.2)
 </style>

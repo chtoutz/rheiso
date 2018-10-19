@@ -1,9 +1,9 @@
 <template>
   <section id="projects">
     <!-- <div class="container is-fluid"> -->
-    <breadcrumb></breadcrumb>
+    <!-- <breadcrumb></breadcrumb> -->
 
-    <div class="container is-fluid" id="projects-children-view">
+    <div class="section" id="projects-children-view">
 
       <div v-if="loading" class="loading has-text-centered">
         <span class='icon'>
