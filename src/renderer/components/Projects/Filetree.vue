@@ -4,20 +4,38 @@
       <p class="card-header-title">
         Jeux de fichiers
       </p>
-      <a href="#" class="card-header-icon" aria-label="more options">
-        <span class="icon">
-          <i class="fa fa-angle-down" aria-hidden="true"></i>
-        </span>
-      </a>
+      <div class="dropdown is-right is-hoverable">
+        <div class="dropdown-trigger">
+          <a class="card-header-icon" aria-label="more options" aria-haspopup="true" aria-controls="card-dropdown">
+            <span class="icon">
+              <i class="fa fa-angle-down" aria-hidden="true"></i>
+            </span>
+          </a>
+        </div>
+        <div class="dropdown-menu" id="card-dropdown" role="menu">
+          <div class="dropdown-content">
+            <a class="dropdown-item">
+              <p>Importer les fichiers</p>
+            </a>
+            <hr class="dropdown-divider">
+            <div class="dropdown-item">
+              <p><strong>{{nbFiles}}</strong> éléments</p>
+            </div>
+            <div class="dropdown-item">
+              <p>Dernière mise à jour il y a 3 heures</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </header>
     <div class="card-content">
       <div class="filetree-searchbar">
         <p class="control has-icons-left has-icons-right">
-          <input class="input" type="text" placeholder="Filtrer par nom ou chemin" v-model="filterFiles">
+          <input class="input is-small" type="text" placeholder="Filtrer par nom ou chemin" v-model="filterFiles">
           <span class="icon is-left">
             <i class="fa fa-search" aria-hidden="true"></i>
           </span>
-          <span class="icon is-right" v-show="filterFiles">
+          <span class="icon is-right" v-show="filterFiles" @click="alert('ok')">
             <i class="fa fa-remove" aria-hidden="true"></i>
           </span>
         </p>
@@ -37,16 +55,20 @@
                :children="tree.children"
                :selected="tree.selected"
                :name="tree.name"
-               :class="'dedede'"
              ></tree-menu>
           </ul>
         </div>
       </div>
     </div>
     <footer class="card-footer">
-      <a href="#" class="card-footer-item">Save</a>
-      <a href="#" class="card-footer-item">Edit</a>
-      <a href="#" class="card-footer-item">Delete</a>
+      <a class="card-footer-item" @click="importFiles">
+        <span class="icon">
+          <i class="fa fa-download"></i>
+        </span>
+        Importer les fichiers
+      </a>
+      <a class="card-footer-item">Edit</a>
+      <a class="card-footer-item">Delete</a>
     </footer>
   </div>
   <!-- <nav class="panel">
@@ -91,11 +113,14 @@
 
 <script>
 import TreeMenu from '@/components/Layout/TreeMenu'
+import ProjectsMixin from '@/mixins/Projects'
+
 export default {
   name: 'projects-filetree',
   props: [ 'tree', 'children', 'name', 'selected' ],
   data () {
     return {
+      nbFiles: 123,
       showChildren: false,
       filterFiles: null
     }
@@ -110,10 +135,11 @@ export default {
   },
   methods: {
     // TODO: Do not call 'this.showChildren = !this.showChildren' in toggleSelected
-    // toggleChildren () {
+    // importFiles () {
     //   this.showChildren = !this.showChildren
     // }
   },
+  mixins: [ProjectsMixin],
   components: {
     TreeMenu
   }
@@ -130,6 +156,11 @@ export default {
 
 <style lang="sass" scoped>
 @import "~bulma/sass/utilities/_all"
+.card-footer
+  a
+    color: $grey
+    &:hover
+      color: $dark
 .filetree-menu
   min-height: 150px
   max-height: 550px

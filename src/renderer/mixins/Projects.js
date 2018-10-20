@@ -1,5 +1,7 @@
 import _ from 'lodash'
 import fs from 'fs'
+import path from 'path'
+import dir from 'node-dir'
 import moment from 'moment'
 import dirTree from 'directory-tree'
 
@@ -9,20 +11,26 @@ export default {
     _projId () {
       return this.$settings.get('activeProject.name').match(/\w+/)
     },
+    projectDirectory () {
+      return this.$settings.get('activeProject.path')
+    },
     dataDirectory () {
       return `${this.$settings.get('general.projectsSaving')}/${this.$settings.get('activeProject.name')}`
     },
     filetreesDirectory () {
       return `${this.dataDirectory}/filetrees`
     },
-    filetreesName () {
-      // Add the date at the end so that it is unique
-      return `${this.$route.params.filetree}-${moment().format()}.json`
+    localfilesDirectory () {
+      return `${this.dataDirectory}/localfiles`
     },
-    filetreePath () {
-      return `${this.filetreesDirectory}/${this.filetreesName}`
-    },
-    filetrees () {
+    // filetreesName () {
+    //   // Add the date at the end so that it is unique
+    //   return `${this.$route.params.filetree}-${moment().format()}.json`
+    // },
+    // filetreePath () {
+    //   return `${this.filetreesDirectory}/${this.filetreesName}`
+    // },
+    filetreesFiles () {
       // Collect all files in filetrees directory, filter to only JSON
       let files = dirTree(this.filetreesDirectory, { extensions: /\.json/ })
       // If there is at least one JSON file...
@@ -38,17 +46,47 @@ export default {
     }
   },
   methods: {
+    getDatedName (name = 'localfiles', extension = 'json') {
+      // Add the date at the end so that it is unique. Used to generate a new locafiles or filetree file
+      return `${name}-${moment().format()}.${extension}`
+    },
     importFiles () {
       // TODO: Check if we want to limit number of saves (save the X number in $settings).
       // If yes, launch a function (modular, which should be used in crons e.g) that deletes the oldest files more than X in files beginning with $route.params.filetree
-      console.log(`Importing files from project directory to file : ${this.filetreePath}`)
-      let tree = dirTree(this.$settings.get('activeProject.path'))
-      fs.writeFile(this.filetreePath, JSON.stringify(tree), { flag: 'wx' }, function (err) {
-        if (err) {
-          return console.log(err)
+      // TODO: Check if we want to import all files rawly, or watch the arguments to check for created, reoved and edited files
+      let fileName = this.getDatedName('localfiles')
+      let filetreePath = path.resolve(this.localfilesDirectory, fileName)
+      console.log(`Importing files from project directory to file : ${filetreePath}`)
+      // Get an array of simple folders and files paths in the project
+      dir.paths(path.resolve(this.projectDirectory, '3-Etudes', '04-Catalogue méthodique'), true, (err, paths) => {
+        // paths = null
+        // Display error notification if needed
+        if (err || !paths) {
+          this.$openNotification({
+            title: 'Erreur',
+            message: (err || 'Erreur lors de l\'ajout des fichiers'),
+            type: 'danger',
+            direction: 'Down',
+            duration: 4500,
+            container: '.notifications'
+          })
+        } else {
+          console.log(paths)
         }
-        console.log('Files imported successfully !')
+        // files.push(paths)
+        // console.log(err)
       })
+      // TODO: Save each file found with a recursive async.eachLimit & fs.readDir() into a database entry, with some extra infos : creation date, sha1 of the path and the file content (to check for changes and notify user if a more recent version of a file exists), or other infos from fs.stat(). All this is instead of dirTree. This function is called when clicking the "Importer les fichiers" button in Filetree files card, which creates a confirm window to explain what will happen, and a checkbox asking to erase all precedent versiions of the files database. Each time the button is clicked, a "localfiles-DATE().db" file is created in project data folder. Right after that, or when the app is laucnhed, the $store.state.DataBase.projectFiles is updated with this DB content (when first launch, default file is the latest DB file from $settings.get('activeProject.path')/localfiles).
+      // Add an option to keep the structure of current treefile : which folders are expanded, which files are selected... To do this (alert user here), a deep comparison is done between each entry of the database file and the current project files : this.checkAddedFiles() in mixin which loops into fs.recursiveReadDir to check if path exists in current DB ; and this.checkDeletedFiles() in mixin which loops into DB files and check if exists in current project files ; and this.checkEditedFiles() which compares sha1 of content. Maybe use _.difference on each two BIG arrays (DB and fs.readDir)
+      // Use https://github.com/fshost/node-dir to get all files paths from current project folder, and DB as last saved localfiles. Then use _.difference() on both sens to see what file is created or removed
+
+      // let tree = dirTree(this.$settings.get('activeProject.path'))
+      // fs.writeFile(filetreePath, JSON.stringify(tree), { flag: 'wx' }, function (err) {
+      //   if (err) {
+      //     return console.log(err)
+      //   }
+      //   console.log('Files imported successfully !')
+      // })
       // console.log(tree)
     },
     // Push this.filetrees with content of project dataPath/filetrees JSON files, then group them by name
@@ -62,8 +100,8 @@ export default {
       })
       console.log(filetrees)
     },
-    loadFiletree (filetreePath) {
-      fs.readFile(filetreePath, (err, file) => {
+    loadFiletree (path) {
+      fs.readFile(path, (err, file) => {
         if (err) {
           // TODO: Only show if filetree is not local
           // console.log(err.message)

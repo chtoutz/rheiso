@@ -1,13 +1,13 @@
 <template>
   <div id="projects-files">
-    <div class="level">
+    <!-- <div class="level">
       <div class="level-left">
         <h2 class="title">Jeu de fichiers : {{ $route.params.filetree }} <small class="subtitle">123 éléments</small></h2>
       </div>
       <div class="level-right" v-if="tree">
         <span class="heading">Dernière mise à jour il y a deux jours</span>
       </div>
-    </div>
+    </div> -->
 
     <div class="tile has-text-centered is-ancestor">
       <!-- <div class="tile is-parent is-2">
@@ -65,7 +65,7 @@
       <div class="has-text-centered">
         <a class="button is-medium" @click="importFiles">
           <span class="icon">
-            <i class="fa fa-arrow-circle-down"></i>
+            <i class="fa fa-download"></i>
           </span>
           <span>Importer</span>
         </a>
@@ -122,12 +122,12 @@ export default {
   mounted () {
     let tree
     let treename
-    if (this.filetrees[this.$route.params.filetree]) {
+    if (this.filetreesFiles[this.$route.params.filetree]) {
       treename = this.$route.params.filetree
     } else {
       treename = 'local'
     }
-    tree = _.last(this.filetrees[treename])
+    tree = _.last(this.filetreesFiles[treename])
     this.loadTree(tree.path)
     // _.filter(this.tree.children, 'selected')
 
