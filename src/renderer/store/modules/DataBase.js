@@ -18,8 +18,8 @@ const mutations = {
     state.libraries = new Datastore({ filename: DBpaths.libraries, autoload: true })
     // TODO: Populate the state.plugins object with all DB available in activated plugins folders
   },
-  loadDatabase (dbName, dbPath) {
-    state[dbName] = new Datastore({ filename: dbPath, autoload: true })
+  loadDatabase (state, payload) {
+    state[payload.dbName] = new Datastore({ filename: payload.dbPath, autoload: true })
   }
   // EDIT_SETTING (name, value) {
   //   // TODO: Check if name has a dot to prevent modifying without a scope (e.g general/plugins...) for security ?

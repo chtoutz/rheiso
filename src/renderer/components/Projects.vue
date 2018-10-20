@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import Breadcrumb from '@/components/Projects/_ProjectBreadcrumb'
 import ProjectsMixin from '@/mixins/Projects'
 
@@ -61,6 +62,8 @@ export default {
   // },
   mounted () {
     this.fetchProject(this.$settings.get('activeProject._id'))
+    this.loadProjectFiles()
+    console.log(this.localfilesFiles)
   },
   methods: {
     fetchProject (projId) {
@@ -68,16 +71,22 @@ export default {
       this.loading = true
       var _self = this
       // Load project from DB based on current $route.projectId
-      this.$DB.projects.findOne({ _id: projId }, function (err, res) {
+      this.$DB.projects.findOne({ _id: projId }, function (err, project) {
         _self.loading = false
         // err = 'okok'
         if (err) {
           _self.error = err.toString()
         } else {
-          _self.project = res
-          console.log(`Loaded project ${res.name}`)
+          _self.project = project
+          console.log(`Loaded project "${project.name}"`)
+          // Load project files from last import DB file
         }
       })
+    },
+    loadProjectFiles () {
+      let dbPath = _.last(this.localfilesFiles)
+      this.$store.commit('loadDatabase', 'localfiles', dbPath)
+      console.log(this.$store.state.DataBase)
     }
   }
   // beforeRouteUpdate (to, from, next) {

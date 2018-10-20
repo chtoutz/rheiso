@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import fs from 'fs'
 import path from 'path'
+import async from 'async'
 import dir from 'node-dir'
 import moment from 'moment'
 import dirTree from 'directory-tree'
@@ -20,16 +21,6 @@ export default {
     filetreesDirectory () {
       return `${this.dataDirectory}/filetrees`
     },
-    localfilesDirectory () {
-      return `${this.dataDirectory}/localfiles`
-    },
-    // filetreesName () {
-    //   // Add the date at the end so that it is unique
-    //   return `${this.$route.params.filetree}-${moment().format()}.json`
-    // },
-    // filetreePath () {
-    //   return `${this.filetreesDirectory}/${this.filetreesName}`
-    // },
     filetreesFiles () {
       // Collect all files in filetrees directory, filter to only JSON
       let files = dirTree(this.filetreesDirectory, { extensions: /\.json/ })
@@ -43,7 +34,34 @@ export default {
         // Or return empty array
         return []
       }
+    },
+    localfilesDirectory () {
+      return `${this.dataDirectory}/localfiles`
+    },
+    localfilesFiles () {
+      // Collect all files in filetrees directory, filter to only JSON
+      let files = dirTree(this.localfilesDirectory, { extensions: /\.db/ })
+      // If there is at least one DB file...
+      if (files.children) {
+        return files.children
+      } else {
+        // Or return empty array
+        return []
+      }
+    },
+    localfilesDB () {
+      if (this.localfilesFiles.length) {
+        // de
+      }
     }
+
+    // filetreesName () {
+    //   // Add the date at the end so that it is unique
+    //   return `${this.$route.params.filetree}-${moment().format()}.json`
+    // },
+    // filetreePath () {
+    //   return `${this.filetreesDirectory}/${this.filetreesName}`
+    // },
   },
   methods: {
     getDatedName (name = 'localfiles', extension = 'json') {
@@ -54,8 +72,10 @@ export default {
       // TODO: Check if we want to limit number of saves (save the X number in $settings).
       // If yes, launch a function (modular, which should be used in crons e.g) that deletes the oldest files more than X in files beginning with $route.params.filetree
       // TODO: Check if we want to import all files rawly, or watch the arguments to check for created, reoved and edited files
-      let fileName = this.getDatedName('localfiles')
+      let fileName = this.getDatedName('localfiles', 'db')
       let filetreePath = path.resolve(this.localfilesDirectory, fileName)
+      // console.log(filetreePath)
+      this.$store.commit('loadDatabase', {dbName: 'localfiles', dbPath: filetreePath})
       console.log(`Importing files from project directory to file : ${filetreePath}`)
       // Get an array of simple folders and files paths in the project
       dir.paths(path.resolve(this.projectDirectory, '3-Etudes', '04-Catalogue méthodique'), true, (err, paths) => {
@@ -71,7 +91,43 @@ export default {
             container: '.notifications'
           })
         } else {
-          console.log(paths)
+          // For each files and folder found in project
+          async.mapLimit(paths, 50, (item, next) => {
+            // Set an object with useful infos
+            let stats = fs.statSync(item)
+            let file = {
+              path: item,
+              name: path.basename(item, path.extname(item)),
+              size: stats.size,
+              type: stats.isFile() ? 'file' : 'directory',
+              // atime: moment().format(stats.atimeMs),
+              // birthtime: moment().format(stats.birthtimeMs)
+              mtime: moment(stats.mtime).format(),
+              birthtime: moment(stats.birthtime).format()
+            }
+            // console.log(moment().format(stats.birthtime.$$date)
+            if (file.type === 'file') {
+              file.extension = path.extname(item)
+            }
+            // console.log(fs.statSync(item))
+            return next(null, file)
+          }, (err, files) => {
+            if (err) {
+              console.log(err)
+            } else {
+              // TODO: Create files array in DB.
+              // Then, check for edited, added or removed files if needed
+              this.$DB.localfiles.insert(files, function (err, newDoc) {
+                if (err) {
+                  console.log(err)
+                }
+                // console.log(moment().format(newDoc[0].mtime.$$date))
+                // console.log(moment(newDoc[0].mtime).format())
+                console.log(newDoc)
+              })
+            }
+          })
+          // console.log(paths)
         }
         // files.push(paths)
         // console.log(err)

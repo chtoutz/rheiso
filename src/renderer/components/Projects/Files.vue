@@ -82,7 +82,7 @@
         </main>
       </div>
     </div>
-    <!-- <code>{{selectedFiles}}</code> -->
+    <!-- <code>{{tree}}</code> -->
 
   </div>
 </template>
@@ -159,7 +159,7 @@ export default {
             })
           }
         } else {
-          console.log('Tree loaded')
+          console.log(`Loaded tree from "${filetreePath}"`)
           // console.log(JSON.parse(file))
           _self.tree = JSON.parse(file)
         }
