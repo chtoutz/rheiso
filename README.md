@@ -40,6 +40,8 @@ https://github.com/sindresorhus/conf (or replace with https://github.com/sindres
 https://github.com/louischatriot/nedb
 https://lodash.com/
 http://momentjs.com/docs/
+https://caolan.github.io/async/docs.html
+https://github.com/fshost/node-dir
 
 ## DESIGN
 https://bulma.io/
