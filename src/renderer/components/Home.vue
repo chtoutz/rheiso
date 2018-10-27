@@ -3,7 +3,7 @@
   <article class="hero">
     <div class="hero-body">
       <div class="container has-text-centered">
-        <img id="logo" src="~@/assets/logo.png" alt="electron-vue">
+        <img id="rheiso-logo" src="~@/assets/rheiso-logo.svg" alt="electron-vue">
         <p class="content">
           <span class="is-light">Connecté en tant que </span> <strong class="is-dark">Valentin STUTZ</strong>
           &nbsp;
@@ -14,6 +14,41 @@
   </article>
 
   <article class="section">
+
+    <div class="container is-fluid content">
+      <div class="columns">
+        <div class="column is-4">
+          <p class="subtitle">Projet actif</p>
+          <div class="card">
+            <div class="card-content">
+              <div class="media">
+                <div class="media-left">
+                  <span class="icon is-large">
+                    <i class="fa fa-file fa-3x"></i>
+                  </span>
+                </div>
+                <div class="media-content">
+                  <p class="title is-4">{{ $settings.get('activeProject.name') }}</p>
+                </div>
+              </div>
+
+              <div class="content">
+                <a href="#">#css</a> <a href="#">#responsive</a>
+                <!-- <br>
+                <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <span class="subtitle">Todo :</span>
+      <ul>
+        <li>Remove the cards above (projects and tasks)</li>
+        <li>Move tasks in navbar, like notifications</li>
+        <li>In this page, display infos like in MKV Bot dashboard : logs content, local files that were created/edited/deleted, latests files opened, whatever the project, stats (number of projects, using local or API mode, number of libs (symbols, products...))</li>
+      </ul>
+    </div>
     <div class="columns">
 
       <div class="column">
@@ -23,44 +58,6 @@
       <div class="column">
         <tasks></tasks>
       </div>
-    </div>
-    <div class="container is-fluid">
-
-      <!-- Recent projects and tasks in panels -->
-      <hr>
-
-      <!-- <div id="libraries-home">
-          <h1 class="title">Nouveau document ou Projets récents</h1>
-
-              <div class="tile is-ancestor">
-                <div class="tile is-parent">
-                  <a class="tile is-child box">
-                    <span class="icon has-text-info is-large"><i class="fa fa-file-word-o fa-4x"></i></span>
-                  </a>
-                </div>
-                <div class="tile is-parent">
-                  <a class="tile is-child box">
-                    <span class="icon has-text-success is-large"><i class="fa fa-file-excel-o fa-4x"></i></span>
-                  </a>
-                </div>
-                <div class="tile is-parent">
-                  <a class="tile is-child box">
-                    <span class="icon has-text-primary is-large"><i class="fa fa-map-o fa-4x"></i></span>
-                  </a>
-                </div>
-                <div class="tile is-parent">
-                  <a class="tile is-child box">
-                    <span class="icon has-text-danger is-large"><i class="fa fa-file-pdf-o fa-4x"></i></span>
-                  </a>
-                </div>
-              </div>
-
-              <br>
-
-          <p class="content"><i>Tiles</i> avec fa-icons de "Word", "Excel", "AutoCAD", "PDF" pour création rapide de Notes de calcul, Nomenclature/liste équipements, Schéma isométrique/fonctionnel.</p>
-          <p class="content">Sur clic icône -> redirection vers page Libs complète : faire genre de dossiers d'apps Android / iOS contenant les trames internes/clients (MS Office, CAO), les matériels et équipements (gestion stock ?)</p>
-          <p class="content">OU BIEN garder la forme mais avec des preview de PID des projets créés et ouverts récemment (les 5 derniers). Dans ce cas, supprimer la liste des projets ci-dessus et ne la laisser que dans le dashboard des projets.</p>
-        </div> -->
     </div>
   </article>
   <!-- <modal></modal> -->
@@ -94,9 +91,9 @@ export default {
 </script>
 
 <style>
-#logo {
-  height: auto;
-  margin-bottom: 20px;
-  width: 420px;
+#rheiso-logo {
+  transform:scale(1.5);
+  -webkit-transform:scale(1.5);
+  padding: 20px 0 30px;
 }
 </style>

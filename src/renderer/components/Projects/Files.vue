@@ -78,11 +78,11 @@
           <filetree :tree="tree"></filetree>
         </aside>
         <main class="column props" id="files-props">
-          <props :selected="selectedFiles"></props>
+          <props :selected="selectedFiles" :directories="localDirs"></props>
         </main>
       </div>
     </div>
-    <!-- <code>{{tree}}</code> -->
+    <code>{{tree}}</code>
 
   </div>
 </template>
@@ -115,8 +115,9 @@ export default {
   data () {
     return {
       tree: null,
-      selectedFiles: []
-      // filetrees: []
+      selectedFiles: [],
+      localDirs: [],
+      localFiles: []
     }
   },
   mounted () {
@@ -129,6 +130,58 @@ export default {
     }
     tree = _.last(this.filetreesFiles[treename])
     this.loadTree(tree.path)
+    this.$DB.localfiles.find({type: 'directory'}, (err, dirs) => {
+      if (err) {
+        console.log(err)
+      } else {
+        this.localDirs = dirs
+      }
+    })
+    this.$DB.localfiles.find({type: 'file'}, (err, files) => {
+      if (err) {
+        console.log(err)
+      } else {
+        this.localFiles = files
+      }
+    })
+    this.$DB.localfiles.find({}).sort({ path: 1 }).exec((err, files) => {
+      if (err) {
+        console.log(err)
+      } else {
+        let dirs = _.filter(files, {type: 'directory'})
+        // console.log(dirs)
+        _.forEach(dirs, (dir) => {
+          dir.children = _.filter(files, (f) => {
+            return _.startsWith(f.path, dir.path)
+          })
+        })
+        console.log(dirs, this.tree)
+        // this.localFiles = files
+        let obj = {}
+        // let paths = _.map(files, (file) => {
+        //   // Keep only the path parts from project's root, removing this.projectDirectory from path
+        //   let regex = new RegExp(`${this.projectDirectory}/?`, 'g')
+        //   file.path = file.path.replace(regex, '')
+        //   return file
+        // })
+        // paths.forEach((path) => {
+        //   path.split('/').reduce((r, e) => {
+        //     console.log(r)
+        //     return r[e] || (r[e] = {})
+        //   }, obj)
+        // })
+        files.forEach((file) => {
+          file.path.split('/').reduce((r, e) => {
+            // console.log(r)
+            return r[e] || (r[e] = [])
+          }, obj)
+        })
+
+        // console.log(obj)
+        // console.log(files)
+      }
+    })
+
     // _.filter(this.tree.children, 'selected')
 
     // If the filename in URL doesn't match any of the files, redirect to local config

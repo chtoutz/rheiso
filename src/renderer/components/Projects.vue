@@ -16,7 +16,7 @@
           <p>Erreur:</p>
         </div>
         <div class="message-body">
-          {{ error }}
+          {{ error || 'Impossible de charger le projet' }}
         </div>
       </div>
 
@@ -39,13 +39,13 @@ export default {
     Breadcrumb
   },
   mixins: [ProjectsMixin],
-  data () {
-    return {
-      loading: false,
-      error: null,
-      project: null
-    }
-  },
+  // data () {
+  //   return {
+  //     loading: false,
+  //     error: null,
+  //     project: null
+  //   }
+  // },
   // beforeRouteEnter (to, from, next) {
   //   getPost(to.params.id, (err, post) => {
   //     next(vm => vm.setData(err, post))
@@ -61,9 +61,9 @@ export default {
   //   })
   // },
   mounted () {
-    this.fetchProject(this.$settings.get('activeProject._id'))
     this.loadProjectFiles()
-    console.log(this.localfilesFiles)
+    this.fetchProject(this.$settings.get('activeProject._id'))
+    // console.log(this.localfilesFiles)
   },
   methods: {
     fetchProject (projId) {
@@ -84,9 +84,11 @@ export default {
       })
     },
     loadProjectFiles () {
-      let dbPath = _.last(this.localfilesFiles)
-      this.$store.commit('loadDatabase', 'localfiles', dbPath)
-      console.log(this.$store.state.DataBase)
+      let dbFile = _.last(this.localfilesFiles)
+      console.log(`Loading project files from ${dbFile.path}...`)
+      this.$store.commit('loadDatabase', {dbName: 'localfiles', dbPath: dbFile.path})
+      console.log('...Project files loaded.')
+      // console.log(this.$store.state.DataBase)
     }
   }
   // beforeRouteUpdate (to, from, next) {

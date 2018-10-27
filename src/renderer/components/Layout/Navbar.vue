@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar is-dark is-fixed-top" role="navigation" aria-label="main navigation">
+  <nav class="navbar is-dark is-fixed-top is-transparent" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <router-link :to="{name: 'home'}" class="navbar-item">
         <span class="icon">
@@ -78,5 +78,8 @@ export default {
 }
 </script>
 
-<style lang="css">
+<style lang="sass">
+.navbar
+  &.is-transparent
+    opacity: 0.8
 </style>

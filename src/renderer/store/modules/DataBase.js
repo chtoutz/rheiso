@@ -19,7 +19,11 @@ const mutations = {
     // TODO: Populate the state.plugins object with all DB available in activated plugins folders
   },
   loadDatabase (state, payload) {
+    if (!payload.dbName || !payload.dbPath) {
+      // de
+    }
     state[payload.dbName] = new Datastore({ filename: payload.dbPath, autoload: true })
+    console.log(`Loaded "${payload.dbName}" database from ${payload.dbPath}`)
   }
   // EDIT_SETTING (name, value) {
   //   // TODO: Check if name has a dot to prevent modifying without a scope (e.g general/plugins...) for security ?

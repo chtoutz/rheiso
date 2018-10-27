@@ -38,7 +38,7 @@
       <div class="field">
         <label class="label">Fichiers de sortie</label>
         <div class="control has-icons-right">
-          <input class="input" type="text" placeholder="Text input" v-model="settings.general.output">
+          <input class="input" type="text" placeholder="Text input" v-model="settings.general.outputFiles">
           <!-- <span class="icon is-small is-left">
             <i class="fa fa-user"></i>
           </span> -->
