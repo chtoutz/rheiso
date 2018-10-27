@@ -42,6 +42,7 @@ https://lodash.com/
 http://momentjs.com/docs/
 https://caolan.github.io/async/docs.html
 https://github.com/fshost/node-dir
+https://github.com/balderdashy/waterline
 
 ## DESIGN
 https://bulma.io/
@@ -49,6 +50,10 @@ https://fontawesome.com/
 https://github.com/vue-bulma/notification
 https://vuejsdevelopers.com/2017/10/23/vue-js-tree-menu-recursive-components/
 https://github.com/mihneadb/node-directory-tree
+https://www.flaticon.com/free-icon/wind_824695
+https://www.fontsquirrel.com/fonts/lekton?filter%5Bsettings%5D%5B0%5D=show_more_tags&filter%5Btags%5D%5B0%5D=programming&q%5Bterm%5D=&q%5Bsearch_check%5D=Y
+https://www.gimp.org/
+https://inkscape.org/
 
 ## DRAWING
 https://github.com/thomasdesmoulin/dxf-parsing
