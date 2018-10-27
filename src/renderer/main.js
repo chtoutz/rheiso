@@ -2,9 +2,10 @@ import Vue from 'vue'
 import axios from 'axios'
 import Settings from 'electron-store'
 
-import App from './App'
-import router from './router'
-import store from './store'
+import App from '@/App'
+import router from '@/router'
+import store from '@/store'
+import conf from '@/conf'
 
 import Notification from '@/components/Layout/Notification'
 
@@ -12,26 +13,14 @@ import Notification from '@/components/Layout/Notification'
  * Load styles *
  ***************/
 
-import './assets/styles.sass'
+import '@/assets/styles.sass'
 
 /*****************
  * Load settings *
  *****************/
 
 // TODO: Create and call a boot loader that applies default values for all general settings (projects folder, shortcuts...), init database (?)
-let settingsData = {
-  name: 'rheiso-settings',
-  encryptionKey: 'InG€ocachingWeTru$t',
-  defaults: {
-    general: {
-      projectsSource: '',
-      projectsSaving: ''
-    },
-    plugins: {},
-    projects: {}
-  }
-}
-const settings = new Settings(settingsData)
+const settings = new Settings(conf.settings)
 
 /**********************
  * Load notifications *
@@ -57,6 +46,9 @@ const openNotification = (propsData = {
  **************************************************/
 
 store.commit('initDatabase')
+conf.bootstrap(() => {
+  console.log('Bootstrap ended successfully')
+})
 
 /*********************
  * Load core objects *
