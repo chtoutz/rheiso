@@ -55,6 +55,16 @@
               <i class="fa fa-bell"></i> &nbsp;
               <span class="tag is-rounded">6</span>
             </span>
+            &nbsp;
+          </a>
+        </div>
+        <div class="navbar-item">
+          <a class="has-text-light">
+            <span class="icon">
+              <i class="fa fa-tasks"></i> &nbsp;
+              <span class="tag is-rounded">3</span>
+            </span>
+            &nbsp;
           </a>
         </div>
         <div class="navbar-item">

@@ -23,8 +23,8 @@
             <div class="card-content">
               <div class="media">
                 <div class="media-left">
-                  <span class="icon is-large">
-                    <i class="fa fa-file fa-3x"></i>
+                  <span class="icon">
+                    <i class="fa fa-file fa-2x"></i>
                   </span>
                 </div>
                 <div class="media-content">
@@ -42,13 +42,18 @@
         </div>
       </div>
 
-      <span class="subtitle">Todo :</span>
-      <ul>
-        <li>Remove the cards above (projects and tasks)</li>
-        <li>Move tasks in navbar, like notifications</li>
-        <li>In this page, display infos like in MKV Bot dashboard : logs content, local files that were created/edited/deleted, latests files opened, whatever the project, stats (number of projects, using local or API mode, number of libs (symbols, products...))</li>
-      </ul>
+      <div class="columns">
+        <div class="column">
+          <span class="subtitle">Todo</span>
+          <ul>
+            <li>Remove the cards below (projects and tasks)</li>
+            <li>Move tasks in navbar, like notifications</li>
+            <li>In this page, display infos like in MKV Bot dashboard : logs content, local files that were created/edited/deleted, latests files opened, whatever the project, stats (number of projects, using local or API mode, number of libs (symbols, products...))</li>
+          </ul>
+        </div>
+      </div>
     </div>
+    
     <div class="columns">
 
       <div class="column">
