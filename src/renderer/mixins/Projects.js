@@ -32,36 +32,34 @@ export default {
     filetreesFiles () {
       // Collect all files in filetrees directory, filter to only JSON
       let files = dirTree(this.filetreesDirectory, { extensions: /\.json/ })
+      let res = []
       // If there is at least one JSON file...
       if (files.children) {
         // Return an object containing all versions of a filetree, grouped by filetree name (filepath before the '-DATE.json')
-        return _.groupBy(files.children, (file) => {
+        res = _.groupBy(files.children, (file) => {
           return file.name.match(/\w+/)
         })
-      } else {
-        // Or return empty array
-        return []
       }
-    },
-    localfilesDirectory () {
-      return `${this.dataDirectory}/localfiles`
-    },
-    localfilesFiles () {
-      // Collect all files in filetrees directory, filter to only JSON
-      let files = dirTree(this.localfilesDirectory, { extensions: /\.db/ })
-      // If there is at least one DB file...
-      if (files.children) {
-        return files.children
-      } else {
-        // Or return empty array
-        return []
-      }
-    },
-    localfilesDB () {
-      if (this.localfilesFiles.length) {
-        // de
-      }
+      return res
     }
+    // TODO: Remove this attribute and use Waterline project.populate('files'), based on activeProject ID stored in files $DB
+    // localfilesDB () {
+    //   await this.$DB.file.find({project: this.$settings.get('activeProject.id')})
+    // }
+    // localfilesDirectory () {
+    //   return `${this.dataDirectory}/localfiles`
+    // },
+    // localfilesFiles () {
+    //   // Collect all files in filetrees directory, filter to only JSON
+    //   let files = dirTree(this.localfilesDirectory, { extensions: /\.db/ })
+    //   // If there is at least one DB file...
+    //   if (files.children) {
+    //     return files.children
+    //   } else {
+    //     // Or return empty array
+    //     return []
+    //   }
+    // }
 
     // filetreesName () {
     //   // Add the date at the end so that it is unique
@@ -72,6 +70,7 @@ export default {
     // },
   },
   mounted () {
+    // console.log(_.now())
     // TODO: Watch for events and set this.error to mask the project div, and show only the error message in Projects.vue
   },
   methods: {
@@ -83,17 +82,16 @@ export default {
       let _self = this
       // TODO: Check if we want to limit number of saves (save the X number in $settings).
       // If yes, launch a function (modular, which should be used in crons e.g) that deletes the oldest files more than X in files beginning with $route.params.filetree
-      // TODO: Check if we want to import all files rawly, or watch the arguments to check for created, reoved and edited files
-      let fileName = this.getDatedName('localfiles', 'db')
-      let filetreePath = path.resolve(this.localfilesDirectory, fileName)
-      _self.$store.commit('loadDatabase', {dbName: 'localfiles', dbPath: filetreePath})
-      console.log(`Importing project files to database : ${filetreePath}`)
+      // let fileName = this.getDatedName('localfiles', 'db')
+      // let filetreePath = path.resolve(this.localfilesDirectory, fileName)
+      // console.log(`Importing project files to database : ${filetreePath}`)
+      console.log(`Importing project files to database...`)
       // console.log(filetreePath)
       // Get an array of simple folders and files paths in the project
-      let projectDirectory = path.resolve(this.projectDirectory)
-      // let projectDirectory = path.resolve(this.projectDirectory, '3-Etudes')
+      // let projectDirectory = path.resolve(this.projectDirectory)
+      let projectDirectory = path.resolve(this.projectDirectory, '3-Etudes', '04-Catalogue méthodique')
       dir.paths(projectDirectory, true, (err, paths) => {
-        // console.log(`${paths.length} files found`)
+        console.log(`${paths.length} files found`)
         // paths = null
         // Display error notification if needed
         if (err || !paths) {
@@ -107,7 +105,7 @@ export default {
           })
         } else {
           // For each files and folder found in project
-          async.eachLimit(paths, 50, async (filepath, next) => {
+          async.eachLimit(paths, 100, async (filepath, next) => {
             // Set an object with useful infos
             // let dbFile = null
             let stats = fs.statSync(filepath)
@@ -117,15 +115,15 @@ export default {
             try {
               // Then, check for edited, added or removed files if needed
               _self.updateOrCreate({
-                name: path.basename(filepath, path.extname(filepath)),
-                type: stats.isFile() ? 'file' : 'directory',
                 path: filepath
               }, {
                 path: filepath,
                 size: stats.size,
+                project: _self.$settings.get('activeProject.id'),
                 mtime: moment(stats.mtime).format(),
                 type: stats.isFile() ? 'file' : 'directory',
-                name: path.basename(filepath, path.extname(filepath))
+                // name: path.basename(filepath, path.extname(filepath))
+                name: path.basename(filepath)
               })
               // console.log(`Imported ${files.length} project files successfully`)
             } catch (e) {
@@ -140,21 +138,14 @@ export default {
             } else {
               console.log(`Imported project files successfully`)
             }
-            // try {
-            //   // Then, check for edited, added or removed files if needed
-            //   // await _self.$DB.file.createEach(files)
-            //   console.log(`Imported ${files.length} project files successfully`)
-            // } catch (e) {
-            //   console.log(e)
-            // }
           })
           // console.log(paths)
         }
         // files.push(paths)
-        // console.log(err)
       })
       // TODO: This function is called when clicking the "Importer les fichiers" button in Filetree files card, which creates a confirm window to explain what will happen, and a checkbox asking to erase all precedent versiions of the files database. Each time the button is clicked, a "localfiles-DATE().db" file is created in project data folder. Right after that, or when the app is laucnhed, the $store.state.DataBase.projectFiles is updated with this DB content (when first launch, default file is the latest DB file from $settings.get('activeProject.path')/localfiles).
-      // Add an option to keep the structure of current treefile : which folders are expanded, which files are selected... To do this (alert user here), a deep comparison is done between each entry of the database file and the current project files : this.checkAddedFiles() in mixin which loops into fs.recursiveReadDir to check if path exists in current DB ; and this.checkDeletedFiles() in mixin which loops into DB files and check if exists in current project files ; and this.checkEditedFiles() which compares sha1 of content. Maybe use _.difference on each two BIG arrays (DB and fs.readDir)
+      // TODO: In the filetrees, allow to keep the structure of current treefile : which folders are expanded, which files are selected... To do this (alert user here), the filetree is created with the name, path and _id of the $DB.file, and an optionnal boolean field "expanded" and "selected". This allows dynamic tree construction (if this.expanded, loadChildren...)
+      // TODO: a deep comparison can be done between each entry of the database file and the current project filetree : this.checkAddedFiles() and this.checkDeletedFiles() in mixin which loops into $DB.file to check if path or _id exists in current filetree ; and this.checkEditedFiles() which compares size and mdate of $DB.file. Maybe use _.difference on each two BIG arrays (DB and fs.readDir)
       // Use https://github.com/fshost/node-dir to get all files paths from current project folder, and DB as last saved localfiles. Then use _.difference() on both sens to see what file is created or removed
 
       // let tree = dirTree(this.$settings.get('activeProject.path'))
@@ -166,14 +157,20 @@ export default {
       // })
       // console.log(tree)
     },
-    updateOrCreate (criteria, values) {
+    /**
+     * Find a record based on criteria, or create it if doesn't exist. Then, update it with full file infos
+     * @param  {Object} criteria The search criteria (here, the file path)
+     * @param  {Object} values   The new file infos to store (size and mtime may change)
+     * @return {}                Waterline instance
+     */
+    async updateOrCreate (criteria, values) {
       var self = this.$DB.file // reference for use by callbacks
       // If no values were specified, use criteria
       if (!values) {
         values = criteria.where ? criteria.where : criteria
       }
 
-      return self.findOne(criteria).then((result) => {
+      await self.findOne(criteria).then((result) => {
         if (result) {
           return self.update(criteria, values)
         } else {

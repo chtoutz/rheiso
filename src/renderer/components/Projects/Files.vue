@@ -56,7 +56,7 @@
       </div> -->
     </div>
 
-    <div v-if="!tree">
+    <div v-if="!localFiles">
       <div class="message is-info">
         <div class="message-body">
           Il semblerait que les fichiers de ce projet n'aient pas encore été importés. Vous pouvez essayer de scanner le dossier du projet actif à l'aide du bouton ci-dessous : <br>
@@ -75,14 +75,15 @@
     <div id="files" v-else>
       <div class="columns">
         <aside class="column is-8" id="files-sidebar">
-          <filetree :tree="tree"></filetree>
+          {{localFiles}}
+          <!-- <filetree :tree="tree"></filetree> -->
         </aside>
         <main class="column props" id="files-props">
           <props :selected="selectedFiles" :directories="localDirs"></props>
         </main>
       </div>
     </div>
-    <code>{{tree}}</code>
+    <!-- <code>{{localFiles}}</code> -->
 
   </div>
 </template>
@@ -130,6 +131,7 @@ export default {
     }
     tree = _.last(this.filetreesFiles[treename])
     console.log(tree)
+    this.loadLocalfiles()
     // this.loadTree(tree.path)
     // this.$DB.file.find({type: 'directory'}, (err, dirs) => {
     //   if (err) {
@@ -218,6 +220,9 @@ export default {
           _self.tree = JSON.parse(file)
         }
       })
+    },
+    async loadLocalfiles () {
+      this.localFiles = await this.$DB.file.find({project: this.$settings.get('activeProject.id')})
     }
   }
 }

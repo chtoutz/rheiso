@@ -20,12 +20,13 @@ export default Waterline.Collection.extend({
     name: { type: 'string' },
     size: { type: 'number' },
     type: { type: 'string' },
-    mtime: { type: 'string' }
+    mtime: { type: 'string' },
+    project: { type: 'string' }
 
     // Add a reference to Pets
-    // pets: {
-    //   collection: 'pet',
-    //   via: 'owner'
+    // project: {
+    //   collection: 'project',
+    //   via: 'id'
     // }
   }
 })

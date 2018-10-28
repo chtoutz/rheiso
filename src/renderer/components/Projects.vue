@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import _ from 'lodash'
+// import _ from 'lodash'
 import Breadcrumb from '@/components/Projects/_ProjectBreadcrumb'
 import ProjectsMixin from '@/mixins/Projects'
 
@@ -84,9 +84,9 @@ export default {
       }
     },
     loadProjectFiles () {
-      let dbFile = _.last(this.localfilesFiles)
-      console.log(`Loading project files from ${dbFile.path}...`)
-      this.$store.commit('loadDatabase', {dbName: 'localfiles', dbPath: dbFile.path})
+      // let dbFile = _.last(this.localfilesFiles)
+      // console.log(`Loading project files from ${dbFile.path}...`)
+      // this.$store.commit('loadDatabase', {dbName: 'localfiles', dbPath: dbFile.path})
       console.log('...Project files loaded.')
       // console.log(this.$store.state.DataBase)
     }
