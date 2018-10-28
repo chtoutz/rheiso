@@ -13,14 +13,14 @@ export default Waterline.Collection.extend({
     },
     path: {
       type: 'string',
-      required: true,
-      unique: true
+      required: false
+      // TODO: Add this unique attribute when using MongoDB in prod PI
+      // unique: true
     },
     name: { type: 'string' },
     size: { type: 'number' },
     type: { type: 'string' },
-    mtime: { type: 'string' },
-    birthdate: { type: 'string' }
+    mtime: { type: 'string' }
 
     // Add a reference to Pets
     // pets: {

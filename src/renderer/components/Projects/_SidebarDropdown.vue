@@ -59,7 +59,7 @@ export default {
     // }, function (n, o) {
     //   console.log(n, o)
     // })
-    this.$DB.projects.find({}, function (err, projects) {
+    this.$DB.project.find({}, function (err, projects) {
       if (err) {
         console.log(err)
       }

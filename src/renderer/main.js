@@ -26,18 +26,12 @@ const settings = new Settings(conf.settings)
  * Load notifications *
  **********************/
 
+// TODO: Use _.merge(notifySettings, settings.get('notifications'))
 const NotificationComponent = Vue.extend(Notification)
-const openNotification = (propsData = {
-  title: '',
-  message: '',
-  type: 'primary',
-  direction: 'Down',
-  duration: 4500,
-  container: '.notifications'
-}) => {
+const openNotification = (notifySettings = settings.get('notifications')) => {
   return new NotificationComponent({
     el: document.createElement('div'),
-    propsData
+    notifySettings
   })
 }
 
@@ -45,26 +39,35 @@ const openNotification = (propsData = {
  * Init db files loading from DataBase VueX store *
  **************************************************/
 
-store.commit('initDatabase')
-conf.bootstrap(() => {
-  console.log('Bootstrap ended successfully')
-})
+// store.commit('initDatabase')
 
 /*********************
  * Load core objects *
  *********************/
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
-Vue.DB = Vue.prototype.$DB = store.state.DataBase
 Vue.http = Vue.prototype.$http = axios
 Vue.settings = Vue.prototype.$settings = settings
 Vue.openNotification = Vue.prototype.$openNotification = openNotification
 Vue.config.productionTip = false
 
-/* eslint-disable no-new */
-new Vue({
-  components: { App },
-  router,
-  store,
-  template: '<App/>'
-}).$mount('#app')
+/*****************************
+ * Init bootstrap of the app *
+ *****************************/
+
+conf.bootstrap._init((err, data) => {
+  if (err) {
+    console.log(`Error wile bootstrapping: ${err}`)
+  } else {
+    console.log('Bootstrap ended successfully')
+    Vue.DB = Vue.prototype.$DB = data.collections
+
+    /* eslint-disable no-new */
+    new Vue({
+      components: { App },
+      router,
+      store,
+      template: '<App/>'
+    }).$mount('#app')
+  }
+})

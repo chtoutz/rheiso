@@ -62,26 +62,26 @@ export default {
   // },
   mounted () {
     this.loadProjectFiles()
-    this.fetchProject(this.$settings.get('activeProject._id'))
+    this.fetchProject()
     // console.log(this.localfilesFiles)
   },
   methods: {
-    fetchProject (projId) {
+    /**
+     * Load a project from $DB with its id
+     * @param  {[Int, String]}  [projId=this.$settings.get('activeProject.id')]
+     * @return {Promise}
+     */
+    async fetchProject (projId = this.$settings.get('activeProject.id')) {
       this.project = this.error = null
       this.loading = true
-      var _self = this
-      // Load project from DB based on current $route.projectId
-      this.$DB.projects.findOne({ _id: projId }, function (err, project) {
-        _self.loading = false
-        // err = 'okok'
-        if (err) {
-          _self.error = err.toString()
-        } else {
-          _self.project = project
-          console.log(`Loaded project "${project.name}"`)
-          // Load project files from last import DB file
-        }
-      })
+      try {
+        this.project = await this.$DB.project.findOne(projId)
+        console.log(`Loaded project "${this.project.name}"`)
+      } catch (e) {
+        this.error = e.toString()
+      } finally {
+        this.loading = false
+      }
     },
     loadProjectFiles () {
       let dbFile = _.last(this.localfilesFiles)

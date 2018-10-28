@@ -13,8 +13,9 @@ export default Waterline.Collection.extend({
     },
     path: {
       type: 'string',
-      required: true,
-      unique: true
+      required: true
+      // TODO: Add this unique attribute when using MongoDB in prod PI
+      // unique: true
     },
     name: { type: 'string' }
   }

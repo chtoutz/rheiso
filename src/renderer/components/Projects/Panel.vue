@@ -67,7 +67,7 @@
 
       </div>
     </nav>
-{{$settings.get()}}
+    <code>{{ $settings.get() }}</code>
   </article>
 </template>
 
@@ -88,7 +88,7 @@ export default {
   },
   mounted () {
     var _self = this
-    this.$DB.projects.find({}, function (err, projects) {
+    this.$DB.project.find({}, function (err, projects) {
       if (err) {
         console.log(err)
       }
@@ -138,12 +138,12 @@ export default {
             // TODO: Check if readable directory (and writable ?)
             let project = {
               name: path.basename(projectPath),
-              sourcepath: projectPath
+              path: projectPath
             }
-            project.datapath = path.join(_self.$settings.get('general.projectsSaving'), project.name)
             projects.push(project)
             // Try to create folder containing future project data (drawings, database, libs, reports...)
-            fs.mkdir(project.datapath, (err) => {
+            let datapath = path.join(_self.$settings.get('general.projectsSaving'), project.name)
+            fs.mkdir(datapath, (err) => {
               if (err && err.code !== 'EEXIST') console.log('err')
             })
           })
@@ -151,7 +151,7 @@ export default {
           let projNames = _.map(projects, 'name')
           console.debug(`Selected projects ${projNames.join(', ')}.`)
           // ... Insert in into $DB...
-          _self.$DB.projects.insert(projects, function (err, docs) {
+          _self.$DB.project.createEach(projects, function (err, docs) {
             if (err) {
               console.log(err)
             }

@@ -93,7 +93,7 @@ export default {
       let projectDirectory = path.resolve(this.projectDirectory)
       // let projectDirectory = path.resolve(this.projectDirectory, '3-Etudes')
       dir.paths(projectDirectory, true, (err, paths) => {
-        console.log(`${paths.length} files found`)
+        // console.log(`${paths.length} files found`)
         // paths = null
         // Display error notification if needed
         if (err || !paths) {
@@ -107,49 +107,53 @@ export default {
           })
         } else {
           // For each files and folder found in project
-          async.mapLimit(paths, 50, (item, next) => {
+          async.eachLimit(paths, 50, async (filepath, next) => {
             // Set an object with useful infos
-            let stats = fs.statSync(item)
+            // let dbFile = null
+            let stats = fs.statSync(filepath)
             let regex = new RegExp(`${this.projectDirectory}/?`, 'g')
-            let file = {
-              path: item.replace(regex, ''),
-              name: path.basename(item, path.extname(item)),
-              size: stats.size,
-              type: stats.isFile() ? 'file' : 'directory',
-              mtime: moment(stats.mtime).format(),
-              birthtime: moment(stats.birthtime).format()
-            }
-            // console.log(moment().format(stats.birthtime.$$date)
-            if (file.type === 'file') {
-              file.extension = path.extname(item)
+            filepath = filepath.replace(regex, '')
+            // console.log(filepath)
+            try {
+              // Then, check for edited, added or removed files if needed
+              _self.updateOrCreate({
+                name: path.basename(filepath, path.extname(filepath)),
+                type: stats.isFile() ? 'file' : 'directory',
+                path: filepath
+              }, {
+                path: filepath,
+                size: stats.size,
+                mtime: moment(stats.mtime).format(),
+                type: stats.isFile() ? 'file' : 'directory',
+                name: path.basename(filepath, path.extname(filepath))
+              })
+              // console.log(`Imported ${files.length} project files successfully`)
+            } catch (e) {
+              // console.log(e)
+              return next(e)
             }
             // console.log(fs.statSync(item))
-            return next(null, file)
-          }, (err, files) => {
+            return next(null)
+          }, (err) => {
             if (err) {
               console.log(err)
             } else {
-              // TODO: Create files array in DB.
-              // Then, check for edited, added or removed files if needed
-              this.$DB.localfiles.insert(files, function (err, newDoc) {
-                if (err) {
-                  console.log(err)
-                } else {
-                  // _self.$store.commit('loadDatabase', {dbName: 'localfiles', dbPath: filetreePath})
-                  console.log(`Imported project files successfully`)
-                }
-                // console.log(moment().format(newDoc[0].mtime.$$date))
-                // console.log(moment(newDoc[0].mtime).format())
-                // console.log(newDoc)
-              })
+              console.log(`Imported project files successfully`)
             }
+            // try {
+            //   // Then, check for edited, added or removed files if needed
+            //   // await _self.$DB.file.createEach(files)
+            //   console.log(`Imported ${files.length} project files successfully`)
+            // } catch (e) {
+            //   console.log(e)
+            // }
           })
           // console.log(paths)
         }
         // files.push(paths)
         // console.log(err)
       })
-      // TODO: Save each file found with a recursive async.eachLimit & fs.readDir() into a database entry, with some extra infos : creation date, sha1 of the path and the file content (to check for changes and notify user if a more recent version of a file exists), or other infos from fs.stat(). All this is instead of dirTree. This function is called when clicking the "Importer les fichiers" button in Filetree files card, which creates a confirm window to explain what will happen, and a checkbox asking to erase all precedent versiions of the files database. Each time the button is clicked, a "localfiles-DATE().db" file is created in project data folder. Right after that, or when the app is laucnhed, the $store.state.DataBase.projectFiles is updated with this DB content (when first launch, default file is the latest DB file from $settings.get('activeProject.path')/localfiles).
+      // TODO: This function is called when clicking the "Importer les fichiers" button in Filetree files card, which creates a confirm window to explain what will happen, and a checkbox asking to erase all precedent versiions of the files database. Each time the button is clicked, a "localfiles-DATE().db" file is created in project data folder. Right after that, or when the app is laucnhed, the $store.state.DataBase.projectFiles is updated with this DB content (when first launch, default file is the latest DB file from $settings.get('activeProject.path')/localfiles).
       // Add an option to keep the structure of current treefile : which folders are expanded, which files are selected... To do this (alert user here), a deep comparison is done between each entry of the database file and the current project files : this.checkAddedFiles() in mixin which loops into fs.recursiveReadDir to check if path exists in current DB ; and this.checkDeletedFiles() in mixin which loops into DB files and check if exists in current project files ; and this.checkEditedFiles() which compares sha1 of content. Maybe use _.difference on each two BIG arrays (DB and fs.readDir)
       // Use https://github.com/fshost/node-dir to get all files paths from current project folder, and DB as last saved localfiles. Then use _.difference() on both sens to see what file is created or removed
 
@@ -161,6 +165,21 @@ export default {
       //   console.log('Files imported successfully !')
       // })
       // console.log(tree)
+    },
+    updateOrCreate (criteria, values) {
+      var self = this.$DB.file // reference for use by callbacks
+      // If no values were specified, use criteria
+      if (!values) {
+        values = criteria.where ? criteria.where : criteria
+      }
+
+      return self.findOne(criteria).then((result) => {
+        if (result) {
+          return self.update(criteria, values)
+        } else {
+          return self.create(values)
+        }
+      })
     },
     dbToTree (files, cb) {
       // let tree = {}

@@ -129,58 +129,59 @@ export default {
       treename = 'local'
     }
     tree = _.last(this.filetreesFiles[treename])
-    this.loadTree(tree.path)
-    this.$DB.localfiles.find({type: 'directory'}, (err, dirs) => {
-      if (err) {
-        console.log(err)
-      } else {
-        this.localDirs = dirs
-      }
-    })
-    this.$DB.localfiles.find({type: 'file'}, (err, files) => {
-      if (err) {
-        console.log(err)
-      } else {
-        this.localFiles = files
-      }
-    })
-    this.$DB.localfiles.find({}).sort({ path: 1 }).exec((err, files) => {
-      if (err) {
-        console.log(err)
-      } else {
-        let dirs = _.filter(files, {type: 'directory'})
-        // console.log(dirs)
-        _.forEach(dirs, (dir) => {
-          dir.children = _.filter(files, (f) => {
-            return _.startsWith(f.path, dir.path)
-          })
-        })
-        console.log(dirs, this.tree)
-        // this.localFiles = files
-        let obj = {}
-        // let paths = _.map(files, (file) => {
-        //   // Keep only the path parts from project's root, removing this.projectDirectory from path
-        //   let regex = new RegExp(`${this.projectDirectory}/?`, 'g')
-        //   file.path = file.path.replace(regex, '')
-        //   return file
-        // })
-        // paths.forEach((path) => {
-        //   path.split('/').reduce((r, e) => {
-        //     console.log(r)
-        //     return r[e] || (r[e] = {})
-        //   }, obj)
-        // })
-        files.forEach((file) => {
-          file.path.split('/').reduce((r, e) => {
-            // console.log(r)
-            return r[e] || (r[e] = [])
-          }, obj)
-        })
-
-        // console.log(obj)
-        // console.log(files)
-      }
-    })
+    console.log(tree)
+    // this.loadTree(tree.path)
+    // this.$DB.file.find({type: 'directory'}, (err, dirs) => {
+    //   if (err) {
+    //     console.log(err)
+    //   } else {
+    //     this.localDirs = dirs
+    //   }
+    // })
+    // this.$DB.file.find({type: 'file'}, (err, files) => {
+    //   if (err) {
+    //     console.log(err)
+    //   } else {
+    //     this.localFiles = files
+    //   }
+    // })
+    // this.$DB.file.find({}).sort({ path: 1 }).exec((err, files) => {
+    //   if (err) {
+    //     console.log(err)
+    //   } else {
+    //     let dirs = _.filter(files, {type: 'directory'})
+    //     // console.log(dirs)
+    //     _.forEach(dirs, (dir) => {
+    //       dir.children = _.filter(files, (f) => {
+    //         return _.startsWith(f.path, dir.path)
+    //       })
+    //     })
+    //     console.log(dirs, this.tree)
+    //     // this.localFiles = files
+    //     let obj = {}
+    //     // let paths = _.map(files, (file) => {
+    //     //   // Keep only the path parts from project's root, removing this.projectDirectory from path
+    //     //   let regex = new RegExp(`${this.projectDirectory}/?`, 'g')
+    //     //   file.path = file.path.replace(regex, '')
+    //     //   return file
+    //     // })
+    //     // paths.forEach((path) => {
+    //     //   path.split('/').reduce((r, e) => {
+    //     //     console.log(r)
+    //     //     return r[e] || (r[e] = {})
+    //     //   }, obj)
+    //     // })
+    //     files.forEach((file) => {
+    //       file.path.split('/').reduce((r, e) => {
+    //         // console.log(r)
+    //         return r[e] || (r[e] = [])
+    //       }, obj)
+    //     })
+    //
+    //     // console.log(obj)
+    //     // console.log(files)
+    //   }
+    // })
 
     // _.filter(this.tree.children, 'selected')
 
