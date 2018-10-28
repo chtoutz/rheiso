@@ -140,6 +140,7 @@ export default {
               name: path.basename(projectPath),
               path: projectPath
             }
+            project.reference = project.name.match(/\w+/)[0]
             projects.push(project)
             // Try to create folder containing future project data (drawings, database, libs, reports...)
             let datapath = path.join(_self.$settings.get('general.projectsSaving'), project.name)

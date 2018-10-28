@@ -67,4 +67,7 @@ https://github.com/amatiash/svg.intersections.js
 https://github.com/svgdotjs/svg.filter.js
 https://github.com/fuzzyma/svg.draw.js
 https://github.com/loredanacirstea/svg.connectable.js
+
+## MISC
+https://stackoverflow.com/questions/25936910/sails-js-model-insert-or-update-records
 ```

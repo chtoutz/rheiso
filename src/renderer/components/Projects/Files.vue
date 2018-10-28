@@ -56,7 +56,7 @@
       </div> -->
     </div>
 
-    <div v-if="!localFiles">
+    <div v-if="!activeProject.files.length">
       <div class="message is-info">
         <div class="message-body">
           Il semblerait que les fichiers de ce projet n'aient pas encore été importés. Vous pouvez essayer de scanner le dossier du projet actif à l'aide du bouton ci-dessous : <br>
@@ -72,24 +72,41 @@
       </div>
     </div>
 
+    <div v-if="!tree">
+      <div class="message is-info">
+        <div class="message-body">
+          Il semblerait qu'aucun "filetree" ne soit configuré. Vous pouvez essayer d'en créer un basé sur les fichiers locaux contenus dans la base de données, à l'aide du bouton ci-dessous : <br>
+        </div>
+      </div>
+      <div class="has-text-centered">
+        <a class="button is-medium" @click="importFiles">
+          <span class="icon">
+            <i class="fa fa-plus"></i>
+          </span>
+          <span>Créer un filetree</span>
+        </a>
+      </div>
+    </div>
+
     <div id="files" v-else>
       <div class="columns">
         <aside class="column is-8" id="files-sidebar">
-          {{localFiles}}
-          <!-- <filetree :tree="tree"></filetree> -->
+          <!-- {{activeProject.files}} -->
+          <filetree :tree="tree"></filetree>
         </aside>
         <main class="column props" id="files-props">
           <props :selected="selectedFiles" :directories="localDirs"></props>
         </main>
       </div>
     </div>
-    <!-- <code>{{localFiles}}</code> -->
+    <!-- <code>{{activeProject.files}}</code> -->
+    <code>{{tree}}</code>
 
   </div>
 </template>
 
 <script>
-import _ from 'lodash'
+// import _ from 'lodash'
 // import dirTree from 'directory-tree'
 import fs from 'fs'
 import TreeMenu from '@/components/Layout/TreeMenu'
@@ -117,36 +134,33 @@ export default {
     return {
       tree: null,
       selectedFiles: [],
-      localDirs: [],
-      localFiles: []
+      localDirs: []
     }
   },
   mounted () {
+    // TODO: After checking treename, check if (treename === 'local' && !this.filetreesFiles[this.$route.params.filetree])
+    // => create a local filetree based on all local files in $DB
     let tree
-    let treename
-    if (this.filetreesFiles[this.$route.params.filetree]) {
-      treename = this.$route.params.filetree
-    } else {
-      treename = 'local'
+    // let treename
+    // if (this.filetreesFiles[this.$route.params.filetree]) {
+    //   treename = this.$route.params.filetree
+    // } else {
+    //   treename = 'local'
+    // }
+    // // tree = _.last(this.filetreesFiles[treename])
+    // console.log(treename)
+    tree = {
+      name: this.activeProject.name,
+      path: '',
+      depth: 0,
+      type: 'directory',
+      // children: [],
+      expanded: false
+      // selected: false
     }
-    tree = _.last(this.filetreesFiles[treename])
-    console.log(tree)
-    this.loadLocalfiles()
+    this.tree = tree
     // this.loadTree(tree.path)
-    // this.$DB.file.find({type: 'directory'}, (err, dirs) => {
-    //   if (err) {
-    //     console.log(err)
-    //   } else {
-    //     this.localDirs = dirs
-    //   }
-    // })
-    // this.$DB.file.find({type: 'file'}, (err, files) => {
-    //   if (err) {
-    //     console.log(err)
-    //   } else {
-    //     this.localFiles = files
-    //   }
-    // })
+
     // this.$DB.file.find({}).sort({ path: 1 }).exec((err, files) => {
     //   if (err) {
     //     console.log(err)
@@ -220,9 +234,6 @@ export default {
           _self.tree = JSON.parse(file)
         }
       })
-    },
-    async loadLocalfiles () {
-      this.localFiles = await this.$DB.file.find({project: this.$settings.get('activeProject.id')})
     }
   }
 }

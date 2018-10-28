@@ -52,8 +52,9 @@
         <div class="menu">
           <ul class="menu-list">
             <tree-menu
-               :children="tree.children"
-               :selected="tree.selected"
+               :type="tree.type"
+               :path="tree.path"
+               :depth="tree.depth"
                :name="tree.name"
              ></tree-menu>
           </ul>
@@ -70,6 +71,7 @@
       <a class="card-footer-item">Edit</a>
       <a class="card-footer-item">Delete</a>
     </footer>
+    <code>{{tree}}</code>
   </div>
   <!-- <nav class="panel">
     <p class="panel-heading">
@@ -117,7 +119,7 @@ import ProjectsMixin from '@/mixins/Projects'
 
 export default {
   name: 'projects-filetree',
-  props: [ 'tree', 'children', 'name', 'selected' ],
+  props: [ 'tree' ],
   data () {
     return {
       nbFiles: 123,
@@ -134,6 +136,19 @@ export default {
     // }
   },
   methods: {
+    // TODO: Send event and move this function in mixin method ?
+    // async loadChildren () {
+    //   console.log('ookk')
+    //   if (this.tree.type === 'directory') {
+    //     // console.log(this.root)
+    //     // let criteria = { 'path': { startsWith: this.path }, depth: this.depth + 1 }
+    //     // console.log(criteria)
+    //     this.tree.children = await this.$DB.file.find(this.childrenQuery)
+    //     console.log(this.tree)
+    //   } else {
+    //     console.log('pas ouvrir fichier')
+    //   }
+    // }
     // TODO: Do not call 'this.showChildren = !this.showChildren' in toggleSelected
     // importFiles () {
     //   this.showChildren = !this.showChildren

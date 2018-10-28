@@ -21,7 +21,7 @@
       </div>
 
       <div v-if="project">
-        <router-view></router-view>
+        <router-view :active-project="project"></router-view>
       </div>
     </div>
 
@@ -61,7 +61,7 @@ export default {
   //   })
   // },
   mounted () {
-    this.loadProjectFiles()
+    // this.loadProjectFiles()
     this.fetchProject()
     // console.log(this.localfilesFiles)
   },
@@ -75,8 +75,9 @@ export default {
       this.project = this.error = null
       this.loading = true
       try {
-        this.project = await this.$DB.project.findOne(projId)
+        this.project = await this.$DB.project.findOne(projId).populate('files')
         console.log(`Loaded project "${this.project.name}"`)
+        // console.log(this.project)
       } catch (e) {
         this.error = e.toString()
       } finally {

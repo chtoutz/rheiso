@@ -11,11 +11,13 @@ export default {
   data () {
     return {
       // These 3 are used to display/hide the corresponding divs in Projects.vue parent layout
+      // TODO: Maybe place these on the main App.vue component to handle globally loading state ?
       loading: false,
       error: null,
       project: null
     }
   },
+  props: [ 'activeProject' ],
   computed: {
     _projId () {
       return this.$settings.get('activeProject.name').match(/\w+/)
@@ -46,28 +48,6 @@ export default {
     // localfilesDB () {
     //   await this.$DB.file.find({project: this.$settings.get('activeProject.id')})
     // }
-    // localfilesDirectory () {
-    //   return `${this.dataDirectory}/localfiles`
-    // },
-    // localfilesFiles () {
-    //   // Collect all files in filetrees directory, filter to only JSON
-    //   let files = dirTree(this.localfilesDirectory, { extensions: /\.db/ })
-    //   // If there is at least one DB file...
-    //   if (files.children) {
-    //     return files.children
-    //   } else {
-    //     // Or return empty array
-    //     return []
-    //   }
-    // }
-
-    // filetreesName () {
-    //   // Add the date at the end so that it is unique
-    //   return `${this.$route.params.filetree}-${moment().format()}.json`
-    // },
-    // filetreePath () {
-    //   return `${this.filetreesDirectory}/${this.filetreesName}`
-    // },
   },
   mounted () {
     // console.log(_.now())
@@ -88,10 +68,10 @@ export default {
       console.log(`Importing project files to database...`)
       // console.log(filetreePath)
       // Get an array of simple folders and files paths in the project
-      // let projectDirectory = path.resolve(this.projectDirectory)
-      let projectDirectory = path.resolve(this.projectDirectory, '3-Etudes', '04-Catalogue méthodique')
+      let projectDirectory = this.projectDirectory
+      // let projectDirectory = path.resolve(this.projectDirectory, '3-Etudes', '04-Catalogue méthodique')
       dir.paths(projectDirectory, true, (err, paths) => {
-        console.log(`${paths.length} files found`)
+        // console.log(`${paths.length} files found`)
         // paths = null
         // Display error notification if needed
         if (err || !paths) {
@@ -109,7 +89,7 @@ export default {
             // Set an object with useful infos
             // let dbFile = null
             let stats = fs.statSync(filepath)
-            let regex = new RegExp(`${this.projectDirectory}/?`, 'g')
+            let regex = new RegExp(`${this.projectDirectory}/`)
             filepath = filepath.replace(regex, '')
             // console.log(filepath)
             try {
@@ -118,6 +98,7 @@ export default {
                 path: filepath
               }, {
                 path: filepath,
+                depth: filepath.split('/').length,
                 size: stats.size,
                 project: _self.$settings.get('activeProject.id'),
                 mtime: moment(stats.mtime).format(),
@@ -125,13 +106,13 @@ export default {
                 // name: path.basename(filepath, path.extname(filepath))
                 name: path.basename(filepath)
               })
+              return next(null)
               // console.log(`Imported ${files.length} project files successfully`)
             } catch (e) {
               // console.log(e)
               return next(e)
             }
             // console.log(fs.statSync(item))
-            return next(null)
           }, (err) => {
             if (err) {
               console.log(err)
@@ -169,11 +150,15 @@ export default {
       if (!values) {
         values = criteria.where ? criteria.where : criteria
       }
+      // console.log(values.project)
 
       await self.findOne(criteria).then((result) => {
+        // if (result && result.mtime !== values.mtime) {
         if (result) {
+          console.log(`Updating ${values.name}`)
           return self.update(criteria, values)
         } else {
+          console.log(`Creating ${values.name}`)
           return self.create(values)
         }
       })
