@@ -42,7 +42,7 @@
       </div>
       <div class="filetree-tabs tabs is-small is-centered">
         <ul>
-          <li class="is-active"><a>Fichiers locaux</a></li>
+          <li class="is-active"><a>Fichiers locaux ({{ project ? project.filesCount : 0 }})</a></li>
           <li><a>DOE</a></li>
           <li><a>Affaires</a></li>
           <li><a>Livrables</a></li>
@@ -71,7 +71,6 @@
       <a class="card-footer-item">Edit</a>
       <a class="card-footer-item">Delete</a>
     </footer>
-    <code>{{tree}}</code>
   </div>
   <!-- <nav class="panel">
     <p class="panel-heading">
@@ -119,7 +118,7 @@ import ProjectsMixin from '@/mixins/Projects'
 
 export default {
   name: 'projects-filetree',
-  props: [ 'tree' ],
+  props: [ 'tree', 'files-count' ],
   data () {
     return {
       nbFiles: 123,

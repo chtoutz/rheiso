@@ -8,9 +8,7 @@
       <tree-menu
         v-for="child in children"
         :key="child.name"
-        :children="child.children"
         :name="child.name"
-        :selected="child.selected"
         :type="child.type"
         :path="child.path"
         :depth="child.depth"
@@ -72,7 +70,8 @@ export default {
     },
     itemClasses () {
       return {
-        'is-selected': this.selected
+        'is-selected': this.selected,
+        'is-expanded': this.showChildren
       }
     },
     childrenQuery () {
@@ -82,11 +81,11 @@ export default {
       }
     }
   },
-  watch: {
-    children: (newValue, oldalue) => {
-      console.log(newValue)
-    }
-  },
+  // watch: {
+  //   children: (newValue, oldalue) => {
+  //     console.log(newValue)
+  //   }
+  // },
   methods: {
     // TODO: Do not call 'this.showChildren = !this.showChildren' in toggleSelected
     toggleChildren () {
@@ -100,7 +99,7 @@ export default {
     async loadChildren () {
       if (this.type === 'directory') {
         if (!this.children) {
-          this.children = await this.$DB.file.find(this.childrenQuery).sort('path')
+          this.children = await this.$DB.file.find(this.childrenQuery).sort([{type: 'ASC'}, {path: 'ASC'}])
         }
         // console.log(this.children)
       } else {

@@ -20,8 +20,12 @@ export default Waterline.Collection.extend({
     name: { type: 'string' },
     reference: { type: 'string' },
 
-    files: {
-      collection: 'file',
+    // files: {
+    //   collection: 'file',
+    //   via: 'project'
+    // }
+    filetrees: {
+      collection: 'filetree',
       via: 'project'
     }
   }

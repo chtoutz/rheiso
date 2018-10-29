@@ -39,13 +39,11 @@ export default {
     Breadcrumb
   },
   mixins: [ProjectsMixin],
-  // data () {
-  //   return {
-  //     loading: false,
-  //     error: null,
-  //     project: null
-  //   }
-  // },
+  data () {
+    return {
+      // filesCount: 0
+    }
+  },
   // beforeRouteEnter (to, from, next) {
   //   getPost(to.params.id, (err, post) => {
   //     next(vm => vm.setData(err, post))
@@ -60,35 +58,22 @@ export default {
   //     next()
   //   })
   // },
-  mounted () {
+  async mounted () {
+    await this.fetchProject()
     // this.loadProjectFiles()
-    this.fetchProject()
     // console.log(this.localfilesFiles)
   },
   methods: {
-    /**
-     * Load a project from $DB with its id
-     * @param  {[Int, String]}  [projId=this.$settings.get('activeProject.id')]
-     * @return {Promise}
-     */
-    async fetchProject (projId = this.$settings.get('activeProject.id')) {
-      this.project = this.error = null
-      this.loading = true
-      try {
-        this.project = await this.$DB.project.findOne(projId).populate('files')
-        console.log(`Loaded project "${this.project.name}"`)
-        // console.log(this.project)
-      } catch (e) {
-        this.error = e.toString()
-      } finally {
-        this.loading = false
-      }
-    },
-    loadProjectFiles () {
+    async loadProjectFiles () {
+      // this.project.files = 2
+      // if (this.project) {
+      this.project.filesCount = await this.$DB.file.count({project: this.$settings.get('activeProject.id')})
+      // this.project.filesCount = this.filesCount
+      // }
       // let dbFile = _.last(this.localfilesFiles)
       // console.log(`Loading project files from ${dbFile.path}...`)
       // this.$store.commit('loadDatabase', {dbName: 'localfiles', dbPath: dbFile.path})
-      console.log('...Project files loaded.')
+      console.log('...' + this.project.filesCount + ' Project files loaded.')
       // console.log(this.$store.state.DataBase)
     }
   }

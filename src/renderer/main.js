@@ -35,12 +35,6 @@ const openNotification = (notifySettings = settings.get('notifications')) => {
   })
 }
 
-/**************************************************
- * Init db files loading from DataBase VueX store *
- **************************************************/
-
-// store.commit('initDatabase')
-
 /*********************
  * Load core objects *
  *********************/

@@ -56,7 +56,7 @@
       </div> -->
     </div>
 
-    <div v-if="!activeProject.files.length">
+    <div v-if="project && !project.files">
       <div class="message is-info">
         <div class="message-body">
           Il semblerait que les fichiers de ce projet n'aient pas encore été importés. Vous pouvez essayer de scanner le dossier du projet actif à l'aide du bouton ci-dessous : <br>
@@ -100,7 +100,7 @@
       </div>
     </div>
     <!-- <code>{{activeProject.files}}</code> -->
-    <code>{{tree}}</code>
+    <code>{{activeProject}}</code>
 
   </div>
 </template>
@@ -125,14 +125,19 @@ export default {
     Filetree
   },
   mixins: [ProjectsMixin],
-  // computed: {
-  //   selected () {
-  //     return _.filter(this.tree, 'selected')
-  //   }
-  // },
+  // props: [ 'filesCount' ],
+  computed: {
+    // async filetrees () {
+    //   return _.concat(['local'], await this.$DB.filetree.find({project: this.$settings.get('activeProject.id')}))
+    // }
+    // selected () {
+    //   return _.filter(this.tree, 'selected')
+    // }
+  },
   data () {
     return {
       tree: null,
+      // filetrees: [],
       selectedFiles: [],
       localDirs: []
     }
@@ -153,9 +158,9 @@ export default {
       name: this.activeProject.name,
       path: '',
       depth: 0,
-      type: 'directory',
+      type: 'directory'
       // children: [],
-      expanded: false
+      // expanded: false
       // selected: false
     }
     this.tree = tree

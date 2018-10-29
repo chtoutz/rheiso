@@ -58,6 +58,26 @@ export default {
       // Add the date at the end so that it is unique. Used to generate a new locafiles or filetree file
       return `${name}-${moment().format()}.${extension}`
     },
+    /**
+     * Fetch a project from $DB based on its ID
+     * @param  {Int}  projId  The project ID to fetch. By default, activeProject.id
+     * @return {Promise}      Set project or display error
+     */
+    async fetchProject (projId = this.$settings.get('activeProject.id')) {
+      this.project = this.error = null
+      this.loading = true
+      try {
+        this.project = await this.$DB.project.findOne(projId).populate('filetrees')
+        this.project.filetrees = _.concat('local', 'pdf', 'folder', 'drawing', 'note', this.project.filetrees)
+        // this.project = await this.$DB.project.findOne(projId)
+        console.log(`Loaded project "${this.project.name}"`)
+        // console.log(this.project)
+      } catch (e) {
+        this.error = e.toString()
+      } finally {
+        this.loading = false
+      }
+    },
     importFiles () {
       let _self = this
       // TODO: Check if we want to limit number of saves (save the X number in $settings).
