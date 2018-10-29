@@ -1,36 +1,48 @@
 <template>
   <div class="tile is-ancestor has-text-centered">
-    <div class="tile is-parent is-3">
-      <router-link :to="{name: 'home'}" class="tile is-child box">
-        <span class="icon has-text-info is-large"><i class="fa fa-plus fa-3x"></i></span>
-        <p class="subtitle">Ajouter un plan</p>
-      </router-link>
+    <div class="tile is-parent is-2">
+      <a class="tile is-child box has-text-info" @click="$openModal()">
+        <span class="icon is-large"><i class="fa fa-plus fa-3x"></i></span>
+        <p class="heading">Ajouter un plan</p>
+      </a>
     </div>
-    <!-- <div class="tile is-parent is-3">
+    <div class="tile is-parent is-2">
       <router-link :to="{name: 'home'}" class="tile is-child box">
         <p class="title">Two</p>
         <p class="subtitle">Subtitle</p>
       </router-link>
     </div>
-    <div class="tile is-parent is-3">
+    <div class="tile is-parent is-2">
       <router-link :to="{name: 'home'}" class="tile is-child box">
         <p class="title">Three</p>
         <p class="subtitle">Subtitle</p>
       </router-link>
     </div>
-    <div class="tile is-parent is-3">
+    <div class="tile is-parent is-2">
       <router-link :to="{name: 'home'}" class="tile is-child box">
         <p class="title">Four</p>
         <p class="subtitle">Subtitle</p>
       </router-link>
-    </div> -->
+    </div>
+    <!-- <modal :showd="showModal"></modal> -->
   </div>
 </template>
 
 <script>
-export default {
-  name: 'projects-drawing'
+import ProjectsMixin from '@/mixins/Projects'
+// import Modal from '@/components/Layout/Modal'
 
+export default {
+  name: 'projects-drawing',
+  // components: {
+  //   Modal
+  // },
+  // methods: {
+  //   toggleModal () {
+  //     this.showModal = !this.showModal
+  //   }
+  // },
+  mixins: [ProjectsMixin]
 }
 </script>
 

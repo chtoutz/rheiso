@@ -1,18 +1,20 @@
 <template>
-  <nav class="menu">
-    <!-- <router-link
-    class="menu-label"
-      :to="{ name: 'projects.explore', params: $route.params }"
-      :class="{'is-active': $route.name === 'projects.explore'}"
-    >Résumé</router-link> -->
-    <!-- <div class="submenu">
+  <transition :name="'fade'">
+    <nav class="menu">
+      <!-- <router-link
+      class="menu-label"
+        :to="{ name: 'projects.explore', params: $route.params }"
+        :class="{'is-active': $route.name === 'projects.explore'}"
+      >Résumé</router-link> -->
+      <!-- <div class="submenu">
 
-    </div> -->
-    <projects-sidebar-dropdown></projects-sidebar-dropdown>
-    <projects-sidebar></projects-sidebar>
-    <settings-sidebar></settings-sidebar>
-    <repos-sidebar></repos-sidebar>
-  </nav>
+      </div> -->
+      <projects-sidebar-dropdown></projects-sidebar-dropdown>
+      <projects-sidebar></projects-sidebar>
+      <settings-sidebar></settings-sidebar>
+      <repos-sidebar></repos-sidebar>
+    </nav>
+  </transition>
 </template>
 
 <script>

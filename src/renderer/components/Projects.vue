@@ -1,9 +1,8 @@
 <template>
   <section id="projects">
     <!-- <div class="container is-fluid"> -->
-    <!-- <breadcrumb></breadcrumb> -->
 
-    <div class="section" id="projects-children-view">
+    <div class="section">
 
       <div v-if="loading" class="loading has-text-centered">
         <span class='icon'>
@@ -31,6 +30,7 @@
 <script>
 // import _ from 'lodash'
 import Breadcrumb from '@/components/Projects/_ProjectBreadcrumb'
+
 import ProjectsMixin from '@/mixins/Projects'
 
 export default {
@@ -41,7 +41,7 @@ export default {
   mixins: [ProjectsMixin],
   data () {
     return {
-      // filesCount: 0
+      // dede: false
     }
   },
   // beforeRouteEnter (to, from, next) {

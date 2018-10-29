@@ -12,6 +12,12 @@ export default {
       duration: 4500,
       container: '.notifications'
     },
+    modal: {
+      title: '',
+      message: '',
+      duration: 0,
+      container: '.modal-container'
+    },
     general: {
       projectsSource: '',
       projectsSaving: '',
