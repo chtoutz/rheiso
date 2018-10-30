@@ -8,7 +8,7 @@ import store from '@/store'
 import conf from '@/conf'
 
 import Notification from '@/components/Layout/Notification'
-import Modal from '@/components/Layout/Modal'
+// import Modal from '@/components/Layout/Modal'
 
 /***************
  * Load styles *
@@ -35,13 +35,13 @@ const openNotification = (notifySettings = settings.get('notifications')) => {
     notifySettings
   })
 }
-const ModalComponent = Vue.extend(Modal)
-const openModal = (modalProps = settings.get('modal')) => {
-  return new ModalComponent({
-    el: document.createElement('div'),
-    modalProps
-  })
-}
+// const ModalComponent = Vue.extend(Modal)
+// const openModal = (modalProps = settings.get('modal')) => {
+//   return new ModalComponent({
+//     el: document.createElement('div'),
+//     modalProps
+//   })
+// }
 
 /*********************
  * Load core objects *
@@ -51,7 +51,7 @@ if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios
 Vue.settings = Vue.prototype.$settings = settings
 Vue.openNotification = Vue.prototype.$openNotification = openNotification
-Vue.openModal = Vue.prototype.$openModal = openModal
+// Vue.openModal = Vue.prototype.$openModal = openModal
 Vue.config.productionTip = false
 
 /*****************************
