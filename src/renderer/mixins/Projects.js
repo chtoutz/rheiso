@@ -6,6 +6,8 @@ import dir from 'node-dir'
 import moment from 'moment'
 import dirTree from 'directory-tree'
 
+import Card from '@/components/Layout/Card'
+
 // TODO: Rename this mixin to 'Local.js', and create another called 'Api.js' which connects to Pi. These two mixins have exactly the same functions inside, which do core actions depending on local/server env. "Core actions" may be importFiles, fetchProject, etc. which mainly repose on retriving data from DB or from local files with an ID or NAME, obtained from url query.
 // Try to move out all current functions that don't retrieve data with an ID
 // Maybe add a 'Common.js' mixin to store all that's... common.
@@ -22,6 +24,9 @@ export default {
     }
   },
   props: [ 'activeProject' ],
+  components: {
+    Card
+  },
   computed: {
     _projId () {
       return this.$settings.get('activeProject.name').match(/\w+/)

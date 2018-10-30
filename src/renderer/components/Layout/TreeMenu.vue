@@ -22,21 +22,6 @@
 </template>
 
 <script>
-// id: {
-//   type: 'number',
-//   autoMigrations: {autoIncrement: true}
-// },
-// path: {
-//   type: 'string',
-//   required: false
-//   // TODO: Add this unique attribute when using MongoDB in prod PI
-//   // unique: true
-// },
-// name: { type: 'string' },
-// size: { type: 'number' },
-// type: { type: 'string' },
-// mtime: { type: 'string' },
-
 // TODO: Move this file into components/Layout/ and use it to generale the main left sidebar
 export default {
   name: 'tree-menu',
@@ -50,18 +35,6 @@ export default {
     }
   },
   computed: {
-    // dirFiles: {
-    //   get: function () {
-    //     if (this.type === 'directory') {
-    //       return this.children
-    //     } else {
-    //       return null
-    //     }
-    //   },
-    //   set: function (v) {
-    //     // console.log(v)
-    //   }
-    // },
     iconClasses () {
       return {
         'fa-plus-square-o': !this.showChildren,
@@ -102,8 +75,6 @@ export default {
           this.children = await this.$DB.file.find(this.childrenQuery).sort([{type: 'ASC'}, {path: 'ASC'}])
         }
         // console.log(this.children)
-      } else {
-        console.log('pas ouvrir fichier')
       }
     }
   }

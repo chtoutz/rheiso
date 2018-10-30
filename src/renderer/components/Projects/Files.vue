@@ -90,9 +90,33 @@
 
     <div id="files" v-else>
       <div class="columns">
-        <aside class="column is-8" id="files-sidebar">
+        <aside class="column is-8" id="files-filetrees">
           <!-- {{activeProject.files}} -->
-          <filetree :tree="tree"></filetree>
+          <card :cardTitle="'Jeux de fichiers'" :card-menu="true" v-if="tree">
+            <!-- Card menu -->
+            <div slot="menu" class="dropdown-content">
+              <a class="dropdown-item">
+                <p>Importer les fichiers</p>
+              </a>
+              <hr class="dropdown-divider">
+              <div class="dropdown-item">
+                <p>Dernière mise à jour il y a 3 heures</p>
+              </div>
+            </div>
+            <!-- Filetree -->
+            <filetree :tree="tree"></filetree>
+            <!-- Card footer -->
+            <footer slot="footer" class="card-footer">
+              <a class="card-footer-item" @click="importFiles">
+                <span class="icon">
+                  <i class="fa fa-download"></i>
+                </span>
+                Importer les fichiers
+              </a>
+              <a class="card-footer-item">Edit</a>
+              <a class="card-footer-item">Delete</a>
+            </footer>
+          </card>
         </aside>
         <main class="column props" id="files-props">
           <props :selected="selectedFiles" :directories="localDirs"></props>
