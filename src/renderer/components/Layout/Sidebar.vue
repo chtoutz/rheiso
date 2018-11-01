@@ -1,6 +1,6 @@
 <template>
   <transition :name="'fade'">
-    <nav class="menu">
+    <nav class="menu" id="main-sidebar">
       <!-- <router-link
       class="menu-label"
         :to="{ name: 'projects.explore', params: $route.params }"
@@ -9,7 +9,7 @@
       <!-- <div class="submenu">
 
       </div> -->
-      <projects-sidebar-dropdown></projects-sidebar-dropdown>
+      <!-- <projects-sidebar-dropdown></projects-sidebar-dropdown> -->
       <projects-sidebar></projects-sidebar>
       <settings-sidebar></settings-sidebar>
       <repos-sidebar></repos-sidebar>
@@ -46,11 +46,36 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
-  .menu {
-    margin-left: 12px;
-  }
-  .submenu {
+<style lang="sass">
+  @import "~bulma/sass/utilities/initial-variables"
+  .menu
+    margin-left: 12px
+  .submenu
     margin-top: 12px
-  }
+  #main-view, #main-sidebar
+    height: calc(100vh - 52px)
+    // height: calc(100vh - 180px)
+  #main-sidebar
+    overflow-y: auto
+    position: fixed
+    display: block
+    background: rgba($grey-light,0.4)
+    border: 2px dashed transparent
+    outline: 0px 0px 1px 1px rgba(0,0,0,0.15)
+    border-radius: 4px
+    -webkit-border-radius: 4px
+    transition: all .3s ease-in-out
+    -webkit-transition: all .3s ease-in-out
+    -moz-transition: all .3s ease-in-out
+    -o-transition: all .3s ease-in-out
+    // margin-bottom: 0
+    // background: radial-gradient(ellipse at bottom left, rgba(255, 255, 255, 0.8) 40%, rgba(182, 173, 173, 0.6) 100%)
+    // Custom scrollbars style
+    // ::-webkit-scrollbar
+    //   width: 0.4em
+    // ::-webkit-scrollbar-track
+    //   -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3)
+    // ::-webkit-scrollbar-thumb
+    //   background-color: darkgrey
+    // outline: 1px solid slategrey
 </style>

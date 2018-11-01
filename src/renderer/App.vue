@@ -3,7 +3,7 @@
     <!-- <app-header></app-header> -->
     <navbar></navbar>
     <div class="columns">
-      <aside class="column is-2" id="main-sidebar">
+      <aside class="column is-2">
         <sidebar></sidebar>
       </aside>
       <main class="column" id="main-view">

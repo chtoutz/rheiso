@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar is-dark is-fixed-top is-transparent" role="navigation" aria-label="main navigation">
+  <nav class="navbar is-dark is-fixed-top is-transpZZarent" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <router-link :to="{name: 'home'}" class="navbar-item">
         <span class="icon">
@@ -17,13 +17,42 @@
 
     <div id="navbar" class="navbar-menu">
       <div class="navbar-start">
-        <a class="navbar-item">
+        <!-- <a class="navbar-item">
           <div class="field">
             <div class="control">
               <input class="input is-rounded" type="text" placeholder="Primary input">
             </div>
           </div>
-        </a>
+        </a> -->
+
+        <!-- <div class="dropdown is-hoverable" id="projects-dropdown">
+          <div class="dropdown-trigger">
+            <a class="button is-fullwidth is-rounded" aria-haspopup="true" aria-controls="projects-list">
+              <span>{{ activeProject.name || 'Sélectionner un projet' }}</span>
+              <span class="icon is-small">
+                <i class="fa fa-angle-down" aria-hidden="true"></i>
+              </span>
+            </a>
+          </div>
+          <div class="dropdown-menu" id="projects-list" role="menu">
+            <div class="dropdown-content">
+                <span>{{project.name || '???'}}</span>
+              </a>
+              <div class="dropdown-item" v-if="projects.length === 0">
+                Aucun projet enregistré.
+              </div>
+              <hr class="dropdown-divider">
+              <a class="dropdown-item">
+                <span class="icon">
+                  <i class="fa fa-share"></i>
+                </span>
+                Voir tous
+              </a>
+            </div>
+          </div>
+        </div> -->
+
+        <projects-dropdown></projects-dropdown>
 
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link">
@@ -83,8 +112,13 @@
 </template>
 
 <script>
+import ProjectsDropdown from '@/components/Layout/_ProjectsDropdown'
+
 export default {
-  name: 'navbar'
+  name: 'navbar',
+  components: {
+    ProjectsDropdown
+  }
 }
 </script>
 
