@@ -28,18 +28,21 @@
           :to="{ name: 'projects.filetree', params: {filetree: 'local'} }"
           :class="{'is-active': $route.name === 'projects.filetree'}"
         >Fichiers</router-link>
-        <!-- <ul>
-          <li><a>Fichiers locaux</a></li>
-          <li><a>Dossier des Ouvrages Exécutés</a></li>
-          <li><a>Chantier</a></li>
-          <li><a>Affaire</a></li>
-        </ul> -->
       </li>
       <li>
         <router-link
           :to="{ name: 'projects.explore' }"
           :class="{'is-active': $route.name === 'projects.settings'}"
         >Réglages</router-link>
+        <ul>
+          <li><a>Tags</a></li>
+          <li>
+            <router-link
+              :to="{ name: 'projects.filesets' }"
+              :class="{'is-active': $route.name === 'projects.filesets'}"
+            >Jeux de fichiers</router-link>
+          </li>
+        </ul>
       </li>
     </ul>
   </div>

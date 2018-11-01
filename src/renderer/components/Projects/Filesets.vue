@@ -1,8 +1,8 @@
 <template>
-  <div id="projects-files">
+  <div id="projects-filesets">
     <div class="level">
       <div class="level-left">
-        <h2 class="title">Jeu de fichiers : {{ $route.params.filetree }} <small class="subtitle">123 éléments</small></h2>
+        <h2 class="title">Jeux de fichiers <small class="subtitle">4 éléments</small></h2>
       </div>
       <div class="level-right" v-if="tree">
         <span class="heading">Dernière mise à jour il y a deux jours</span>
@@ -56,22 +56,6 @@
       </div> -->
     </div>
 
-    <div v-if="project && !project.files">
-      <div class="message is-info">
-        <div class="message-body">
-          Il semblerait que les fichiers de ce projet n'aient pas encore été importés. Vous pouvez essayer de scanner le dossier du projet actif à l'aide du bouton ci-dessous : <br>
-        </div>
-      </div>
-      <div class="has-text-centered">
-        <a class="button is-medium" @click="importFiles">
-          <span class="icon">
-            <i class="fa fa-download"></i>
-          </span>
-          <span>Importer</span>
-        </a>
-      </div>
-    </div>
-
     <div v-if="!tree">
       <div class="message is-info">
         <div class="message-body">
@@ -92,9 +76,9 @@
       <div class="columns">
         <aside class="column is-8" id="files-filetrees">
           <!-- {{activeProject.files}} -->
-          <card :cardTitle="'Jeux de fichiers'" :card-menu="true" v-if="tree">
+          <!-- <card :cardTitle="'Jeux de fichiers'" :card-menu="false" v-if="tree"> -->
             <!-- Card menu -->
-            <div slot="menu" class="dropdown-content">
+            <!-- <div slot="menu" class="dropdown-content">
               <a class="dropdown-item">
                 <p>Importer les fichiers</p>
               </a>
@@ -102,21 +86,75 @@
               <div class="dropdown-item">
                 <p>Dernière mise à jour il y a 3 heures</p>
               </div>
-            </div>
+            </div> -->
             <!-- Filetree -->
-            <filetree :tree="tree"></filetree>
-            <!-- Card footer -->
-            <footer slot="footer" class="card-footer">
-              <a class="card-footer-item" @click="importFiles">
-                <span class="icon">
-                  <i class="fa fa-download"></i>
+            <!-- <filetree :tree="tree"></filetree> -->
+            <nav class="panel">
+              <p class="panel-heading">
+                repositories
+              </p>
+              <div class="panel-block">
+                <p class="control has-icons-left">
+                  <input class="input is-small" type="text" placeholder="search">
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                  </span>
+                </p>
+              </div>
+              <p class="panel-tabs">
+                <a class="is-active">all</a>
+                <a>public</a>
+                <a>private</a>
+                <a>sources</a>
+                <a>forks</a>
+              </p>
+              <a class="panel-block is-active">
+                <span class="panel-icon">
+                  <i class="fas fa-book" aria-hidden="true"></i>
                 </span>
-                Importer les fichiers
+                bulma
               </a>
-              <a class="card-footer-item">Edit</a>
-              <a class="card-footer-item">Delete</a>
-            </footer>
-          </card>
+              <a class="panel-block">
+                <span class="panel-icon">
+                  <i class="fas fa-book" aria-hidden="true"></i>
+                </span>
+                marksheet
+              </a>
+              <a class="panel-block">
+                <span class="panel-icon">
+                  <i class="fas fa-book" aria-hidden="true"></i>
+                </span>
+                minireset.css
+              </a>
+              <a class="panel-block">
+                <span class="panel-icon">
+                  <i class="fas fa-book" aria-hidden="true"></i>
+                </span>
+                jgthms.github.io
+              </a>
+              <a class="panel-block">
+                <span class="panel-icon">
+                  <i class="fas fa-code-branch" aria-hidden="true"></i>
+                </span>
+                daniellowtw/infboard
+              </a>
+              <a class="panel-block">
+                <span class="panel-icon">
+                  <i class="fas fa-code-branch" aria-hidden="true"></i>
+                </span>
+                mojs
+              </a>
+              <label class="panel-block">
+                <input type="checkbox">
+                remember me
+              </label>
+              <div class="panel-block">
+                <button class="button is-link is-outlined is-fullwidth">
+                  reset all filters
+                </button>
+              </div>
+            </nav>
+          <!-- </card> -->
         </aside>
         <main class="column props" id="files-props">
           <props :selected="selectedFiles" :directories="localDirs"></props>
@@ -142,7 +180,7 @@ import ProjectsMixin from '@/mixins/Projects'
 // Use _.take(filetrees, 2) and add it in the first row, after "Add filetree" and "Local filetree" tiles
 // Then  _.chunk(_.drop(filetrees, 2), 4) to display the other filetrees in next lines tiles
 export default {
-  name: 'projects-files',
+  name: 'projects-filesets',
   components: {
     TreeMenu,
     Props,

@@ -11,12 +11,42 @@
         </span>
       </p>
     </div>
+    <div class="filetree-tags">
+      <div class="field is-grouped is-grouped-multiline">
+        <div class="control">
+          <div class="tags has-addons">
+            <a class="tag is-light">PDF</a>
+            <a class="tag is-delete"></a>
+          </div>
+        </div>
+
+        <div class="control">
+          <div class="tags has-addons">
+            <a class="tag is-light">Notes</a>
+            <a class="tag is-delete"></a>
+          </div>
+        </div>
+
+        <div class="control">
+          <div class="tags has-addons">
+            <a class="tag is-light">Tableurs</a>
+            <a class="tag is-delete"></a>
+          </div>
+        </div>
+
+        <div class="control">
+          <div class="tags has-addons">
+            <a class="tag is-light">Plans</a>
+            <a class="tag is-delete"></a>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="filetree-tabs tabs is-small is-centered">
       <ul>
-        <li class="is-active"><a>Fichiers locaux ({{ project ? project.filesCount : 0 }})</a></li>
+        <li class="is-active"><a>Fichiers locaux</a></li>
+        <li><a>Dossiers</a></li>
         <li><a>DOE</a></li>
-        <li><a>Affaires</a></li>
-        <li><a>Livrables</a></li>
       </ul>
     </div>
     <div class="filetree-menu">

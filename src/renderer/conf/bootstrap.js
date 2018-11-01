@@ -8,7 +8,7 @@ let initDatabase = (next) => {
   let waterline = new Waterline()
   waterline.registerModel(models.File)
   waterline.registerModel(models.Project)
-  waterline.registerModel(models.Filetree)
+  waterline.registerModel(models.Fileset)
 
   waterline.initialize(conf, (err, ontology) => {
     return next(err, ontology)

@@ -22,6 +22,7 @@ export default Waterline.Collection.extend({
     depth: { type: 'number' },
     type: { type: 'string' },
     mtime: { type: 'string' },
+    extension: { type: 'string' },
     // project: { type: 'string' }
 
     // Add a reference to Pets

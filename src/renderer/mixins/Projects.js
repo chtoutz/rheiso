@@ -20,7 +20,7 @@ export default {
       // TODO: Maybe place these on the main App.vue component to handle globally loading state ?
       loading: false,
       error: null,
-      project: null
+      project: {}
     }
   },
   props: [ 'activeProject' ],
@@ -77,7 +77,7 @@ export default {
       this.loading = true
       try {
         this.project = await this.$DB.project.findOne(projId).populate('filetrees')
-        this.project.filetrees = _.concat('local', 'pdf', 'folder', 'drawing', 'note', this.project.filetrees)
+        // this.project.filetrees = _.concat('local', 'pdf', 'folder', 'drawing', 'note', this.project.filetrees)
         // this.project = await this.$DB.project.findOne(projId)
         console.log(`Loaded project "${this.project.name}"`)
         // console.log(this.project)
@@ -124,16 +124,18 @@ export default {
             try {
               // Then, check for edited, added or removed files if needed
               _self.updateOrCreate({
+                project: _self.$settings.get('activeProject.id'),
                 path: filepath
               }, {
                 path: filepath,
-                depth: filepath.split('/').length,
                 size: stats.size,
-                project: _self.$settings.get('activeProject.id'),
+                name: path.basename(filepath, path.extname(filepath)),
+                // name: path.basename(filepath)
+                extension: path.extname(filepath),
+                depth: filepath.split('/').length,
                 mtime: moment(stats.mtime).format(),
                 type: stats.isFile() ? 'file' : 'directory',
-                // name: path.basename(filepath, path.extname(filepath))
-                name: path.basename(filepath)
+                project: _self.$settings.get('activeProject.id')
               })
               return next(null)
               // console.log(`Imported ${files.length} project files successfully`)
@@ -285,6 +287,19 @@ export default {
         return null // Or set item.size = 0 for devices, FIFO and sockets ?
       }
       return item
+    },
+    async loadProjectFiles (query = {}) {
+      // this.project.files = 2
+      // if (this.project) {
+      query.project = this.$settings.get('activeProject.id')
+      this.project.filesCount = await this.$DB.file.count(query)
+      // this.project.filesCount = this.filesCount
+      // }
+      // let dbFile = _.last(this.localfilesFiles)
+      // console.log(`Loading project files from ${dbFile.path}...`)
+      // this.$store.commit('loadDatabase', {dbName: 'localfiles', dbPath: dbFile.path})
+      console.log('...' + this.project.filesCount + ' Project files loaded.')
+      // console.log(this.$store.state.DataBase)
     },
     // Push this.filetrees with content of project dataPath/filetrees JSON files, then group them by name
     loadFiletrees () {

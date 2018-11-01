@@ -25,7 +25,7 @@ export default Waterline.Collection.extend({
     //   via: 'project'
     // }
     filetrees: {
-      collection: 'filetree',
+      collection: 'fileset',
       via: 'project'
     }
   }

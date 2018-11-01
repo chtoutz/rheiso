@@ -17,6 +17,21 @@ export default {
       projectsSaving: '',
       outputFiles: ''
     },
+    filetrees: {
+      local: {
+        query: {}
+      },
+      outputFiles: ''
+    },
+    tags: {
+      pdf: {
+        query: { 'extension': '.pdf' }
+      },
+      folder: {
+        query: { 'type': 'folder' }
+      },
+      outputFiles: ''
+    },
     plugins: {},
     projects: {}
   }
