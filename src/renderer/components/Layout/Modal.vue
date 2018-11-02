@@ -17,12 +17,9 @@
 </template>
 
 <script>
-// import ProjectsMixin from '@/mixins/Projects'
 
 export default {
   name: 'modal',
-  // mixins: [ProjectsMixin],
-  // props: [ 'show' ],
   props: {
     tabs: {
       type: Array,

@@ -14,43 +14,11 @@ import Card from '@/components/Layout/Card'
 
 export default {
   name: 'projects-mixin',
-  data () {
-    return {
-      // These 3 are used to display/hide the corresponding divs in Projects.vue parent layout
-      // TODO: Maybe place these on the main App.vue component to handle globally loading state ?
-      loading: false,
-      error: null,
-      project: {}
-    }
-  },
   props: [ 'activeProject' ],
   components: {
     Card
   },
-  watch: {
-    // '$route': 'fetchProject'
-    async '$route' (to, from) {
-      // console.log(from, to)
-      console.log(`Going to route ${to.fullPath}`)
-      this.error = null
-      this.loading = true
-      // If the project id changes (selected from navbar projects dropdown), refresh the data for all components
-      if ((to.params.id && from.params.id) && (to.params.id.toString() !== from.params.id.toString())) {
-        // console.log(to.params.id, from.params.id)
-        this.project = null
-        try {
-          await this.fetchProject(to.params.id)
-        } catch (e) {
-          this.error = e.toString()
-        }
-      }
-      this.loading = false
-    }
-  },
   computed: {
-    _projId () {
-      return this.$settings.get('activeProject.name').match(/\w+/)
-    },
     projectDirectory () {
       return this.$settings.get('activeProject.path')
     },
@@ -78,9 +46,13 @@ export default {
     //   await this.$DB.file.find({project: this.$settings.get('activeProject.id')})
     // }
   },
-  mounted () {
-    // console.log(_.now())
-    // TODO: Watch for events and set this.error to mask the project div, and show only the error message in Projects.vue
+  // mounted () {
+  //   // console.log(_.now())
+  // },
+  data () {
+    return {
+      project: {}
+    }
   },
   methods: {
     getDatedName (name = 'localfiles', extension = 'json') {
@@ -93,9 +65,28 @@ export default {
      * @return {Promise}      Set project or display error
      */
     async fetchProject (projId = this.$settings.get('activeProject.id')) {
-      this.project = await this.$DB.project.findOne(projId).populate('filetrees')
-      // this.project.filetrees = _.concat('local', 'pdf', 'folder', 'drawing', 'note', this.project.filetrees)
+      // Retrieve the project from $DB
+      let project = await this.$DB.project.findOne(projId).populate('filetrees')
+      // Change activeProject setting for next app launch
+      this.$settings.set('activeProject', project)
+      this.project = project
+      // this.project.filesCount = await this.$DB.file.count({ project: projId })
+      await this.loadProjectFiles({ project: projId })
       console.log(`Loaded project "${this.project.name}"`)
+      if (this.$route.name.match(/projects/)) {
+        let nextRoute = {
+          params: {id: project.id},
+          name: this.$route.name,
+          query: this.$route.query,
+          hash: this.$route.hash
+        }
+        this.$router.replace(nextRoute)
+      }
+    },
+    async loadProjectFiles (query = { project: this.$settings.get('activeProject.id') }) {
+      // query.project =
+      this.project.filesCount = await this.$DB.file.count(query)
+      console.log(`${this.project.filesCount} project files loaded.`)
     },
     importFiles () {
       let _self = this
@@ -165,19 +156,9 @@ export default {
         }
         // files.push(paths)
       })
-      // TODO: This function is called when clicking the "Importer les fichiers" button in Filetree files card, which creates a confirm window to explain what will happen, and a checkbox asking to erase all precedent versiions of the files database. Each time the button is clicked, a "localfiles-DATE().db" file is created in project data folder. Right after that, or when the app is laucnhed, the $store.state.DataBase.projectFiles is updated with this DB content (when first launch, default file is the latest DB file from $settings.get('activeProject.path')/localfiles).
       // TODO: In the filetrees, allow to keep the structure of current treefile : which folders are expanded, which files are selected... To do this (alert user here), the filetree is created with the name, path and _id of the $DB.file, and an optionnal boolean field "expanded" and "selected". This allows dynamic tree construction (if this.expanded, loadChildren...)
       // TODO: a deep comparison can be done between each entry of the database file and the current project filetree : this.checkAddedFiles() and this.checkDeletedFiles() in mixin which loops into $DB.file to check if path or _id exists in current filetree ; and this.checkEditedFiles() which compares size and mdate of $DB.file. Maybe use _.difference on each two BIG arrays (DB and fs.readDir)
       // Use https://github.com/fshost/node-dir to get all files paths from current project folder, and DB as last saved localfiles. Then use _.difference() on both sens to see what file is created or removed
-
-      // let tree = dirTree(this.$settings.get('activeProject.path'))
-      // fs.writeFile(filetreePath, JSON.stringify(tree), { flag: 'wx' }, function (err) {
-      //   if (err) {
-      //     return console.log(err)
-      //   }
-      //   console.log('Files imported successfully !')
-      // })
-      // console.log(tree)
     },
     /**
      * Find a record based on criteria, or create it if doesn't exist. Then, update it with full file infos
@@ -297,19 +278,6 @@ export default {
         return null // Or set item.size = 0 for devices, FIFO and sockets ?
       }
       return item
-    },
-    async loadProjectFiles (query = {}) {
-      // this.project.files = 2
-      // if (this.project) {
-      query.project = this.$settings.get('activeProject.id')
-      this.project.filesCount = await this.$DB.file.count(query)
-      // this.project.filesCount = this.filesCount
-      // }
-      // let dbFile = _.last(this.localfilesFiles)
-      // console.log(`Loading project files from ${dbFile.path}...`)
-      // this.$store.commit('loadDatabase', {dbName: 'localfiles', dbPath: dbFile.path})
-      console.log('...' + this.project.filesCount + ' Project files loaded.')
-      // console.log(this.$store.state.DataBase)
     },
     // Push this.filetrees with content of project dataPath/filetrees JSON files, then group them by name
     loadFiletrees () {

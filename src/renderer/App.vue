@@ -1,13 +1,43 @@
 <template>
   <div id="app">
     <!-- <app-header></app-header> -->
-    <navbar></navbar>
+    <!-- <navbar @fetch-project="fetchProject"></navbar> -->
+    <navbar :active-project="project"></navbar>
+    <!-- <navbar></navbar> -->
     <div class="columns">
       <aside class="column is-2">
         <sidebar></sidebar>
       </aside>
       <main class="column" id="main-view">
-        <router-view></router-view>
+
+        <div v-if="loading" class="loading has-text-centered">
+          <span class='icon'>
+            <i class="fa fa-spinner fa-spin fa-3x"></i>
+          </span>
+        </div>
+
+        <div v-if="error" class="message is-danger">
+          <div class="message-header">
+            <p>Erreur:</p>
+          </div>
+          <div class="message-body">
+            {{ error || 'Impossible de charger le projet' }}
+          </div>
+        </div>
+        <div v-if="project">
+          <router-view :active-project="project"></router-view>
+        </div>
+
+        <code>
+          Route: {{$route.fullPath}}
+        </code>
+        <br>
+        <code>
+          Projet: {{project}}
+        </code>
+
+        <!-- <router-view></router-view> -->
+        <!-- <router-view :active-project="project"></router-view> -->
       </main>
     </div>
     <!-- <div class="columns">
@@ -22,15 +52,60 @@
   import Sidebar from '@/components/Layout/Sidebar'
   import Debug from '@/components/Debug'
 
+  import ProjectsMixin from '@/mixins/Projects'
+
   export default {
     components: {
       AppHeader,
       Navbar,
       Sidebar,
       Debug
-      // 'breadcrumb': Breadcrumb
     },
-    mounted () {
+    data () {
+      return {
+        // These 3 are used to display/hide the corresponding divs in Projects.vue parent layout
+        // TODO: Maybe place these on the main App.vue component to handle globally loading state ?
+        loading: false,
+        error: null
+        // project: {}
+      }
+    },
+    watch: {
+      async '$route' (to, from) {
+        // console.log(from, to)
+        console.log(`Going to route ${to.fullPath}`)
+        this.error = null
+        // this.project = {}
+        this.loading = true
+        // If the project id changes (selected from navbar projects dropdown), refresh the data for all components
+        if (this.project && (to.params.id.toString() !== this.project.id.toString())) {
+          // console.log(to.params.id, from.params.id)
+          try {
+            await this.fetchProject(to.params.id)
+            // await this.loadProjectFiles(to.params.id)
+          } catch (e) {
+            this.error = e.toString()
+          }
+        }
+        this.loading = false
+      }
+      // 'project' (newValue, oldValue) {
+      //   console.log(newValue, oldValue)
+      //   // if (this.$route.name.match(/projects/)) {
+      //   let nextRoute = {
+      //     params: {id: newValue.id},
+      //     name: this.$route.name,
+      //     query: this.$route.query,
+      //     hash: this.$route.hash
+      //   }
+      //   this.$router.replace(nextRoute)
+      //   // }
+      // }
+    },
+    mixins: [ ProjectsMixin ],
+    async mounted () {
+      await this.fetchProject()
+      // await this.loadProjectFiles()
       // TODO: Move this mounted code into a mxiin loaded in all projects components : navbar, sidebar, breadcrumb, etc.
       // Use intern $emit and $on to reload active project values in nav items e.g.
       // And/or maybe create a BootLoader.vue component which listens on all hooks emitted by plugins and intern components ?
@@ -42,6 +117,9 @@
       // let settings = this.$settings
       // this.$store.commit('loadActiveProject', settings)
     }
+    // methods: {
+    //   de
+    // }
   }
 </script>
 

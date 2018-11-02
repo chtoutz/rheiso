@@ -39,7 +39,6 @@
 </template>
 
 <script>
-// import ProjectsMixin from '@/mixins/Projects'
 
 export default {
   name: 'card',

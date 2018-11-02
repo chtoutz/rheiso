@@ -25,34 +25,7 @@
           </div>
         </a> -->
 
-        <!-- <div class="dropdown is-hoverable" id="projects-dropdown">
-          <div class="dropdown-trigger">
-            <a class="button is-fullwidth is-rounded" aria-haspopup="true" aria-controls="projects-list">
-              <span>{{ activeProject.name || 'Sélectionner un projet' }}</span>
-              <span class="icon is-small">
-                <i class="fa fa-angle-down" aria-hidden="true"></i>
-              </span>
-            </a>
-          </div>
-          <div class="dropdown-menu" id="projects-list" role="menu">
-            <div class="dropdown-content">
-                <span>{{project.name || '???'}}</span>
-              </a>
-              <div class="dropdown-item" v-if="projects.length === 0">
-                Aucun projet enregistré.
-              </div>
-              <hr class="dropdown-divider">
-              <a class="dropdown-item">
-                <span class="icon">
-                  <i class="fa fa-share"></i>
-                </span>
-                Voir tous
-              </a>
-            </div>
-          </div>
-        </div> -->
-
-        <projects-dropdown :active-project="$settings.get('activeProject')"></projects-dropdown>
+        <projects-dropdown :project-name="activeProject.name" @switch-project="switchProject"></projects-dropdown>
 
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link">
@@ -113,11 +86,29 @@
 
 <script>
 import ProjectsDropdown from '@/components/Layout/_ProjectsDropdown'
+import ProjectsMixin from '@/mixins/Projects'
 
 export default {
   name: 'navbar',
   components: {
     ProjectsDropdown
+  },
+  // data () {
+  //   return {
+  //     activeProject: this.$settings.get('activeProject')
+  //   }
+  // },
+  mixins: [ ProjectsMixin ],
+  methods: {
+    async switchProject (projectId) {
+      await this.fetchProject(projectId)
+      // await this.loadProjectFiles(project.id)
+      // console.log(project)
+      // this.activeProject = project
+      // this.project = project
+      // this.project = project
+      // this.$emit('fetch-project', project.id)
+    }
   }
 }
 </script>
