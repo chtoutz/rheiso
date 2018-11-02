@@ -20,9 +20,13 @@
       </div>
 
       <div v-if="project">
-        <router-view :active-project="project"></router-view>
+        <transition name="fade">
+          <router-view :active-project="project"></router-view>
+        </transition>
       </div>
     </div>
+    {{$route.fullPath}}
+    {{project}}
 
   </section>
 </template>
@@ -38,12 +42,12 @@ export default {
   components: {
     Breadcrumb
   },
-  mixins: [ProjectsMixin],
-  data () {
-    return {
-      // dede: false
-    }
-  },
+  mixins: [ ProjectsMixin ],
+  // data () {
+  //   return {
+  //     transitionName: null
+  //   }
+  // },
   // beforeRouteEnter (to, from, next) {
   //   getPost(to.params.id, (err, post) => {
   //     next(vm => vm.setData(err, post))
@@ -59,22 +63,14 @@ export default {
   //   })
   // },
   async mounted () {
+    // this.$router.replace()
     await this.fetchProject()
-    this.loadProjectFiles()
+    // this.loadProjectFiles()
     // console.log(this.localfilesFiles)
   },
   methods: {
-    // async loadProjectFiles () {
-    //   // this.project.files = 2
-    //   // if (this.project) {
-    //   this.project.filesCount = await this.$DB.file.count({project: this.$settings.get('activeProject.id')})
-    //   // this.project.filesCount = this.filesCount
-    //   // }
-    //   // let dbFile = _.last(this.localfilesFiles)
-    //   // console.log(`Loading project files from ${dbFile.path}...`)
-    //   // this.$store.commit('loadDatabase', {dbName: 'localfiles', dbPath: dbFile.path})
-    //   console.log('...' + this.project.filesCount + ' Project files loaded.')
-    //   // console.log(this.$store.state.DataBase)
+    // dede () {
+    //
     // }
   }
   // beforeRouteUpdate (to, from, next) {

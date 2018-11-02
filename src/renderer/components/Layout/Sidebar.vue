@@ -1,5 +1,5 @@
 <template>
-  <transition :name="'fade'">
+  <transition name="fade">
     <nav class="menu" id="main-sidebar">
       <!-- <router-link
       class="menu-label"

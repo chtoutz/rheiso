@@ -32,7 +32,7 @@ export default new Router({
       ]
     },
     {
-      path: '/projects',
+      path: '/projects/:id',
       name: 'projects',
       component: require('@/components/Projects').default,
       children: [
@@ -53,8 +53,8 @@ export default new Router({
           component: require('@/components/Projects/Filesets').default
         },
         {
-          path: 'filetree/:filetree',
-          name: 'projects.filetree',
+          path: 'files/:fileset',
+          name: 'projects.files',
           component: require('@/components/Projects/Files').default
         },
         {

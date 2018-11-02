@@ -7,38 +7,38 @@
     <ul class="menu-list">
       <li>
         <router-link
-          :to="{ name: 'projects.explore' }"
+          :to="{ name: 'projects.explore', params: { id: $settings.get('activeProject.id') } }"
           :class="{'is-active': $route.name === 'projects.explore'}"
         >Résumé</router-link>
       </li>
       <li>
         <router-link
-          :to="{ name: 'projects.drawing' }"
+          :to="{ name: 'projects.drawing', params: { id: $settings.get('activeProject.id') } }"
           :class="{'is-active': $route.name === 'projects.drawing'}"
         >Plans</router-link>
       </li>
       <li>
         <router-link
-          :to="{ name: 'projects.rooms' }"
+          :to="{ name: 'projects.rooms', params: { id: $settings.get('activeProject.id') } }"
           :class="{'is-active': $route.name === 'projects.rooms'}"
         >Locaux</router-link>
       </li>
       <li>
         <router-link
-          :to="{ name: 'projects.filetree', params: {filetree: 'local'} }"
-          :class="{'is-active': $route.name === 'projects.filetree'}"
+          :to="{ name: 'projects.files', params: {fileset: 'local', id: $settings.get('activeProject.id')} }"
+          :class="{'is-active': $route.name === 'projects.files'}"
         >Fichiers</router-link>
       </li>
       <li>
         <router-link
-          :to="{ name: 'projects.explore' }"
+          :to="{ name: 'projects.explore', params: { id: $settings.get('activeProject.id') } }"
           :class="{'is-active': $route.name === 'projects.settings'}"
         >Réglages</router-link>
         <ul>
           <li><a>Tags</a></li>
           <li>
             <router-link
-              :to="{ name: 'projects.filesets' }"
+              :to="{ name: 'projects.filesets', params: { id: $settings.get('activeProject.id') } }"
               :class="{'is-active': $route.name === 'projects.filesets'}"
             >Jeux de fichiers</router-link>
           </li>

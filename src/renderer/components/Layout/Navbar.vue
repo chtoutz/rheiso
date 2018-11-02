@@ -52,7 +52,7 @@
           </div>
         </div> -->
 
-        <projects-dropdown></projects-dropdown>
+        <projects-dropdown :active-project="$settings.get('activeProject')"></projects-dropdown>
 
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link">

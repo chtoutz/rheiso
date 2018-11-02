@@ -34,11 +34,11 @@
       // TODO: Move this mounted code into a mxiin loaded in all projects components : navbar, sidebar, breadcrumb, etc.
       // Use intern $emit and $on to reload active project values in nav items e.g.
       // And/or maybe create a BootLoader.vue component which listens on all hooks emitted by plugins and intern components ?
-      this.$settings.onDidChange('activeProject', (newValue, oldValue) => {
-        if (newValue) {
-          console.log(`New project is ${newValue.name}`)
-        }
-      })
+      // this.$settings.onDidChange('activeProject', (newValue, oldValue) => {
+      //   if (newValue) {
+      //     console.log(`New project is ${newValue.name}`)
+      //   }
+      // })
       // let settings = this.$settings
       // this.$store.commit('loadActiveProject', settings)
     }

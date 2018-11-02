@@ -49,6 +49,7 @@ export default {
     },
     childrenQuery () {
       return {
+        'project': this.$route.params.id,
         'path': { startsWith: this.path },
         'depth': this.depth + 1
       }

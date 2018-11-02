@@ -75,23 +75,9 @@
     <div id="files" v-else>
       <div class="columns">
         <aside class="column is-8" id="files-filetrees">
-          <!-- {{activeProject.files}} -->
-          <!-- <card :cardTitle="'Jeux de fichiers'" :card-menu="false" v-if="tree"> -->
-            <!-- Card menu -->
-            <!-- <div slot="menu" class="dropdown-content">
-              <a class="dropdown-item">
-                <p>Importer les fichiers</p>
-              </a>
-              <hr class="dropdown-divider">
-              <div class="dropdown-item">
-                <p>Dernière mise à jour il y a 3 heures</p>
-              </div>
-            </div> -->
-            <!-- Filetree -->
-            <!-- <filetree :tree="tree"></filetree> -->
             <nav class="panel">
               <p class="panel-heading">
-                repositories
+                dede
               </p>
               <div class="panel-block">
                 <p class="control has-icons-left">

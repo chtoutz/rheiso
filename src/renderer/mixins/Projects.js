@@ -27,6 +27,26 @@ export default {
   components: {
     Card
   },
+  watch: {
+    // '$route': 'fetchProject'
+    async '$route' (to, from) {
+      // console.log(from, to)
+      console.log(`Going to route ${to.fullPath}`)
+      this.error = null
+      this.loading = true
+      // If the project id changes (selected from navbar projects dropdown), refresh the data for all components
+      if ((to.params.id && from.params.id) && (to.params.id.toString() !== from.params.id.toString())) {
+        // console.log(to.params.id, from.params.id)
+        this.project = null
+        try {
+          await this.fetchProject(to.params.id)
+        } catch (e) {
+          this.error = e.toString()
+        }
+      }
+      this.loading = false
+    }
+  },
   computed: {
     _projId () {
       return this.$settings.get('activeProject.name').match(/\w+/)
@@ -73,19 +93,9 @@ export default {
      * @return {Promise}      Set project or display error
      */
     async fetchProject (projId = this.$settings.get('activeProject.id')) {
-      this.project = this.error = null
-      this.loading = true
-      try {
-        this.project = await this.$DB.project.findOne(projId).populate('filetrees')
-        // this.project.filetrees = _.concat('local', 'pdf', 'folder', 'drawing', 'note', this.project.filetrees)
-        // this.project = await this.$DB.project.findOne(projId)
-        console.log(`Loaded project "${this.project.name}"`)
-        // console.log(this.project)
-      } catch (e) {
-        this.error = e.toString()
-      } finally {
-        this.loading = false
-      }
+      this.project = await this.$DB.project.findOne(projId).populate('filetrees')
+      // this.project.filetrees = _.concat('local', 'pdf', 'folder', 'drawing', 'note', this.project.filetrees)
+      console.log(`Loaded project "${this.project.name}"`)
     },
     importFiles () {
       let _self = this

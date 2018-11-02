@@ -124,7 +124,7 @@
       </div>
     </div>
     <!-- <code>{{activeProject.files}}</code> -->
-    <code>{{activeProject}}</code>
+    <code>{{$settings.get('activeProject')}}</code>
 
   </div>
 </template>
@@ -181,7 +181,7 @@ export default {
     // console.log(treename)
     // await this.loadProjectFiles()
     tree = {
-      name: this.activeProject.name,
+      name: this.$settings.get('activeProject.name'),
       path: '',
       depth: 0,
       type: 'directory',
