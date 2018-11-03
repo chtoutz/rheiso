@@ -6,24 +6,24 @@
     </a>
 
     <div class="navbar-dropdown">
-      <a
+      <!-- <a
         class="navbar-item"
-        :class="{'is-active': $route.params.id === project.id}"
+        :class="{'is-active': $settings.get('activeProject.id') === project.id}"
         v-for="project in projects"
         :key="project._id"
         @click="$emit('switch-project', project.id)"
         >
         {{project.name || '???'}}
-      </a>
-      <!-- <router-link
+      </a> -->
+      <router-link
         class="navbar-item"
-        :class="{'is-active': $route.params.id === project.id}"
+        :class="{'is-active': $settings.get('activeProject.id') === project.id}"
         v-for="project in projects"
         :key="project._id"
-        :to="{ name: $route.name, params: { 'id': project.id } }"
+        :to="{ name: $route.name, params: {id: project.id} }"
         >
         {{project.name || '???'}}
-      </router-link> -->
+      </router-link>
       <a class="navbar-item" v-if="projects.length === 0">
         Aucun projet enregistré.
       </a>
@@ -49,8 +49,13 @@ export default {
   },
   props: [ 'projectName' ],
   computed: {
-    linkClass () {
-      return this.$settings.get('activeProject.name')
+    switchProjectLink () {
+      let route = { name: this.$route.name }
+      if (route.name.match(/projects/)) {
+        route.params = { 'id': 1 }
+      }
+      return route
+      // return this.$settings.get('activeProject.name')
     }
   },
   mounted () {

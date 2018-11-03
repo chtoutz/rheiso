@@ -15,7 +15,7 @@
       </a>
     </div>
 
-    <div id="navbar" class="navbar-menu">
+    <div id="navbar" class="navbar-menu" v-if="activeProject">
       <div class="navbar-start">
         <!-- <a class="navbar-item">
           <div class="field">
@@ -26,10 +26,11 @@
         </a> -->
 
         <projects-dropdown :project-name="activeProject.name" @switch-project="switchProject"></projects-dropdown>
+        <filesets-dropdown :filesets="activeProject.filesets" :fileset-name="activeProject.fileset" @switch-fileset="switchFileset"></filesets-dropdown>
 
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link">
-            More
+            {{activeProject.filesCount}}
           </a>
 
           <div class="navbar-dropdown">
@@ -86,12 +87,15 @@
 
 <script>
 import ProjectsDropdown from '@/components/Layout/_ProjectsDropdown'
+import FilesetsDropdown from '@/components/Layout/_FilesetsDropdown'
+
 import ProjectsMixin from '@/mixins/Projects'
 
 export default {
   name: 'navbar',
   components: {
-    ProjectsDropdown
+    ProjectsDropdown,
+    FilesetsDropdown
   },
   // data () {
   //   return {
@@ -101,6 +105,9 @@ export default {
   mixins: [ ProjectsMixin ],
   methods: {
     async switchProject (projectId) {
+      // if (projectId !== activeProject.id) {
+      //   await this.fetchProject(to.params.id)
+      // }
       await this.fetchProject(projectId)
       // await this.loadProjectFiles(project.id)
       // console.log(project)
@@ -108,6 +115,12 @@ export default {
       // this.project = project
       // this.project = project
       // this.$emit('fetch-project', project.id)
+    },
+    async switchFileset (fileset) {
+      // if (fileset !== activeProject.id) {
+      //   await this.fetchProject(to.params.id)
+      // }
+      await this.useFileset(fileset)
     }
   }
 }

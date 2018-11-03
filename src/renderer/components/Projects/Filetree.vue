@@ -61,7 +61,7 @@
         </ul>
       </div>
     </div>
-    {{tree}}
+    <!-- {{tree}} -->
   </div>
 </template>
 

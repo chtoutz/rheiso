@@ -14,10 +14,10 @@ export default Waterline.Collection.extend({
       type: 'string',
       defaultsTo: 'Jeu de fichier'
     },
-    nbItems: {
-      type: 'number',
-      defaultsTo: 0
-    },
+    // nbItems: {
+    //   type: 'number',
+    //   defaultsTo: 0
+    // },
     /**
      * Query is an object defining a Waterline query, filtering files and documents (by extension, name containing a string, excluding some paths, ...)
      * @type {Object}

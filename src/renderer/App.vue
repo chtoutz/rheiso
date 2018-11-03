@@ -70,6 +70,14 @@
         // project: {}
       }
     },
+    // methods: {
+    //   async test (projId = this.$settings.get('activeProject.id')) {
+    //     // this.dede = await this.$DB.project.findOne(projId).populate('filetrees')
+    //     let proj = await this.$DB.project.findOne(projId).populate('filetrees')
+    //     proj.filesCount = await this.$DB.file.count({ project: projId })
+    //     this.project = proj
+    //   }
+    // },
     watch: {
       async '$route' (to, from) {
         // console.log(from, to)
@@ -77,8 +85,17 @@
         this.error = null
         // this.project = {}
         this.loading = true
+        // let nextRoute = {
+        //   name: this.$route.name,
+        //   query: this.$route.query,
+        //   hash: this.$route.hash
+        // }
+        // if (this.$route.name.match(/projects/)) {
+        //   nextRoute.params = { id: to.params.id }
+        //   this.$router.replace(nextRoute)
+        // }
         // If the project id changes (selected from navbar projects dropdown), refresh the data for all components
-        if (this.project && (to.params.id.toString() !== this.project.id.toString())) {
+        if (to.params.id && (to.params.id.toString() !== this.project.id.toString())) {
           // console.log(to.params.id, from.params.id)
           try {
             await this.fetchProject(to.params.id)
@@ -91,20 +108,16 @@
       }
       // 'project' (newValue, oldValue) {
       //   console.log(newValue, oldValue)
-      //   // if (this.$route.name.match(/projects/)) {
-      //   let nextRoute = {
-      //     params: {id: newValue.id},
-      //     name: this.$route.name,
-      //     query: this.$route.query,
-      //     hash: this.$route.hash
-      //   }
-      //   this.$router.replace(nextRoute)
-      //   // }
       // }
     },
+    // beforeRouteUpdate (to, from, next) {
+    //   console.log(to, from)
+    //   next()
+    // },
     mixins: [ ProjectsMixin ],
     async mounted () {
-      await this.fetchProject()
+      // await this.test()
+      await this.fetchProject(this.$settings.get('activeProject.id'))
       // await this.loadProjectFiles()
       // TODO: Move this mounted code into a mxiin loaded in all projects components : navbar, sidebar, breadcrumb, etc.
       // Use intern $emit and $on to reload active project values in nav items e.g.

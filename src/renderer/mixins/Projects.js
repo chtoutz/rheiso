@@ -19,6 +19,9 @@ export default {
     Card
   },
   computed: {
+    projectId () {
+      return this.$route.params.id || this.$settings.get('activeProject.id')
+    },
     projectDirectory () {
       return this.$settings.get('activeProject.path')
     },
@@ -51,7 +54,8 @@ export default {
   // },
   data () {
     return {
-      project: {}
+      project: null,
+      fileset: 'local'
     }
   },
   methods: {
@@ -64,29 +68,36 @@ export default {
      * @param  {Int}  projId  The project ID to fetch. By default, activeProject.id
      * @return {Promise}      Set project or display error
      */
-    async fetchProject (projId = this.$settings.get('activeProject.id')) {
-      // Retrieve the project from $DB
-      let project = await this.$DB.project.findOne(projId).populate('filetrees')
-      // Change activeProject setting for next app launch
-      this.$settings.set('activeProject', project)
-      this.project = project
-      // this.project.filesCount = await this.$DB.file.count({ project: projId })
-      await this.loadProjectFiles({ project: projId })
-      console.log(`Loaded project "${this.project.name}"`)
-      if (this.$route.name.match(/projects/)) {
-        let nextRoute = {
-          params: {id: project.id},
-          name: this.$route.name,
-          query: this.$route.query,
-          hash: this.$route.hash
-        }
-        this.$router.replace(nextRoute)
-      }
+    // async fetchProject (projId = this.$settings.get('activeProject.id')) {
+    //   if (this.$route.name.match(/projects/)) {
+    //     let nextRoute = {
+    //       params: {id: project.id},
+    //       name: this.$route.name,
+    //       query: this.$route.query,
+    //       hash: this.$route.hash
+    //     }
+    //     this.$router.replace(nextRoute)
+    //   }
+    // },
+    async fetchProject (projId = this.projectId) {
+      // this.dede = await this.$DB.project.findOne(projId).populate('filetrees')
+      let proj = await this.$DB.project.findOne(projId).populate('filetrees')
+      proj.filesCount = await this.$DB.file.count({ project: projId })
+      this.$settings.set('activeProject', proj)
+      this.project = proj
+      console.log(`Loaded project "${proj.name}"`)
     },
-    async loadProjectFiles (query = { project: this.$settings.get('activeProject.id') }) {
-      // query.project =
-      this.project.filesCount = await this.$DB.file.count(query)
-      console.log(`${this.project.filesCount} project files loaded.`)
+    // async loadProjectFiles (query = { project: this.$settings.get('activeProject.id') }) {
+    //   this.project.filesCount = await this.$DB.file.count(query)
+    //   console.log(`${this.project.filesCount} project files loaded.`)
+    // },
+    async useFileset (fileset = {}) {
+      // TODO: Move this into Filesets.vue when saving a new fileset to $DB
+      // fileset.project = this.$settings.get('activeProject.id')
+      this.$settings.set('activeProject.fileset', fileset)
+      this.project.fileset = fileset
+      // this.project.fileset = await this.$DB.fileset.findOne(fileset.id)
+      console.log(`Fileset "${fileset.name}" set as active.`)
     },
     importFiles () {
       let _self = this

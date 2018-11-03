@@ -4,7 +4,7 @@
       <div class="level-left">
         <h2 class="title">Jeu de fichiers : {{ $route.params.filetree }} <small class="subtitle">{{ activeProject.filesCount }} éléments</small></h2>
       </div>
-      <div class="level-right" v-if="tree">
+      <div class="level-right" v-if="rootFolder">
         <span class="heading">Dernière mise à jour il y a deux jours</span>
       </div>
     </div>
@@ -76,7 +76,7 @@
       <div class="columns">
         <aside class="column is-8" id="files-filetrees">
           <!-- {{activeProject.files}} -->
-          <card :cardTitle="'Jeux de fichiers'" :card-menu="true" v-if="tree">
+          <card :cardTitle="'Jeux de fichiers'" :card-menu="true" v-if="rootFolder">
             <!-- Card menu -->
             <div slot="menu" class="dropdown-content">
               <a class="dropdown-item">
@@ -88,7 +88,7 @@
               </div>
             </div>
             <!-- Filetree -->
-            <filetree :tree="tree"></filetree>
+            <filetree :tree="rootFolder"></filetree>
             <!-- Card footer -->
             <footer slot="footer" class="card-footer">
               <a class="card-footer-item" @click="importFiles">
@@ -108,7 +108,7 @@
       </div>
     </div>
 
-    <div v-if="!tree">
+    <div v-if="!rootFolder">
       <div class="message is-info">
         <div class="message-body">
           Il semblerait qu'aucun "filetree" ne soit configuré. Vous pouvez essayer d'en créer un basé sur les fichiers locaux contenus dans la base de données, à l'aide du bouton ci-dessous : <br>
@@ -124,7 +124,7 @@
       </div>
     </div>
     <!-- <code>activeProject:{{activeProject}}</code> -->
-    <code>activeProject:{{activeProject}}</code>
+    <!-- <code>activeProject:{{activeProject}}</code> -->
     <!-- <code>filesCount:{{filesCount}}</code> -->
     <!-- <code>project:{{project}}</code> -->
     <!-- <code>{{$settings.get('activeProject')}}</code> -->
@@ -153,22 +153,20 @@ export default {
   },
   mixins: [ ProjectsMixin ],
   // props: [ 'filesCount' ],
-  computed: {
-  },
   data () {
     return {
-      tree: null,
+      rootFolder: null,
       // filesCount: 0,
       selectedFiles: [],
       localDirs: []
     }
   },
   async mounted () {
+    console.log(this.activeProject)
     // TODO: After checking treename, check if (treename === 'local' && !this.filetreesFiles[this.$route.params.filetree])
     // => create a local filetree based on all local files in $DB
     // TODO: Get the tree from this.dbToTree($DB.file.find(activeProject.filetree.query))
-    let tree = {
-      // name: this.$settings.get('activeProject.name'),
+    let rootFolder = {
       name: this.activeProject.name,
       path: '',
       // path: this.activeProject.path,
@@ -179,7 +177,7 @@ export default {
       // expanded: false
       // selected: false
     }
-    this.tree = tree
+    this.rootFolder = rootFolder
     // await this.loadProjectFiles()
     // If the filename in URL doesn't match any of the files, redirect to local config
     // // TODO: Move into a $route guard ?
