@@ -2,7 +2,7 @@
   <div id="projects-filesets">
     <div class="level">
       <div class="level-left">
-        <h2 class="title">Jeux de fichiers <small class="subtitle">4 éléments</small></h2>
+        <h2 class="title">Jeux de fichiers <small class="subtitle">{{filesets.length}} éléments</small></h2>
       </div>
       <div class="level-right" v-if="tree">
         <span class="heading">Dernière mise à jour il y a deux jours</span>
@@ -77,7 +77,7 @@
         <aside class="column is-8" id="files-filetrees">
             <nav class="panel">
               <p class="panel-heading">
-                dede
+                Jeux de fichiers
               </p>
               <div class="panel-block">
                 <p class="control has-icons-left">
@@ -87,53 +87,12 @@
                   </span>
                 </p>
               </div>
-              <p class="panel-tabs">
-                <a class="is-active">all</a>
-                <a>public</a>
-                <a>private</a>
-                <a>sources</a>
-                <a>forks</a>
-              </p>
-              <a class="panel-block is-active">
-                <span class="panel-icon">
-                  <i class="fas fa-book" aria-hidden="true"></i>
+              <a class="panel-block" v-for="fileset in filesets" :key="fileset.id">
+                <span class="panel-icon has-text-info" @click="dede(fileset, $event)">
+                  <i class="fa fa-bolt"></i>
                 </span>
-                bulma
+                <span>{{fileset.name || '???'}}</span>
               </a>
-              <a class="panel-block">
-                <span class="panel-icon">
-                  <i class="fas fa-book" aria-hidden="true"></i>
-                </span>
-                marksheet
-              </a>
-              <a class="panel-block">
-                <span class="panel-icon">
-                  <i class="fas fa-book" aria-hidden="true"></i>
-                </span>
-                minireset.css
-              </a>
-              <a class="panel-block">
-                <span class="panel-icon">
-                  <i class="fas fa-book" aria-hidden="true"></i>
-                </span>
-                jgthms.github.io
-              </a>
-              <a class="panel-block">
-                <span class="panel-icon">
-                  <i class="fas fa-code-branch" aria-hidden="true"></i>
-                </span>
-                daniellowtw/infboard
-              </a>
-              <a class="panel-block">
-                <span class="panel-icon">
-                  <i class="fas fa-code-branch" aria-hidden="true"></i>
-                </span>
-                mojs
-              </a>
-              <label class="panel-block">
-                <input type="checkbox">
-                remember me
-              </label>
               <div class="panel-block">
                 <button class="button is-link is-outlined is-fullwidth">
                   reset all filters
@@ -154,7 +113,7 @@
 </template>
 
 <script>
-// import _ from 'lodash'
+import _ from 'lodash'
 // import dirTree from 'directory-tree'
 import fs from 'fs'
 import TreeMenu from '@/components/Layout/TreeMenu'
@@ -172,8 +131,7 @@ export default {
     Props,
     Filetree
   },
-  mixins: [ProjectsMixin],
-  // props: [ 'filesCount' ],
+  mixins: [ ProjectsMixin ],
   computed: {
     // async filetrees () {
     //   return _.concat(['local'], await this.$DB.filetree.find({project: this.$settings.get('activeProject.id')}))
@@ -185,7 +143,7 @@ export default {
   data () {
     return {
       tree: null,
-      // filetrees: [],
+      filesets: [],
       selectedFiles: [],
       localDirs: []
     }
@@ -208,14 +166,10 @@ export default {
       name: this.activeProject.name,
       path: '',
       depth: 0,
-      type: 'directory',
-      // TODO: get files count from $DB.filetree
-      filesCount: 123
-      // children: [],
-      // expanded: false
-      // selected: false
+      type: 'directory'
     }
     this.tree = tree
+    this.filesets = _.concat(this.$settings.get('filesets'), this.activeProject.filetrees)
     // this.loadTree(tree.path)
 
     // this.$DB.file.find({}).sort({ path: 1 }).exec((err, files) => {
@@ -271,6 +225,9 @@ export default {
     // console.log(tree)
   },
   methods: {
+    dede (de, dede) {
+      // de
+    },
     loadTree (filetreePath) {
       let _self = this
       fs.readFile(filetreePath, 'utf8', (err, file) => {

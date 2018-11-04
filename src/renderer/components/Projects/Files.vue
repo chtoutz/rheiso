@@ -1,16 +1,16 @@
 <template>
   <div id="projects-files">
-    <div class="level">
+    <!-- <div class="level">
       <div class="level-left">
-        <h2 class="title">Jeu de fichiers : {{ $route.params.filetree }} <small class="subtitle">{{ activeProject.filesCount }} éléments</small></h2>
+        <h2 class="title">Fichiers du projet : {{ $route.params.filetree }} <small class="subtitle">{{ activeProject.filesCount }} éléments</small></h2>
       </div>
       <div class="level-right" v-if="rootFolder">
         <span class="heading">Dernière mise à jour il y a deux jours</span>
       </div>
-    </div>
+    </div> -->
 
-    <div class="tile has-text-centered is-ancestor">
-      <!-- <div class="tile is-parent is-2">
+    <!-- <div class="tile has-text-centered is-ancestor">
+      <div class="tile is-parent is-2">
         <a class="tile is-child box">
           <span class="icon has-text-info is-large"><i class="fa fa-plus fa-3x"></i></span>
           <span class="heading">Ajouter un jeu de fichiers</span>
@@ -53,8 +53,8 @@
           <span class="icon has-text-danger is-large"><i class="fa fa-file-pdf-o fa-3x"></i></span>
           <span class="heading">PDF</span>
         </a>
-      </div> -->
-    </div>
+      </div>
+    </div> -->
 
     <div v-if="!activeProject.filesCount">
       <div class="message is-info">
@@ -76,7 +76,7 @@
       <div class="columns">
         <aside class="column is-8" id="files-filetrees">
           <!-- {{activeProject.files}} -->
-          <card :cardTitle="'Jeux de fichiers'" :card-menu="true" v-if="rootFolder">
+          <card :cardTitle="cardTitle" :card-menu="true" v-if="rootFolder">
             <!-- Card menu -->
             <div slot="menu" class="dropdown-content">
               <a class="dropdown-item">
@@ -161,13 +161,19 @@ export default {
       localDirs: []
     }
   },
+  computed: {
+    cardTitle () {
+      return `${this.activeProject.fileset.name} du projet (${this.activeProject.filesCount} éléments)`
+    }
+  },
   async mounted () {
-    console.log(this.activeProject)
+    // console.log(this.activeProject)
     // TODO: After checking treename, check if (treename === 'local' && !this.filetreesFiles[this.$route.params.filetree])
     // => create a local filetree based on all local files in $DB
     // TODO: Get the tree from this.dbToTree($DB.file.find(activeProject.filetree.query))
     let rootFolder = {
-      name: this.activeProject.name,
+      name: this.$settings.get('activeProject.name'),
+      // name: this.activeProject.name,
       path: '',
       // path: this.activeProject.path,
       // path: this.$settings.get('activeProject.path'),

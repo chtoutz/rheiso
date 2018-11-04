@@ -17,12 +17,13 @@ export default {
       projectsSaving: '',
       outputFiles: ''
     },
-    filetrees: {
-      local: {
+    filesets: [
+      {
+        id: 'local',
+        name: 'Fichiers locaux',
         query: {}
-      },
-      outputFiles: ''
-    },
+      }
+    ],
     tags: {
       pdf: {
         query: { 'extension': '.pdf' }

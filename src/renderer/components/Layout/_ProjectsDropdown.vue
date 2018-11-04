@@ -2,11 +2,11 @@
   <div id="projects-navbar-dropdown" class="navbar-item has-dropdown is-hoverable">
     <a class="navbar-link">
       <!-- {{ $settings.get('activeProject.name', 'Sélectionner un projet') }} -->
-      {{ projectName || 'Sélectionner un projet' }}
+      {{ activeProject.name || 'Sélectionner un projet' }}
     </a>
 
     <div class="navbar-dropdown">
-      <!-- <a
+      <a
         class="navbar-item"
         :class="{'is-active': $settings.get('activeProject.id') === project.id}"
         v-for="project in projects"
@@ -14,8 +14,8 @@
         @click="$emit('switch-project', project.id)"
         >
         {{project.name || '???'}}
-      </a> -->
-      <router-link
+      </a>
+      <!-- <router-link
         class="navbar-item"
         :class="{'is-active': $settings.get('activeProject.id') === project.id}"
         v-for="project in projects"
@@ -23,7 +23,7 @@
         :to="{ name: $route.name, params: {id: project.id} }"
         >
         {{project.name || '???'}}
-      </router-link>
+      </router-link> -->
       <a class="navbar-item" v-if="projects.length === 0">
         Aucun projet enregistré.
       </a>
@@ -47,17 +47,9 @@ export default {
       projects: []
     }
   },
-  props: [ 'projectName' ],
-  computed: {
-    switchProjectLink () {
-      let route = { name: this.$route.name }
-      if (route.name.match(/projects/)) {
-        route.params = { 'id': 1 }
-      }
-      return route
-      // return this.$settings.get('activeProject.name')
-    }
-  },
+  props: [ 'activeProject' ],
+  // computed: {
+  // },
   mounted () {
     var _self = this
     this.$DB.project.find({}, function (err, projects) {

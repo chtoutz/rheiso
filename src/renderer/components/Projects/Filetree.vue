@@ -42,13 +42,14 @@
         </div>
       </div>
     </div>
-    <div class="filetree-tabs tabs is-small is-centered">
+    <!-- <div class="filetree-tabs tabs is-small is-centered">
       <ul>
         <li class="is-active"><a>Fichiers locaux</a></li>
         <li><a>Dossiers</a></li>
         <li><a>DOE</a></li>
       </ul>
-    </div>
+    </div> -->
+    <hr>
     <div class="filetree-menu">
       <div class="menu">
         <ul class="menu-list">

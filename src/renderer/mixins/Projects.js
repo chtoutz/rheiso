@@ -82,8 +82,14 @@ export default {
     async fetchProject (projId = this.projectId) {
       // this.dede = await this.$DB.project.findOne(projId).populate('filetrees')
       let proj = await this.$DB.project.findOne(projId).populate('filetrees')
-      proj.filesCount = await this.$DB.file.count({ project: projId })
       this.$settings.set('activeProject', proj)
+
+      if (this.$route.params.fileset && this.$route.params.fileset !== 'local') {
+        proj.fileset = await this.$DB.fileset.findOne(this.$route.params.fileset)
+      } else {
+        proj.fileset = this.$settings.get('filesets')
+      }
+      proj.filesCount = await this.$DB.file.count({ project: projId })
       this.project = proj
       console.log(`Loaded project "${proj.name}"`)
     },
@@ -91,14 +97,14 @@ export default {
     //   this.project.filesCount = await this.$DB.file.count(query)
     //   console.log(`${this.project.filesCount} project files loaded.`)
     // },
-    async useFileset (fileset = {}) {
-      // TODO: Move this into Filesets.vue when saving a new fileset to $DB
-      // fileset.project = this.$settings.get('activeProject.id')
-      this.$settings.set('activeProject.fileset', fileset)
-      this.project.fileset = fileset
-      // this.project.fileset = await this.$DB.fileset.findOne(fileset.id)
-      console.log(`Fileset "${fileset.name}" set as active.`)
-    },
+    // async useFileset (fileset = {}) {
+    //   // TODO: Move this into Filesets.vue when saving a new fileset to $DB
+    //   // fileset.project = this.$settings.get('activeProject.id')
+    //   this.$settings.set('activeProject.fileset', fileset)
+    //   this.project.fileset = fileset
+    //   // this.project.fileset = await this.$DB.fileset.findOne(fileset.id)
+    //   console.log(`Fileset "${fileset.name}" set as active.`)
+    // },
     importFiles () {
       let _self = this
       // TODO: Check if we want to limit number of saves (save the X number in $settings).

@@ -30,6 +30,8 @@
 
         <code>
           Route: {{$route.fullPath}}
+          <!-- Route: {{$route.params}} -->
+          <!-- Filesets: {{$settings.get('filesets')}} -->
         </code>
         <br>
         <code>
@@ -80,29 +82,26 @@
     // },
     watch: {
       async '$route' (to, from) {
-        // console.log(from, to)
+        // console.log(to)
         console.log(`Going to route ${to.fullPath}`)
         this.error = null
         // this.project = {}
         this.loading = true
-        // let nextRoute = {
-        //   name: this.$route.name,
-        //   query: this.$route.query,
-        //   hash: this.$route.hash
-        // }
-        // if (this.$route.name.match(/projects/)) {
-        //   nextRoute.params = { id: to.params.id }
-        //   this.$router.replace(nextRoute)
-        // }
         // If the project id changes (selected from navbar projects dropdown), refresh the data for all components
-        if (to.params.id && (to.params.id.toString() !== this.project.id.toString())) {
-          // console.log(to.params.id, from.params.id)
+        if (to.name.match(/projects/)) {
+          if (to.params.id && to.params.id.toString() !== this.project.id.toString()) {
+            console.log('Changing project...')
+          }
+          if (to.params.fileset && to.params.fileset.toString() !== this.project.fileset.toString()) {
+            console.log('Changing fileset...')
+          }
           try {
             await this.fetchProject(to.params.id)
             // await this.loadProjectFiles(to.params.id)
           } catch (e) {
             this.error = e.toString()
           }
+          // console.log(to.params.id, from.params.id)
         }
         this.loading = false
       }
@@ -111,7 +110,8 @@
       // }
     },
     // beforeRouteUpdate (to, from, next) {
-    //   console.log(to, from)
+    //   console.log(to)
+    //   this.loading = true
     //   next()
     // },
     mixins: [ ProjectsMixin ],

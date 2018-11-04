@@ -25,8 +25,8 @@
           </div>
         </a> -->
 
-        <projects-dropdown :project-name="activeProject.name" @switch-project="switchProject"></projects-dropdown>
-        <filesets-dropdown :filesets="activeProject.filesets" :fileset-name="activeProject.fileset" @switch-fileset="switchFileset"></filesets-dropdown>
+        <projects-dropdown :active-project="activeProject" @switch-project="switchProject"></projects-dropdown>
+        <filesets-dropdown :active-project="activeProject" @switch-fileset="switchFileset"></filesets-dropdown>
 
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link">
@@ -105,21 +105,21 @@ export default {
   mixins: [ ProjectsMixin ],
   methods: {
     async switchProject (projectId) {
-      // if (projectId !== activeProject.id) {
-      //   await this.fetchProject(to.params.id)
-      // }
+      // Fetch project
       await this.fetchProject(projectId)
-      // await this.loadProjectFiles(project.id)
-      // console.log(project)
-      // this.activeProject = project
-      // this.project = project
-      // this.project = project
-      // this.$emit('fetch-project', project.id)
+
+      // And update route if needed
+      let nextRoute = {
+        name: this.$route.name,
+        // params: this.$route.params,
+        params: {id: projectId},
+        query: this.$route.query,
+        hash: this.$route.hash
+      }
+      // console.log(nextRoute)
+      this.$router.replace(nextRoute)
     },
     async switchFileset (fileset) {
-      // if (fileset !== activeProject.id) {
-      //   await this.fetchProject(to.params.id)
-      // }
       await this.useFileset(fileset)
     }
   }
