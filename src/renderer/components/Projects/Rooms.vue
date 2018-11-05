@@ -89,17 +89,16 @@
       </table>
       <!-- Card footer -->
       <footer slot="footer" class="card-footer">
-        <a class="card-footer-item" @click="addRoom()">
-          <!-- Ajouter un local -->
-          <div class="buttons are-small">
-            <a class="button">Small</a>
-            <a class="button">Small</a>
-            <a class="button">Small</a>
-            <a class="button">Small</a>
-          </div>
+        <a class="card-footer-item" @click="importRooms()">
+          <span class="heading">
+            Importer des locaux
+          </span>
         </a>
-        <a class="card-footer-item">Edit</a>
-        <a class="card-footer-item">Delete</a>
+        <a class="card-footer-item">
+          <span class="heading">
+            Exporter la liste
+          </span>
+        </a>
       </footer>
     </card>
   </div>
@@ -118,16 +117,34 @@ export default {
       return `Liste des locaux`
     }
   },
+  data () {
+    return {
+      rooms: null
+    }
+  },
+  mounted () {
+    // TODO: Populate this.rooms from this.activeProject.rooms (loaded in fetchProject : .populate('files').populate('rooms')...)
+  },
   methods: {
     addRoom () {
       return `Liste des locaux`
+    },
+    importRooms () {
+      // let _self = this
+      const dialog = {
+        properties: ['openFile'],
+        defaultPath: this.$settings.get('activeProject.path'),
+        filters: [
+          {name: 'Tableur', extensions: ['xls', 'xlsx', 'xlsm']},
+          {name: 'CSV', extensions: ['csv']},
+          {name: 'Tous les fichiers', extensions: ['*']}
+        ]
+      }
+      this.$electron.remote.dialog.showOpenDialog(dialog, function (roomsFile, bookmarks) {
+        console.log(roomsFile)
+      })
     }
   }
-  // data () {
-  //   return {
-  //     cardTitle: 'Locaux (11 éléments)'
-  //   }
-  // }
 }
 </script>
 

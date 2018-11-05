@@ -1,43 +1,118 @@
 <template>
-  <div>
+  <div class="">
     <div class="floor-divider">
       <div class="columns is-mobile has-text-centered">
-        <div class="column is-1">
+        <!-- <div class="column is-1 create-column">
           <a class="box create-box" @click="openModal()">
             <span class="icon"><i class="fa fa-plus fa-2x"></i></span>
-            <!-- <p class="heading is-size-6">Ajouter un plan</p> -->
-          </a>
-        </div>
-        <div class="column is-2">
-          <a class="box">
-            <span class="icon is-large"><i class="fa fa-file-pdf-o fa-3x"></i></span>
-            <p class="heading is-size-6">N-1</p>
-          </a>
-        </div>
-        <div class="column is-2">
-          <a class="box">
-            <span class="icon is-large"><i class="fa fa-file-pdf-o fa-3x"></i></span>
-            <p class="heading is-size-6">RDC</p>
-          </a>
-        </div>
-        <div class="column is-2">
-          <a class="box">
-            <span class="icon is-large"><i class="fa fa-file-pdf-o fa-3x"></i></span>
-            <p class="heading is-size-6">N+1</p>
-          </a>
-        </div>
-        <div class="column is-2">
-          <a class="box">
-            <span class="icon is-large"><i class="fa fa-file-pdf-o fa-3x"></i></span>
-            <p class="heading is-size-6">N+2</p>
-          </a>
-        </div>
-        <!-- <div class="column is-one-fifth">
-          <a class="box">
-            <span class="icon is-large"><i class="fa fa-file-pdf-o fa-3x"></i></span>
-            <p class="heading is-size-6">N+3</p>
           </a>
         </div> -->
+        <div class="column drawings-column">
+          <!-- Main container -->
+          <nav class="level">
+            <!-- Left side -->
+            <div class="level-left">
+              <div class="drawing-icon level-item">
+                <a class="box create-box" @click="openModal()">
+                  <span class="icon"><i class="fa fa-plus fa-2x"></i></span>
+                  <!-- <p class="heading is-size-6">Ajouter un plan</p> -->
+                </a>
+              </div>
+            <!-- </div>
+            <div class="level-right"> -->
+              <div class="drawing-icon level-item">
+                <a class="box">
+                  <span class="icon is-large"><i class="fa fa-file-pdf-o fa-3x"></i></span>
+                  <p class="heading is-size-6">N-1</p>
+                </a>
+              </div>
+              <div class="drawing-icon level-item">
+                <a class="box">
+                  <span class="icon is-large"><i class="fa fa-file-pdf-o fa-3x"></i></span>
+                  <p class="heading is-size-6">RDC</p>
+                </a>
+              </div>
+              <div class="drawing-icon level-item">
+                <a class="box">
+                  <span class="icon is-large"><i class="fa fa-file-pdf-o fa-3x"></i></span>
+                  <p class="heading is-size-6">nom de la mort</p>
+                </a>
+              </div>
+              <div class="drawing-icon level-item">
+                <a class="box">
+                  <span class="icon is-large"><i class="fa fa-file-pdf-o fa-3x"></i></span>
+                  <p class="heading is-size-6">N+2</p>
+                </a>
+              </div>
+              <div class="drawing-icon level-item">
+                <a class="box">
+                  <span class="icon is-large"><i class="fa fa-file-pdf-o fa-3x"></i></span>
+                  <p class="heading is-size-6">N+2</p>
+                </a>
+              </div>
+              <div class="drawing-icon level-item">
+                <a class="box">
+                  <span class="icon is-large"><i class="fa fa-file-pdf-o fa-3x"></i></span>
+                  <p class="heading is-size-6">N+1</p>
+                </a>
+              </div>
+              <div class="drawing-icon level-item">
+                <a class="box">
+                  <span class="icon is-large"><i class="fa fa-file-pdf-o fa-3x"></i></span>
+                  <p class="heading is-size-6">N+2</p>
+                </a>
+              </div>
+              <div class="drawing-icon level-item">
+                <a class="box">
+                  <span class="icon is-large"><i class="fa fa-file-pdf-o fa-3x"></i></span>
+                  <p class="heading is-size-6">N+2</p>
+                </a>
+              </div>
+            </div>
+          </nav>
+          <!-- <div class="column is-2">
+            <a class="box">
+              <span class="icon is-large"><i class="fa fa-file-pdf-o fa-3x"></i></span>
+              <p class="heading is-size-6">N-1</p>
+            </a>
+          </div>
+          <div class="column is-2">
+            <a class="box">
+              <span class="icon is-large"><i class="fa fa-file-pdf-o fa-3x"></i></span>
+              <p class="heading is-size-6">RDC</p>
+            </a>
+          </div>
+          <div class="column is-2">
+            <a class="box">
+              <span class="icon is-large"><i class="fa fa-file-pdf-o fa-3x"></i></span>
+              <p class="heading is-size-6">N+1</p>
+            </a>
+          </div>
+          <div class="column is-2">
+            <a class="box">
+              <span class="icon is-large"><i class="fa fa-file-pdf-o fa-3x"></i></span>
+              <p class="heading is-size-6">N+2</p>
+            </a>
+          </div>
+          <div class="column is-2">
+            <a class="box">
+              <span class="icon is-large"><i class="fa fa-file-pdf-o fa-3x"></i></span>
+              <p class="heading is-size-6">N+1</p>
+            </a>
+          </div>
+          <div class="column is-2">
+            <a class="box">
+              <span class="icon is-large"><i class="fa fa-file-pdf-o fa-3x"></i></span>
+              <p class="heading is-size-6">N+2</p>
+            </a>
+          </div> -->
+          <!-- <div class="column is-one-fifth">
+            <a class="box">
+              <span class="icon is-large"><i class="fa fa-file-pdf-o fa-3x"></i></span>
+              <p class="heading is-size-6">N+3</p>
+            </a>
+          </div> -->
+        </div>
       </div>
 
       <hr>
@@ -134,12 +209,22 @@ export default {
 <style lang="sass">
   @import "~bulma/sass/utilities/_all"
   .floor-divider
+    // border: 1px solid black
+    .drawings-column
+      overflow-x: auto
     .box
       min-height: 117px
+      min-width: 120px
+      margin-right: 12px
     .create-box
       color: $primary
       padding-top: 50px
-      // min-height: 117px
+      // float: left
+      // position: absolute
+      // position: fixed
+    .create-column
+      margin-right: 50px
+      float: left
     hr
       background-color: $primary
       margin-bottom: 0.8rem

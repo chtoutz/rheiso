@@ -135,8 +135,8 @@ export default {
 <style lang="sass" scoped>
 @import "~bulma/sass/utilities/_all"
 .card-footer
-  a
-    color: $grey
-    &:hover
-      color: $dark
+  a:hover
+    color: $primary
+    // &:hover
+    //   color: $dark
 </style>

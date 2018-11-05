@@ -8,6 +8,21 @@
       <li><a>Thèmes</a></li>
       <li><a>Mises à jour</a></li>
     </ul>
+    <!-- Test to remove -->
+    <p class="menu-label">
+      Test
+    </p>
+    <ul class="menu-list">
+      <li><a>Extensions</a></li>
+      <li><a>Thèmes</a></li>
+      <li><a>Mises à jour</a></li>
+      <li><a>Extensions</a></li>
+      <li><a>Thèmes</a></li>
+      <li><a>Mises à jour</a></li>
+      <li><a>Extensions</a></li>
+      <li><a>Thèmes</a></li>
+      <li><a>Mises à jour</a></li>
+    </ul>
   </div>
 </template>
 
