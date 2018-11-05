@@ -49,9 +49,9 @@ export default {
 <style lang="sass">
   @import "~bulma/sass/utilities/initial-variables"
   .menu
-    margin-left: 12px
+    padding-left: 12px
   .submenu
-    margin-top: 12px
+    padding-top: 12px
   #main-view, #main-sidebar
     height: calc(100vh - 52px)
     // height: calc(100vh - 180px)

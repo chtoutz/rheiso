@@ -91,15 +91,15 @@
         if (to.name.match(/projects/)) {
           if (to.params.id && to.params.id.toString() !== this.project.id.toString()) {
             console.log('Changing project...')
+            try {
+              await this.fetchProject(to.params.id)
+              // await this.loadProjectFiles(to.params.id)
+            } catch (e) {
+              this.error = e.toString()
+            }
           }
-          if (to.params.fileset && to.params.fileset.toString() !== this.project.fileset.toString()) {
+          if (to.params.fileset && to.params.fileset !== this.project.fileset.id) {
             console.log('Changing fileset...')
-          }
-          try {
-            await this.fetchProject(to.params.id)
-            // await this.loadProjectFiles(to.params.id)
-          } catch (e) {
-            this.error = e.toString()
           }
           // console.log(to.params.id, from.params.id)
         }

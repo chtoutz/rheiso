@@ -1,36 +1,47 @@
 <template>
-  <div class="">
-    <div class="columns is-mobile has-text-centered">
-      <div class="column is-3">
-        <a class="box has-text-info" @click="openModal()">
-          <span class="icon is-large"><i class="fa fa-plus fa-3x"></i></span>
-          <p class="heading is-size-6">Ajouter un plan</p>
-        </a>
+  <div>
+    <div class="floor-divider">
+      <div class="columns is-mobile has-text-centered">
+        <div class="column is-1">
+          <a class="box create-box" @click="openModal()">
+            <span class="icon"><i class="fa fa-plus fa-2x"></i></span>
+            <!-- <p class="heading is-size-6">Ajouter un plan</p> -->
+          </a>
+        </div>
+        <div class="column is-2">
+          <a class="box">
+            <span class="icon is-large"><i class="fa fa-file-pdf-o fa-3x"></i></span>
+            <p class="heading is-size-6">N-1</p>
+          </a>
+        </div>
+        <div class="column is-2">
+          <a class="box">
+            <span class="icon is-large"><i class="fa fa-file-pdf-o fa-3x"></i></span>
+            <p class="heading is-size-6">RDC</p>
+          </a>
+        </div>
+        <div class="column is-2">
+          <a class="box">
+            <span class="icon is-large"><i class="fa fa-file-pdf-o fa-3x"></i></span>
+            <p class="heading is-size-6">N+1</p>
+          </a>
+        </div>
+        <div class="column is-2">
+          <a class="box">
+            <span class="icon is-large"><i class="fa fa-file-pdf-o fa-3x"></i></span>
+            <p class="heading is-size-6">N+2</p>
+          </a>
+        </div>
+        <!-- <div class="column is-one-fifth">
+          <a class="box">
+            <span class="icon is-large"><i class="fa fa-file-pdf-o fa-3x"></i></span>
+            <p class="heading is-size-6">N+3</p>
+          </a>
+        </div> -->
       </div>
-      <div class="column is-3">
-        <a class="box">
-          <span class="icon is-large"><i class="fa fa-file-pdf-o fa-3x"></i></span>
-          <p class="heading is-size-6">N-1</p>
-        </a>
-      </div>
-      <div class="column is-3">
-        <a class="box">
-          <span class="icon is-large"><i class="fa fa-file-pdf-o fa-3x"></i></span>
-          <p class="heading is-size-6">RDC</p>
-        </a>
-      </div>
-      <div class="column is-3">
-        <a class="box">
-          <span class="icon is-large"><i class="fa fa-file-pdf-o fa-3x"></i></span>
-          <p class="heading is-size-6">N+1</p>
-        </a>
-      </div>
-      <div class="column is-3">
-        <a class="box">
-          <span class="icon is-large"><i class="fa fa-file-pdf-o fa-3x"></i></span>
-          <p class="heading is-size-6">N+2</p>
-        </a>
-      </div>
+
+      <hr>
+      <span class="heading is-size-6">Rez de chaussée</span>
     </div>
     <modal :tabs="['Tous', 'PDF', 'Derniers indices', 'Plans', 'Notes']" :show="showModal" @close-modal="closeModal()">
       <filetree :tree="tree"></filetree>
@@ -116,9 +127,21 @@ export default {
       this.showModal = false
     }
   },
-  mixins: [ProjectsMixin]
+  mixins: [ ProjectsMixin ]
 }
 </script>
 
-<style lang="css">
+<style lang="sass">
+  @import "~bulma/sass/utilities/_all"
+  .floor-divider
+    .box
+      min-height: 117px
+    .create-box
+      color: $primary
+      padding-top: 50px
+      // min-height: 117px
+    hr
+      background-color: $primary
+      margin-bottom: 0.8rem
+      margin-top: 0.8rem
 </style>
