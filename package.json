@@ -63,6 +63,7 @@
     "directory-tree": "^2.1.0",
     "electron-store": "^2.0.0",
     "electron-window-state": "^5.0.0",
+    "exceljs": "^1.6.2",
     "font-awesome": "^4.7.0",
     "lodash": "^4.17.11",
     "moment": "^2.22.2",

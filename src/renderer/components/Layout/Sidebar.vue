@@ -1,10 +1,17 @@
 <template>
   <transition name="fade">
-    <nav class="menu" id="main-sidebar">
-      <projects-sidebar></projects-sidebar>
-      <settings-sidebar></settings-sidebar>
-      <repos-sidebar></repos-sidebar>
-    </nav>
+    <aside class="column is-2 ri-sidebar" v-show="showSidebar">
+      <nav class="menu" id="main-sidebar">
+        <projects-sidebar></projects-sidebar>
+        <settings-sidebar></settings-sidebar>
+        <repos-sidebar></repos-sidebar>
+      </nav>
+      <a class="button is-primary sidebar-toggle" @click="toggleSidebar()">
+        <span class="icon">
+          <i class="fa fa-arrow-right"></i>
+        </span>
+      </a>
+    </aside>
   </transition>
 </template>
 
@@ -21,17 +28,22 @@ export default {
     SettingsSidebar,
     ProjectsSidebar,
     ReposSidebar
+  },
+  computed: {
+    sidebarClass () {
+      return { 'is-active': this.showSidebar }
+    }
+  },
+  data () {
+    return {
+      showSidebar: true
+    }
+  },
+  methods: {
+    toggleSidebar () {
+      this.showSidebar = !this.showSidebar
+    }
   }
-  // data () {
-  //   return {
-  //     showDropdown: false
-  //   }
-  // },
-  // methods: {
-  //   toggleDropdown () {
-  //     this.showDropdown = !this.showDropdown
-  //   }
-  // }
 }
 </script>
 
@@ -41,6 +53,11 @@ export default {
   //   padding: 12px
   .submenu
     padding-top: 12px
+  .sidebar-toggle
+    position: fixed
+    display: block
+    top: 50vh
+    left: 100%
   #main-sidebar
     padding: 12px
     height: calc(100vh - 52px)

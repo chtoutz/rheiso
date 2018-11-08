@@ -43,6 +43,7 @@ http://momentjs.com/docs/
 https://caolan.github.io/async/docs.html
 https://github.com/fshost/node-dir
 https://github.com/balderdashy/waterline
+https://github.com/guyonroche/exceljs#readme
 
 ## DESIGN
 https://bulma.io/

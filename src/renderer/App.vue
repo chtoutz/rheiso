@@ -5,10 +5,14 @@
     <navbar :active-project="project"></navbar>
     <!-- <navbar></navbar> -->
     <div class="columns is-gapless">
-      <aside class="column is-2 ri-sidebar">
-        <sidebar></sidebar>
-      </aside>
+      
+      <sidebar></sidebar>
+
       <main class="column ri-main-view">
+
+        <div class="ri-submenu-bar">
+          Barre des menus secondaires (outils de dessin dans les plans, ou interface ExcelLike sur la liste des locaux par exemple)
+        </div>
 
         <div v-if="loading" class="loading has-text-centered">
           <span class='icon'>
@@ -69,18 +73,16 @@
         // These 3 are used to display/hide the corresponding divs in Projects.vue parent layout
         // TODO: Maybe place these on the main App.vue component to handle globally loading state ?
         loading: false,
-        error: null
+        error: null,
+        showSidebar: true
         // project: {}
       }
     },
-    // methods: {
-    //   async test (projId = this.$settings.get('activeProject.id')) {
-    //     // this.dede = await this.$DB.project.findOne(projId).populate('filetrees')
-    //     let proj = await this.$DB.project.findOne(projId).populate('filetrees')
-    //     proj.filesCount = await this.$DB.file.count({ project: projId })
-    //     this.project = proj
-    //   }
-    // },
+    methods: {
+      toggleSidebar () {
+        this.showSidebar = !this.showSidebar
+      }
+    },
     watch: {
       async '$route' (to, from) {
         // console.log(to)
@@ -139,6 +141,11 @@
 
 <style lang="sass">
   @import "~bulma/sass/utilities/initial-variables"
+  .sidebar-toggle
+    position: fixed
+    display: block
+    top: 50vh
+    left: 100%
   // .ri-main-view
   //   height: calc(100vh - 52px)
   // .ri-sidebar

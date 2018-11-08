@@ -17,6 +17,9 @@ export default Waterline.Collection.extend({
       // TODO: Add this unique attribute when using MongoDB in prod PI
       // unique: true
     },
+    roomsFile: {
+      type: 'string'
+    },
     name: { type: 'string' },
     reference: { type: 'string' },
 

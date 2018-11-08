@@ -1,6 +1,14 @@
 <template>
   <div class="">
     <div class="floor-divider">
+      <div class="buttons">
+        <a class="button is-medium">
+          <span class="icon is-medium has-text-danger">
+            <i class="fa fa-file-pdf-o"></i>
+          </span>
+          <span>PL-SSTL-2017-181063.pdf</span>
+        </a>
+      </div>
       <div class="columns is-mobile has-text-centered">
         <!-- <div class="column is-1 create-column">
           <a class="box create-box" @click="openModal()">
