@@ -168,15 +168,10 @@ export default {
   },
   async mounted () {
     // console.log(this.activeProject)
-    // TODO: After checking treename, check if (treename === 'local' && !this.filetreesFiles[this.$route.params.filetree])
-    // => create a local filetree based on all local files in $DB
-    // TODO: Get the tree from this.dbToTree($DB.file.find(activeProject.filetree.query))
     let rootFolder = {
-      name: this.$settings.get('activeProject.name'),
-      // name: this.activeProject.name,
+      name: this.activeProject.name,
       path: '',
       // path: this.activeProject.path,
-      // path: this.$settings.get('activeProject.path'),
       depth: 0,
       type: 'directory'
       // children: [],

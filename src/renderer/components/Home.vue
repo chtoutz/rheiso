@@ -53,15 +53,15 @@
         </div>
       </div>
     </div>
-    
+
     <div class="columns">
 
       <div class="column">
-        <projects></projects>
+        <!-- <projects></projects> -->
       </div>
 
       <div class="column">
-        <tasks></tasks>
+        <!-- <tasks></tasks> -->
       </div>
     </div>
   </article>
@@ -97,8 +97,9 @@ export default {
 
 <style>
 #rheiso-logo {
-  transform:scale(1.5);
-  -webkit-transform:scale(1.5);
+  max-width: 500px;
+  /* transform:scale(0.5);
+  -webkit-transform:scale(0.5); */
   padding: 20px 0 30px;
 }
 </style>

@@ -1,10 +1,10 @@
-import _ from 'lodash'
+// import _ from 'lodash'
 import fs from 'fs'
 import path from 'path'
 import async from 'async'
 import dir from 'node-dir'
 import moment from 'moment'
-import dirTree from 'directory-tree'
+// import dirTree from 'directory-tree'
 
 import Card from '@/components/Layout/Card'
 
@@ -20,33 +20,29 @@ export default {
   },
   computed: {
     projectId () {
-      return this.$route.params.id || this.$settings.get('activeProject.id')
+      return this.$route.params.id || this.$settings.get('activeProject._id')
     },
     projectDirectory () {
       return this.$settings.get('activeProject.path')
     },
     dataDirectory () {
       return `${this.$settings.get('general.projectsSaving')}/${this.$settings.get('activeProject.name')}`
-    },
-    filetreesDirectory () {
-      return `${this.dataDirectory}/filetrees`
-    },
-    filetreesFiles () {
-      // Collect all files in filetrees directory, filter to only JSON
-      let files = dirTree(this.filetreesDirectory, { extensions: /\.json/ })
-      let res = []
-      // If there is at least one JSON file...
-      if (files.children) {
-        // Return an object containing all versions of a filetree, grouped by filetree name (filepath before the '-DATE.json')
-        res = _.groupBy(files.children, (file) => {
-          return file.name.match(/\w+/)
-        })
-      }
-      return res
     }
-    // TODO: Remove this attribute and use Waterline project.populate('files'), based on activeProject ID stored in files $DB
-    // localfilesDB () {
-    //   await this.$DB.file.find({project: this.$settings.get('activeProject.id')})
+    // filetreesDirectory () {
+    //   return `${this.dataDirectory}/filetrees`
+    // },
+    // filetreesFiles () {
+    //   // Collect all files in filetrees directory, filter to only JSON
+    //   let files = dirTree(this.filetreesDirectory, { extensions: /\.json/ })
+    //   let res = []
+    //   // If there is at least one JSON file...
+    //   if (files.children) {
+    //     // Return an object containing all versions of a filetree, grouped by filetree name (filepath before the '-DATE.json')
+    //     res = _.groupBy(files.children, (file) => {
+    //       return file.name.match(/\w+/)
+    //     })
+    //   }
+    //   return res
     // }
   },
   // mounted () {
@@ -55,7 +51,9 @@ export default {
   data () {
     return {
       project: null,
-      fileset: 'local'
+      fileset: {
+        name: 'local'
+      }
     }
   },
   methods: {
@@ -68,7 +66,7 @@ export default {
      * @param  {Int}  projId  The project ID to fetch. By default, activeProject.id
      * @return {Promise}      Set project or display error
      */
-    // async fetchProject (projId = this.$settings.get('activeProject.id')) {
+    // async fetchProject (projId = this.$settings.get('activeProject._id')) {
     //   if (this.$route.name.match(/projects/)) {
     //     let nextRoute = {
     //       params: {id: project.id},
@@ -81,25 +79,26 @@ export default {
     // },
     async fetchProject (projId = this.projectId) {
       // this.dede = await this.$DB.project.findOne(projId).populate('filetrees')
-      let proj = await this.$DB.project.findOne(projId).populate('filesets')
+      let proj = await this.$DB.project.findOne(projId).populate('filesets').populate('rooms')
       this.$settings.set('activeProject', proj)
 
-      if (this.$route.params.fileset && this.$route.params.fileset !== 'local') {
-        proj.fileset = await this.$DB.fileset.findOne(this.$route.params.fileset)
+      if (this.$route.params.fileset && this.$route.params.fileset.length) {
+        proj.fileset = this.$route.params.fileset
       } else {
-        proj.fileset = this.$settings.get('filesets')
+        proj.fileset = 'local'
       }
+      // if (this.$route.params.fileset && this.$route.params.fileset !== 'local') {
+      //   proj.fileset = await this.$DB.fileset.findOne(this.$route.params.fileset)
+      // } else {
+      //   proj.fileset = this.$settings.get('filesets')
+      // }
       proj.filesCount = await this.$DB.file.count({ project: projId })
       this.project = proj
       console.log(`Loaded project "${proj.name}"`)
     },
-    // async loadProjectFiles (query = { project: this.$settings.get('activeProject.id') }) {
-    //   this.project.filesCount = await this.$DB.file.count(query)
-    //   console.log(`${this.project.filesCount} project files loaded.`)
-    // },
     // async useFileset (fileset = {}) {
     //   // TODO: Move this into Filesets.vue when saving a new fileset to $DB
-    //   // fileset.project = this.$settings.get('activeProject.id')
+    //   // fileset.project = this.$settings.get('activeProject._id')
     //   this.$settings.set('activeProject.fileset', fileset)
     //   this.project.fileset = fileset
     //   // this.project.fileset = await this.$DB.fileset.findOne(fileset.id)
@@ -107,18 +106,12 @@ export default {
     // },
     importFiles () {
       let _self = this
-      // TODO: Check if we want to limit number of saves (save the X number in $settings).
-      // If yes, launch a function (modular, which should be used in crons e.g) that deletes the oldest files more than X in files beginning with $route.params.filetree
-      // let fileName = this.getDatedName('localfiles', 'db')
-      // let filetreePath = path.resolve(this.localfilesDirectory, fileName)
-      // console.log(`Importing project files to database : ${filetreePath}`)
       console.log(`Importing project files to database...`)
-      // console.log(filetreePath)
       // Get an array of simple folders and files paths in the project
       let projectDirectory = this.projectDirectory
       // let projectDirectory = path.resolve(this.projectDirectory, '3-Etudes', '04-Catalogue méthodique')
       dir.paths(projectDirectory, true, (err, paths) => {
-        // console.log(`${paths.length} files found`)
+        console.log(`${paths.length} files found`)
         // paths = null
         // Display error notification if needed
         if (err || !paths) {
@@ -142,7 +135,7 @@ export default {
             try {
               // Then, check for edited, added or removed files if needed
               _self.updateOrCreate({
-                project: _self.$settings.get('activeProject.id'),
+                project: _self.$settings.get('activeProject._id'),
                 path: filepath
               }, {
                 path: filepath,
@@ -153,7 +146,7 @@ export default {
                 depth: filepath.split('/').length,
                 mtime: moment(stats.mtime).format(),
                 type: stats.isFile() ? 'file' : 'directory',
-                project: _self.$settings.get('activeProject.id')
+                project: _self.$settings.get('activeProject._id')
               })
               return next(null)
               // console.log(`Imported ${files.length} project files successfully`)
@@ -295,17 +288,6 @@ export default {
         return null // Or set item.size = 0 for devices, FIFO and sockets ?
       }
       return item
-    },
-    // Push this.filetrees with content of project dataPath/filetrees JSON files, then group them by name
-    loadFiletrees () {
-      let path = this.filetreesDirectory
-      let filetreeFiles = dirTree(path)
-      let filetrees = _.groupBy(filetreeFiles.children, (child) => {
-        let groupedFiles = child.name.match(/\w+/)
-        // console.log(child.name.match(/(\w+)-([\w-:+]+)/))
-        return groupedFiles
-      })
-      console.log(filetrees)
     },
     loadFiletree (path) {
       fs.readFile(path, (err, file) => {

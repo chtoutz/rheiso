@@ -2,28 +2,19 @@
   <div id="projects-navbar-dropdown" class="navbar-item has-dropdown is-hoverable">
     <a class="navbar-link">
       <!-- {{ $settings.get('activeProject.name', 'Sélectionner un projet') }} -->
-      {{ activeProject.name || 'Sélectionner un projet' }}
+      {{ activeProject._id ? activeProject.name : 'Sélectionner un projet' }}
     </a>
 
     <div class="navbar-dropdown">
       <a
         class="navbar-item"
-        :class="{'is-active': $settings.get('activeProject.id') === project.id}"
+        :class="{'is-active': activeProject._id === project._id}"
         v-for="project in projects"
         :key="project._id"
-        @click="$emit('switch-project', project.id)"
+        @click="$emit('switch-project', project._id)"
         >
         {{project.name || '???'}}
       </a>
-      <!-- <router-link
-        class="navbar-item"
-        :class="{'is-active': $settings.get('activeProject.id') === project.id}"
-        v-for="project in projects"
-        :key="project._id"
-        :to="{ name: $route.name, params: {id: project.id} }"
-        >
-        {{project.name || '???'}}
-      </router-link> -->
       <a class="navbar-item" v-if="projects.length === 0">
         Aucun projet enregistré.
       </a>
@@ -32,7 +23,7 @@
         <span class="icon">
           <i class="fa fa-share"></i>
         </span>
-        Voir tous
+        Voir tous les projets
       </a>
     </div>
   </div>
@@ -51,17 +42,13 @@ export default {
   // computed: {
   // },
   mounted () {
-    var _self = this
-    this.$DB.project.find({}, function (err, projects) {
-      if (err) {
-        console.log(err)
-      }
-      _self.projects = projects
-    })
+    this.loadProjects()
+  },
+  methods: {
+    async loadProjects () {
+      this.projects = await this.$DB.project.find({}).sort('lastOpened DESC')
+    }
   }
-  // methods: {
-  // de
-  // }
 }
 </script>
 

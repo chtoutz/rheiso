@@ -5,6 +5,7 @@
         <projects-sidebar></projects-sidebar>
         <settings-sidebar></settings-sidebar>
         <repos-sidebar></repos-sidebar>
+        <libraries-sidebar></libraries-sidebar>
       </nav>
       <a class="button is-primary sidebar-toggle" @click="toggleSidebar()">
         <span class="icon">
@@ -18,7 +19,8 @@
 <script>
 import SettingsSidebar from '@/components/Settings/_SettingsSidebar'
 import ProjectsSidebar from '@/components/Projects/_ProjectsSidebar'
-import ReposSidebar from '@/components/Repos/ReposSidebar'
+import ReposSidebar from '@/components/Repos/_ReposSidebar'
+import LibrariesSidebar from '@/components/Libraries/_LibrariesSidebar'
 // TODO: Populate menu with submenus from installed AND active plugins, and load them dynamically when all are ready to show
 // One submenu = one component which receives below mixin
 // TODO: Create mixin with common sidebar submenu actions and @events : automatic expand (in a tooltip on right on hover, and vertically below when active page ?), @click (reload sidebar depending on $route params : vertically expand the submenu which is clicked if there is one...), etc.
@@ -27,7 +29,8 @@ export default {
   components: {
     SettingsSidebar,
     ProjectsSidebar,
-    ReposSidebar
+    ReposSidebar,
+    LibrariesSidebar
   },
   computed: {
     sidebarClass () {

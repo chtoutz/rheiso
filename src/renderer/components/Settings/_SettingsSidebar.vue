@@ -1,9 +1,8 @@
 <template>
   <div class="submenu" id="settings-sidebar">
-    <p class="menu-label" :class="{'has-text-inf': $route.name.match(/settings(\..*)?/)}">
-      <!-- Réglages -->
-      <span>Réglages</span>
+    <p class="menu-label" :class="{'has-text-info': $route.name.match(/settings(\..*)?/)}">
       <span class="icon is-small"><i class="fa fa-cogs"></i></span>
+      <span>Réglages</span>
     </p>
     <ul class="menu-list">
       <li>

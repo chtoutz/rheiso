@@ -23,7 +23,7 @@
         <span class="icon">
           <i class="fa fa-share"></i>
         </span>
-        Voir tous
+        Voir les jeux de fichiers
       </a>
     </div>
   </div>

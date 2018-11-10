@@ -86,8 +86,8 @@
 </template>
 
 <script>
-import ProjectsDropdown from '@/components/Layout/_ProjectsDropdown'
-import FilesetsDropdown from '@/components/Layout/_FilesetsDropdown'
+import ProjectsDropdown from '@/components/Layout/Navbar/_ProjectsDropdown'
+import FilesetsDropdown from '@/components/Layout/Navbar/_FilesetsDropdown'
 
 import ProjectsMixin from '@/mixins/Projects'
 
@@ -110,11 +110,11 @@ export default {
 
       // And update route if needed
       let nextRoute = {
-        name: this.$route.name,
+        // name: this.$route.name,
         // params: this.$route.params,
-        params: {id: projectId},
-        query: this.$route.query,
-        hash: this.$route.hash
+        params: {id: projectId}
+        // query: this.$route.query,
+        // hash: this.$route.hash
       }
       // console.log(nextRoute)
       this.$router.replace(nextRoute)

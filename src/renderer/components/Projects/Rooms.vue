@@ -166,13 +166,9 @@ let module = {
       switch (path.extname(filename)) {
         case '.csv':
           roomsFile = await this.workbook.csv.readFile(filename)
-          // TODO: get the worksheets index from a $router.params
-          this.worksheet = roomsFile.worksheets[0]
           break
         case '.xlsx':
           roomsFile = await this.workbook.xlsx.readFile(filename)
-          // TODO: get the worksheets index from a $router.params
-          this.worksheet = roomsFile.worksheets[0]
           break
         case '.json':
           // TODO: Handle
@@ -184,6 +180,10 @@ let module = {
           break
         default:
           console.log(`Imports from ${path.extname(roomsFile)} are not supported.`)
+      }
+      // If roomsFile is defined, means that reading from filename is OK. Assign
+      if (roomsFile) {
+        this.worksheet = roomsFile.worksheets[0]
       }
       // console.log(this.worksheet)
     },

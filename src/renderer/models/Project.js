@@ -4,10 +4,10 @@ import Waterline from 'waterline'
 export default Waterline.Collection.extend({
   identity: 'project',
   datastore: 'default',
-  primaryKey: 'id',
+  primaryKey: '_id',
 
   attributes: {
-    id: {
+    _id: {
       type: 'number',
       autoMigrations: {autoIncrement: true}
     },
@@ -17,16 +17,14 @@ export default Waterline.Collection.extend({
       // TODO: Add this unique attribute when using MongoDB in prod PI
       // unique: true
     },
-    roomsFile: {
-      type: 'string'
-    },
     name: { type: 'string' },
     reference: { type: 'string' },
+    lastOpened: { type: 'string' },
 
-    // files: {
-    //   collection: 'file',
-    //   via: 'project'
-    // }
+    files: {
+      collection: 'file',
+      via: 'project'
+    },
     filesets: {
       collection: 'fileset',
       via: 'project'

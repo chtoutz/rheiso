@@ -102,7 +102,7 @@
         this.loading = true
         // If the project id changes (selected from navbar projects dropdown), refresh the data for all components
         if (to.name.match(/projects/)) {
-          if (to.params.id && to.params.id.toString() !== this.project.id.toString()) {
+          if (to.params.id && to.params.id.toString() !== this.project._id.toString()) {
             console.log('Changing project...')
             try {
               await this.fetchProject(to.params.id)
@@ -130,7 +130,7 @@
     mixins: [ ProjectsMixin ],
     async mounted () {
       // await this.test()
-      await this.fetchProject(this.$settings.get('activeProject.id'))
+      await this.fetchProject(this.$settings.get('activeProject._id'))
       // await this.loadProjectFiles()
       // TODO: Move this mounted code into a mxiin loaded in all projects components : navbar, sidebar, breadcrumb, etc.
       // Use intern $emit and $on to reload active project values in nav items e.g.

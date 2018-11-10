@@ -4,6 +4,10 @@ export default {
   name: 'rheiso-settings',
   encryptionKey: 'InG€ocachingWeTru$t',
   defaults: {
+    activeProject: {
+      _id: 1,
+      name: '*Projet sans nom*'
+    },
     notifications: {
       title: '',
       message: '',

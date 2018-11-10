@@ -22,7 +22,7 @@ export default Waterline.Collection.extend({
      * Query is an object defining a Waterline query, filtering files and documents (by extension, name containing a string, excluding some paths, ...)
      * @type {Object}
      */
-    // TODO: In components, add query.project = $settings.get('activeProject.id')
+    // TODO: In components, add query.project = $settings.get('activeProject._id')
     query: {
       type: 'json'
     },

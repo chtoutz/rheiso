@@ -133,9 +133,6 @@ export default {
   },
   mixins: [ ProjectsMixin ],
   computed: {
-    // async filetrees () {
-    //   return _.concat(['local'], await this.$DB.filetree.find({project: this.$settings.get('activeProject.id')}))
-    // }
     // selected () {
     //   return _.filter(this.tree, 'selected')
     // }
@@ -149,27 +146,17 @@ export default {
     }
   },
   mounted () {
-    // TODO: After checking treename, check if (treename === 'local' && !this.filetreesFiles[this.$route.params.filetree])
-    // => create a local filetree based on all local files in $DB
     // TODO: Get the tree from this.dbToTree($DB.file.find(activeProject.filetree.query))
-    let tree
-    // let treename
-    // if (this.filetreesFiles[this.$route.params.filetree]) {
-    //   treename = this.$route.params.filetree
-    // } else {
-    //   treename = 'local'
-    // }
-    // // tree = _.last(this.filetreesFiles[treename])
-    // console.log(treename)
-    // await this.loadProjectFiles()
-    tree = {
+    let tree = {
       name: this.activeProject.name,
       path: '',
       depth: 0,
       type: 'directory'
     }
+    let filesets = _.concat(this.$settings.get('filesets'), this.activeProject.filetrees)
+
     this.tree = tree
-    this.filesets = _.concat(this.$settings.get('filesets'), this.activeProject.filetrees)
+    this.filesets = filesets
     // this.loadTree(tree.path)
 
     // this.$DB.file.find({}).sort({ path: 1 }).exec((err, files) => {
