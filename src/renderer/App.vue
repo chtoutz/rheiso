@@ -5,21 +5,25 @@
     <navbar :active-project="project"></navbar>
     <!-- <navbar></navbar> -->
     <div class="columns is-gapless">
-      
+
       <sidebar></sidebar>
 
       <main class="column ri-main-view">
 
-        <div class="ri-submenu-bar">
-          Barre des menus secondaires (outils de dessin dans les plans, ou interface ExcelLike sur la liste des locaux par exemple)
+        <!-- Top bar. Displays submenu tools (ducts/pipes on Drawing.vue, import/export buttons on several components) -->
+        <div class="ri-top-bar" v-if="$route.meta.showTopBar">
+          Barre du haut. Pour afficher outils de dessin dans les plans (cana/gaines), ou boutons importer/exporter (applicable dans pas mal de composants)
         </div>
+        <h1 class="title">Gérer les TODO !!</h1>
 
-        <div v-if="loading" class="loading has-text-centered">
+        <!-- Loader. Displayed between each route changes. TODO: REALLY use it, doesn't really work for now. And place it on middle of page. -->
+        <div v-if="loading" class="ri-loader loading has-text-centered">
           <span class='icon'>
             <i class="fa fa-spinner fa-spin fa-3x"></i>
           </span>
         </div>
 
+        <!-- Error message, optionnal. TODO: use this or only notifications ? -->
         <div v-if="error" class="message is-danger">
           <div class="message-header">
             <p>Erreur:</p>
@@ -29,8 +33,14 @@
           </div>
         </div>
 
-        <div v-if="project">
+        <!-- Router view -->
+        <div>
           <router-view :active-project="project"></router-view>
+        </div>
+
+        <!-- Bottom bar. May display tabs of Excel-like files, or stats, debug infos, custom fields... -->
+        <div class="ri-bottom-bar" v-if="$route.meta.showBottomBar">
+          Barre du bas. Pour afficher des tabs Excel-like sur les listes de locaux par exemple (interactive avec parties optionnelles comme le bilan thermique 337).
         </div>
 
         <code>
@@ -141,6 +151,9 @@
 
 <style lang="sass">
   @import "~bulma/sass/utilities/initial-variables"
+  .ri-bottom-bar
+    position: fixed
+    bottom: 0
   .sidebar-toggle
     position: fixed
     display: block

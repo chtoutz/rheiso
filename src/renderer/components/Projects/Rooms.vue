@@ -161,26 +161,29 @@ let module = {
     //   // creating an empty worksheet if none provided
     //   this.worksheet = options.worksheet
     // },
-    async loadFile (roomsFile) {
-      switch (path.extname(roomsFile)) {
+    async loadFile (filename) {
+      let roomsFile = null
+      switch (path.extname(filename)) {
         case '.csv':
-          this.worksheet = await this.workbook.csv.readFile(roomsFile)
-          // .then(worksheet => {
-          //   // console.log(worksheet)
-          //   this.worksheet = worksheet
-          // })
+          roomsFile = await this.workbook.csv.readFile(filename)
+          // TODO: get the worksheets index from a $router.params
+          this.worksheet = roomsFile.worksheets[0]
           break
         case '.xlsx':
-          this.worksheet = await this.workbook.xlsx.readFile(roomsFile)
+          roomsFile = await this.workbook.xlsx.readFile(filename)
+          // TODO: get the worksheets index from a $router.params
+          this.worksheet = roomsFile.worksheets[0]
           break
         case '.json':
           // TODO: Handle
+          console.log(`Imports from ${path.extname(roomsFile)} are not supported... Yet`)
           break
         case '.txt':
           // TODO: Handle
+          console.log(`Imports from ${path.extname(roomsFile)} are not supported... Yet`)
           break
         default:
-          console.log(`Imports from ${path.extname(roomsFile)} are not supported... Yet`)
+          console.log(`Imports from ${path.extname(roomsFile)} are not supported.`)
       }
       // console.log(this.worksheet)
     },
@@ -197,15 +200,15 @@ let module = {
           {name: 'JSON', extensions: ['json']}
         ]
       }
-      _self.$electron.remote.dialog.showOpenDialog(dialog, async (roomsFile) => {
-        console.log(`Importing rooms from ${roomsFile[0]}`)
-        await _self.loadFile(roomsFile[0])
+      _self.$electron.remote.dialog.showOpenDialog(dialog, async (filenames) => {
+        console.log(`Importing rooms from ${filenames[0]}`)
+        await _self.loadFile(filenames[0])
         if (this.worksheet) {
-          console.log(this.worksheet.worksheets[0])
-          let col = this.worksheet.worksheets[0].getColumn(1)
-          col.eachCell((cell, rowNumber) => {
-            console.log(cell)
-          })
+          console.log(this.worksheet)
+          // let col = this.worksheet.getColumn(1)
+          // col.eachCell((cell, rowNumber) => {
+          //   console.log(cell)
+          // })
         }
       })
     }

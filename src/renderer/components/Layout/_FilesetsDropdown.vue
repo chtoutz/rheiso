@@ -36,7 +36,7 @@ export default {
   name: 'filesets-navbar-dropdown',
   data () {
     return {
-      filesets: _.concat(this.$settings.get('filesets'), this.activeProject.filetrees)
+      filesets: _.concat(this.$settings.get('filesets'), this.activeProject.filesets)
     }
   },
   props: [ 'activeProject' ],

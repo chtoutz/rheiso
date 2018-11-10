@@ -10,11 +10,11 @@ export default new Router({
       name: 'home',
       component: require('@/components/Home').default
     },
-    {
-      path: '/drawing',
-      name: 'drawing',
-      component: require('@/components/Drawing').default
-    },
+    // {
+    //   path: '/drawing',
+    //   name: 'drawing',
+    //   component: require('@/components/Drawing').default
+    // },
     {
       path: '/settings',
       component: require('@/components/Settings').default,
@@ -40,7 +40,8 @@ export default new Router({
         {
           path: 'rooms',
           name: 'projects.rooms',
-          component: require('@/components/Projects/Rooms').default
+          component: require('@/components/Projects/Rooms').default,
+          meta: { showBottomBar: true, showTopBar: true }
         },
         {
           path: 'explore',
