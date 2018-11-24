@@ -28,14 +28,27 @@ export default {
         query: {}
       }
     ],
+    // Name and order of rooms columns whn importing from an Excel/CSV/JSON file
+    roomsCols: [
+      'Bloc',
+      'Niveau',
+      'N°',
+      'Nom',
+      'Longueur',
+      'largeur',
+      'Hauteur'
+    ],
+    // Base tags when filtering files
     tags: {
       pdf: {
         query: { 'extension': '.pdf' }
       },
+      xlsx: {
+        query: { 'extension': '.xlsx' }
+      },
       folder: {
         query: { 'type': 'folder' }
-      },
-      outputFiles: ''
+      }
     },
     plugins: {},
     projects: {}

@@ -3,82 +3,48 @@
     <div class="second-menubar">
       <a class="button" @click="importRooms()">Importer</a>
     </div>
-    <table class="table is-narrow is-hoverable is-fullwidth" v-if="workbook">
+    <table class="table is-narrow is-hoverable is-fullwidth" v-if="!rooms.length">
       <thead>
         <tr>
+          <th>Bloc</th>
+          <th>Niveau</th>
           <th>#</th>
           <th>Nom</th>
-          <th><abbr title="Longueur">L</abbr></th>
-          <th><abbr title="Largeur">l</abbr></th>
           <th><abbr title="Surface">S</abbr></th>
           <th><abbr title="Hauteur">H</abbr></th>
           <th><abbr title="Volume">V</abbr></th>
-          <th><abbr title="Goals against">GA</abbr></th>
-          <th><abbr title="Goal difference">GD</abbr></th>
-          <th><abbr title="Points">Pts</abbr></th>
-          <th>Qualification or relegation</th>
+          <th><abbr title="Longueur">L</abbr></th>
+          <th><abbr title="Largeur">l</abbr></th>
+          <th v-if="$route.params.bottomTab === 'bilan-thermique'">Charges internes, déperditions en plusieurs colonnes</th>
+          <th><abbr title="Ajouter des en-tête custom avec bilan aéraulique, thermique">TODO</abbr></th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th>1</th>
-          <td><a href="https://en.wikipedia.org/wiki/Leicester_City_F.C." title="Leicester City F.C.">Leicester City</a> <strong>(C)</strong>
-          </td>
-          <td>38</td>
-          <td>23</td>
-          <td>12</td>
-          <td>3</td>
-          <td>68</td>
-          <td>36</td>
-          <td>+32</td>
-          <td>81</td>
-          <td><a href="https://en.wikipedia.org/wiki/2016%E2%80%9317_UEFA_Champions_League#Group_stage" title="2016–17 UEFA Champions League">Champions League group stage</a></td>
-        </tr>
-        <tr class="is-selected">
-          <th>2</th>
+        <tr class="is-selected" v-for="room in rooms">
+          <th>{{ room._bloc }}</th>
+          <th>{{ room._floor }}</th>
+          <th>{{ room._number }}</th>
+          <th>{{ room._name }}</th>
+          <th>{{ room._length }}</th>
+          <th>{{ room._width }}</th>
+          <th>{{ room._surface }}</th>
+          <th>{{ room._height }}</th>
+          <th>{{ room._volume }}</th>
           <td><a href="https://en.wikipedia.org/wiki/Arsenal_F.C." title="Arsenal F.C.">Arsenal</a></td>
-          <td>38</td>
-          <td>20</td>
-          <td>11</td>
-          <td>7</td>
-          <td>65</td>
-          <td>36</td>
-          <td>+29</td>
-          <td>71</td>
-          <td><a href="https://en.wikipedia.org/wiki/2016%E2%80%9317_UEFA_Champions_League#Group_stage" title="2016–17 UEFA Champions League">Champions League group stage</a></td>
-        </tr>
-        <tr>
-          <th>3</th>
-          <td><a href="https://en.wikipedia.org/wiki/Tottenham_Hotspur_F.C." title="Tottenham Hotspur F.C.">Tottenham Hotspur</a></td>
-          <td>38</td>
-          <td>19</td>
-          <td>13</td>
-          <td>6</td>
-          <td>69</td>
-          <td>35</td>
-          <td>+34</td>
-          <td>70</td>
-          <td><a href="https://en.wikipedia.org/wiki/2016%E2%80%9317_UEFA_Champions_League#Group_stage" title="2016–17 UEFA Champions League">Champions League group stage</a></td>
-        </tr>
-        <tr>
-          <th>4</th>
-          <td><a href="https://en.wikipedia.org/wiki/Manchester_City_F.C." title="Manchester City F.C.">Manchester City</a></td>
-          <td>38</td>
-          <td>19</td>
-          <td>9</td>
-          <td>10</td>
-          <td>71</td>
-          <td>41</td>
-          <td>+30</td>
-          <td>66</td>
-          <td><a href="https://en.wikipedia.org/wiki/2016%E2%80%9317_UEFA_Champions_League#Play-off_round" title="2016–17 UEFA Champions League">Champions League play-off round</a></td>
         </tr>
       </tbody>
     </table>
-    <div class="" v-else>
-      Pas de workbook
-    </div>
-    <!-- {{ worksheet }} -->
+
+    <article class="message is-primary" v-else>
+      <div class="message-body">
+        Ce projet ne contient pas encore de locaux. Vous pouvez en importer depuis un tableur à l'aide du bouton dans la barre de menu, ou les ajouter un par un.
+      </div>
+    </article>
+    <!-- <ul>
+      <li v-for="worksheet in worksheets">{{worksheet.name}}</li>
+    </ul> -->
+    <bottom-tabs :tabs="tabs" :activeTab="$route.params.bottomTab" :defaultTab="'Locaux'" :canAddTab="true"></bottom-tabs>
+    <!-- {{ worksheets }} -->
     <!-- {{ stream._readableState.pipes.jsZip.files['_rels/.rels']._data.compressedContent }} -->
   </div>
 </template>
@@ -86,31 +52,57 @@
 <script>
 import Excel from 'exceljs'
 import path from 'path'
-// import stream from 'stream'
-// import util from 'util'
-// import bl from 'bl'
+import _ from 'lodash'
 
 import ProjectsMixin from '@/mixins/Projects'
 
 import Card from '@/components/Layout/Card'
-
-// var ExcelTransform = (options) => {
-//   stream.Transform.call(this, { objectMode: true })
-//
-//   module.data.workbook = options.workbook
-//   // you can make module.data optional by checking for it and
-//   // creating an empty worksheet if none provided
-//   module.data.worksheet = options.worksheet
-// }
+import BottomTabs from '@/components/Layout/BottomTabs'
 
 let module = {
   name: 'projects-rooms',
   components: {
-    Card
+    Card,
+    BottomTabs
   },
   computed: {
     cardTitle () {
       return `Liste des locaux`
+    },
+    activeTab () {
+      return _.kebabCase(this.$route.params.bottomTab)
+    },
+    tabs () {
+      let tabs = [
+        // {
+        //   name: '*add*',
+        //   hideName: true,
+        //   icon: 'plus'
+        // },
+        {
+          name: 'Locaux',
+          to: {
+            params: { bottomTab: _.kebabCase('Locaux') }
+          }
+        }
+      ]
+      if (!this.rooms.length) {
+        // TODO: _.concat below extraTabs with the ones found in active plugins hooks
+        let extraTabs = [
+          'Bilan thermique',
+          'Bilan aéraulique',
+          'Synthèse'
+        ]
+        _.map(extraTabs, (tab, key) => {
+          tabs.push({
+            name: tab,
+            to: {
+              params: { bottomTab: _.kebabCase(tab) }
+            }
+          })
+        })
+      }
+      return tabs
     }
   },
   mixins: [ ProjectsMixin ],
@@ -118,11 +110,9 @@ let module = {
     return {
       // The main Excel instance
       workbook: new Excel.Workbook(),
-      worksheet: null,
-      // The input stream to the rooms list file (most likely .xslx)
-      stream: null,
+      rooms: []
+      // activeTab: _.kebabCase(this.$router.params.show),
       // he rooms list itself
-      rooms: null
     }
   },
   mounted () {
@@ -153,37 +143,51 @@ let module = {
     addRoom () {
       return `Liste des locaux`
     },
-    // ExcelTransform (options) {
-    //   stream.Transform.call(this, { objectMode: true })
-    //
-    //   this.workbook = options.workbook
-    //   // you can make this optional by checking for it and
-    //   // creating an empty worksheet if none provided
-    //   this.worksheet = options.worksheet
-    // },
     async loadFile (filename) {
-      let roomsFile = null
+      let workbook = null
       switch (path.extname(filename)) {
         case '.csv':
-          roomsFile = await this.workbook.csv.readFile(filename)
+          workbook = await this.workbook.csv.readFile(filename)
           break
         case '.xlsx':
-          roomsFile = await this.workbook.xlsx.readFile(filename)
+          workbook = await this.workbook.xlsx.readFile(filename)
           break
         case '.json':
           // TODO: Handle
-          console.log(`Imports from ${path.extname(roomsFile)} are not supported... Yet`)
           break
         case '.txt':
           // TODO: Handle
-          console.log(`Imports from ${path.extname(roomsFile)} are not supported... Yet`)
           break
         default:
-          console.log(`Imports from ${path.extname(roomsFile)} are not supported.`)
+          console.log(`Imports from ${path.extname(filename)} are not supported... Yet !`)
       }
-      // If roomsFile is defined, means that reading from filename is OK. Assign
-      if (roomsFile) {
-        this.worksheet = roomsFile.worksheets[0]
+      // If workbook is defined, means that reading from filename is OK. Assign
+      if (workbook) {
+        console.log(`Importing rooms from ${filename}`)
+        workbook.eachSheet((worksheet, sheetId) => {
+          // TODO: Check if worksheet has a recognized name (ri_nomenclatures, ri_bilan_thermique/aéraulique, ri_synthèse...)
+          if (worksheet.name === 'ri_locaux') {
+            // Reset the rooms to display only the ones taken from file
+            this.rooms = []
+            // console.log(`Loaded rooms from ${filename}`)
+            worksheet.eachRow((row, rowNumber) => {
+              // console.log(row)
+              if (rowNumber > 1) {
+                this.rooms.push({
+
+                })
+              }
+            })
+            // this.worksheets.push(worksheet)
+          } else {
+            console.log(worksheet.name)
+          }
+          // console.log(sheetId)
+          // this.tabs.push(worksheet)
+        })
+        // this.worksheet = workbook.worksheets[0]
+      } else {
+        console.log(`Could not load rooms from ${filename}`)
       }
       // console.log(this.worksheet)
     },
@@ -201,8 +205,8 @@ let module = {
         ]
       }
       _self.$electron.remote.dialog.showOpenDialog(dialog, async (filenames) => {
-        console.log(`Importing rooms from ${filenames[0]}`)
-        await _self.loadFile(filenames[0])
+        let filename = filenames[0]
+        await _self.loadFile(filename)
         if (this.worksheet) {
           console.log(this.worksheet)
           // let col = this.worksheet.getColumn(1)
