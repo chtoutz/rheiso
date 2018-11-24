@@ -74,7 +74,6 @@ import Projects from '@/components/Projects/Panel'
 import Tasks from '@/components/Projects/Tasks'
 import Modal from '@/components/Layout/Modal'
 
-// TODO: Inspire from Plex UI
 export default {
   name: 'home',
   components: {

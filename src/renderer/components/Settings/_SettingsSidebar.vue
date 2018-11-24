@@ -30,7 +30,6 @@
 </template>
 
 <script>
-// TODO: Populate extensions enu from installed AND active plugins
 export default {
   name: 'settings-sidebar'
 }

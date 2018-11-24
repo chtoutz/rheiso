@@ -38,11 +38,6 @@
           <router-view :active-project="project"></router-view>
         </div>
 
-        <!-- Bottom bar. May display tabs of Excel-like files, or stats, debug infos, custom fields... -->
-        <div class="ri-bottom-bar" v-if="$route.meta.showBottomBar">
-          Barre du bas. Pour afficher des tabs Excel-like sur les listes de locaux par exemple (interactive avec parties optionnelles comme le bilan thermique 337).
-        </div>
-
         <code>
           Route: {{$route.fullPath}}
           <!-- Route: {{$route.params}} -->
@@ -64,7 +59,6 @@
 </template>
 
 <script>
-  import AppHeader from '@/components/Layout/AppHeader'
   import Navbar from '@/components/Layout/Navbar'
   import Sidebar from '@/components/Layout/Sidebar'
   import Debug from '@/components/Debug'
@@ -73,15 +67,12 @@
 
   export default {
     components: {
-      AppHeader,
       Navbar,
       Sidebar,
       Debug
     },
     data () {
       return {
-        // These 3 are used to display/hide the corresponding divs in Projects.vue parent layout
-        // TODO: Maybe place these on the main App.vue component to handle globally loading state ?
         loading: false,
         error: null,
         showSidebar: true
@@ -132,16 +123,6 @@
       // await this.test()
       await this.fetchProject(this.$settings.get('activeProject._id'))
       // await this.loadProjectFiles()
-      // TODO: Move this mounted code into a mxiin loaded in all projects components : navbar, sidebar, breadcrumb, etc.
-      // Use intern $emit and $on to reload active project values in nav items e.g.
-      // And/or maybe create a BootLoader.vue component which listens on all hooks emitted by plugins and intern components ?
-      // this.$settings.onDidChange('activeProject', (newValue, oldValue) => {
-      //   if (newValue) {
-      //     console.log(`New project is ${newValue.name}`)
-      //   }
-      // })
-      // let settings = this.$settings
-      // this.$store.commit('loadActiveProject', settings)
     }
     // methods: {
     //   de
@@ -151,9 +132,6 @@
 
 <style lang="sass">
   @import "~bulma/sass/utilities/initial-variables"
-  .ri-bottom-bar
-    position: fixed
-    bottom: 0
   .sidebar-toggle
     position: fixed
     display: block

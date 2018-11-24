@@ -288,22 +288,6 @@ export default {
         return null // Or set item.size = 0 for devices, FIFO and sockets ?
       }
       return item
-    },
-    loadFiletree (path) {
-      fs.readFile(path, (err, file) => {
-        if (err) {
-          // TODO: Only show if filetree is not local
-          // console.log(err.message)
-          if (this.$route.params.filetree !== 'local') {
-            this.$openNotification({
-              title: 'Erreur lors de la lecture',
-              type: 'danger',
-              message: err.toString(),
-              duration: 0
-            })
-          }
-        }
-      })
     }
   }
 }

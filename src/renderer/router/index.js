@@ -36,12 +36,11 @@ export default new Router({
       name: 'projects',
       component: require('@/components/Projects').default,
       children: [
-        // TODO: for later, allow custom layouts stored in DB looking like example in store/Layouts.db
         {
-          path: 'rooms',
+          path: 'rooms/:bottomTab?',
           name: 'projects.rooms',
           component: require('@/components/Projects/Rooms').default,
-          meta: { showBottomBar: true, showTopBar: true }
+          meta: { showTopBar: true }
         },
         {
           path: 'explore',
@@ -70,7 +69,6 @@ export default new Router({
       name: 'libraries',
       component: require('@/components/Projects').default,
       children: [
-        // TODO: for later, allow custom layouts stored in DB looking like example in store/Layouts.db
         {
           path: 'symbols',
           name: 'libraries.symbols',

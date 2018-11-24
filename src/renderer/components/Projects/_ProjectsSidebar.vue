@@ -1,7 +1,7 @@
 <template>
   <!-- <div class="submenu" id="projects-sidebar" v-if="$route.params.projectId"> -->
   <div class="submenu" id="projects-sidebar" v-if="$settings.get('activeProject')">
-    <p class="menu-label">
+    <p class="menu-label" :class="{'has-text-info': $route.name.match(/projects(\..*)?/)}">
       Vues du projet
     </p>
     <ul class="menu-list">

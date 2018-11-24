@@ -3,9 +3,9 @@
     <aside class="column is-2 ri-sidebar" v-show="showSidebar">
       <nav class="menu" id="main-sidebar">
         <projects-sidebar></projects-sidebar>
+        <libraries-sidebar></libraries-sidebar>
         <settings-sidebar></settings-sidebar>
         <repos-sidebar></repos-sidebar>
-        <libraries-sidebar></libraries-sidebar>
       </nav>
       <a class="button is-primary sidebar-toggle" @click="toggleSidebar()">
         <span class="icon">

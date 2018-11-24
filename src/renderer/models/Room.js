@@ -3,10 +3,10 @@ import Waterline from 'waterline'
 export default Waterline.Collection.extend({
   identity: 'room',
   datastore: 'default',
-  primaryKey: 'id',
+  primaryKey: '_id',
 
   attributes: {
-    id: {
+    _id: {
       type: 'number',
       autoMigrations: {autoIncrement: true}
     },

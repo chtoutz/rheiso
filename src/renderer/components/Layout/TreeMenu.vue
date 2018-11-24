@@ -61,7 +61,6 @@ export default {
   //   }
   // },
   methods: {
-    // TODO: Do not call 'this.showChildren = !this.showChildren' in toggleSelected
     toggleChildren () {
       this.loadChildren()
       this.showChildren = !this.showChildren

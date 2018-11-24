@@ -142,8 +142,6 @@ import Filetree from '@/components/Projects/Filetree'
 
 import ProjectsMixin from '@/mixins/Projects'
 
-// TODO: Use _.take(filetrees, 2) and add it in the first row, after "Add filetree" and "Local filetree" tiles
-// Then  _.chunk(_.drop(filetrees, 2), 4) to display the other filetrees in next lines tiles
 export default {
   name: 'projects-files',
   components: {
@@ -179,30 +177,12 @@ export default {
       // selected: false
     }
     this.rootFolder = rootFolder
-    // await this.loadProjectFiles()
-    // If the filename in URL doesn't match any of the files, redirect to local config
-    // // TODO: Move into a $route guard ?
-    // fs.access(this.filetreePath, fs.constants.F_OK, (err) => {
-    //   if (err) {
-    //     console.log(`Fichier ${this.filetreePath} inexistant, redirection vers les fichiers locaux`)
-    //     this.$router.replace({name: 'projects.filetree', params: {filetree: 'local'}})
-    //   }
-    // })
-    //
-    // console.log(this.tree)
-    // console.log(tree)
   },
   methods: {
-    // async loadProjectFiles (query = {}) {
-    //   query.project = this.activeProject.id
-    //   this.filesCount = await this.$DB.file.count(query)
-    //   console.log(`${this.filesCount} project files loaded.`)
-    // },
     loadTree (filetreePath) {
       let _self = this
       fs.readFile(filetreePath, 'utf8', (err, file) => {
         if (err) {
-          // TODO: Only show if filetree is not local
           console.log(err.message)
           if (_self.$route.params.filetree !== 'local') {
             _self.$openNotification({

@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     async loadProjects () {
-      this.projects = await this.$DB.project.find({}).sort('lastOpened DESC')
+      this.projects = await this.$DB.project.find({}).sort('lastOpened DESC').limit(10)
     }
   }
 }
