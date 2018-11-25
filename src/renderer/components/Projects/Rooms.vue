@@ -3,34 +3,42 @@
     <div class="second-menubar">
       <a class="button" @click="importRooms()">Importer</a>
     </div>
-    <table class="table is-narrow is-hoverable is-fullwidth" v-if="!rooms.length">
+    <table class="table is-narrow is-hoverable is-fullwidth is-bordered" v-if="rooms.length">
       <thead>
         <tr>
+          <th v-if="isImporting">Statut</th>
           <th>Bloc</th>
           <th>Niveau</th>
           <th>#</th>
           <th>Nom</th>
-          <th><abbr title="Surface">S</abbr></th>
-          <th><abbr title="Hauteur">H</abbr></th>
-          <th><abbr title="Volume">V</abbr></th>
           <th><abbr title="Longueur">L</abbr></th>
           <th><abbr title="Largeur">l</abbr></th>
-          <th v-if="$route.params.bottomTab === 'bilan-thermique'">Charges internes, déperditions en plusieurs colonnes</th>
+          <th><abbr title="Surface">S</abbr></th>
+          <th><abbr title="Hauteur">H</abbr></th>
           <th><abbr title="Ajouter des en-tête custom avec bilan aéraulique, thermique">TODO</abbr></th>
         </tr>
       </thead>
       <tbody>
-        <tr class="is-selected" v-for="room in rooms">
-          <th>{{ room._bloc }}</th>
-          <th>{{ room._floor }}</th>
-          <th>{{ room._number }}</th>
-          <th>{{ room._name }}</th>
-          <th>{{ room._length }}</th>
-          <th>{{ room._width }}</th>
-          <th>{{ room._surface }}</th>
-          <th>{{ room._height }}</th>
-          <th>{{ room._volume }}</th>
-          <td><a href="https://en.wikipedia.org/wiki/Arsenal_F.C." title="Arsenal F.C.">Arsenal</a></td>
+        <tr :class="{'has-text-success': room.status === 'new', 'has-text-warning has-text-weight-bold': room.status === 'modified'}" v-for="room in rooms">
+          <td v-if="isImporting" @click="confirmStatus(room)">
+            <span class="icon">
+              <i class="fa" :class="roomStatusIcon(room.status)"></i>
+            </span>
+          </td>
+          <td contenteditable="true" @blur="updateRoom" :data-number="room._number" data-param="_building">{{ room._building }}</td>
+          <td contenteditable="true" @blur="updateRoom" :data-number="room._number" data-param="_floor">{{ room._floor }}</td>
+          <td contenteditable="true" @blur="updateRoom" :data-number="room._number" data-param="_number">{{ room._number }}</td>
+          <td contenteditable="true" @blur="updateRoom" :data-number="room._number" data-param="_name">{{ room._name }}</td>
+          <td contenteditable="true" @blur="updateRoom" :data-number="room._number" data-param="_length">{{ room._length }}</td>
+          <td contenteditable="true" @blur="updateRoom" :data-number="room._number" data-param="_width">{{ room._width }}</td>
+          <td contenteditable="true" @blur="updateRoom" :data-number="room._number" data-param="_surface">{{ room._surface }}</td>
+          <td contenteditable="true" data="_building"
+            @keyup="changed"
+            @blur="changed"
+            @paste="changed"
+            @delete="changed"
+            @focus="changed">{{ room._height }}</td>
+          <td><a href="https://en.wikipedia.org/wiki/Arsenal_F.C." title="Arsenal F.C.">{{ room.status }}</a></td>
         </tr>
       </tbody>
     </table>
@@ -51,6 +59,7 @@
 
 <script>
 import Excel from 'exceljs'
+import diff from 'deep-diff'
 import path from 'path'
 import _ from 'lodash'
 
@@ -59,7 +68,7 @@ import ProjectsMixin from '@/mixins/Projects'
 import Card from '@/components/Layout/Card'
 import BottomTabs from '@/components/Layout/BottomTabs'
 
-let module = {
+export default {
   name: 'projects-rooms',
   components: {
     Card,
@@ -69,16 +78,11 @@ let module = {
     cardTitle () {
       return `Liste des locaux`
     },
-    activeTab () {
-      return _.kebabCase(this.$route.params.bottomTab)
-    },
+    // activeTab () {
+    //   return _.kebabCase(this.$route.params.bottomTab)
+    // },
     tabs () {
       let tabs = [
-        // {
-        //   name: '*add*',
-        //   hideName: true,
-        //   icon: 'plus'
-        // },
         {
           name: 'Locaux',
           to: {
@@ -86,8 +90,9 @@ let module = {
           }
         }
       ]
-      if (!this.rooms.length) {
+      if (this.rooms.length) {
         // TODO: _.concat below extraTabs with the ones found in active plugins hooks
+        // TODO: Enable this ONLY when user is using premium version or API mode
         let extraTabs = [
           'Bilan thermique',
           'Bilan aéraulique',
@@ -110,14 +115,16 @@ let module = {
     return {
       // The main Excel instance
       workbook: new Excel.Workbook(),
-      rooms: []
-      // activeTab: _.kebabCase(this.$router.params.show),
-      // he rooms list itself
+      isImporting: false,
+      timeoutID: null,
+      rooms: this.activeProject.rooms
     }
   },
   mounted () {
+    // let room1 = {_num: 12, _name: 'Local 1'}
+    // let room2 = {_num: 12, _name: 'Local 1'}
+    // console.log(diff(room1, room2))
     // TODO: Populate this.rooms from this.activeProject.rooms (loaded in fetchProject : .populate('files').populate('rooms')...)
-    // this.workbook = new Excel.Workbook()
     // this.loadFile(this.activeProject.roomsFile)
     // this.workbook = new Excel.stream.xlsx.WorkbookWriter()
     // this.worksheet = this.workbook.addWorksheet('sheet 1')
@@ -140,8 +147,27 @@ let module = {
     // })).pipe(process.stdout)
   },
   methods: {
-    addRoom () {
-      return `Liste des locaux`
+    async addRoom (room) {
+      room.project = this.activeProject._id
+      await this.$DB.room.create(room)
+      room.status = 'unchanged'
+    },
+    async updateRoom (event) {
+      // console.log(event.target.dataset)
+      let update = {}
+      update[event.target.dataset.param] = event.target.innerText
+      await this.$DB.room.updateOne({
+        _number: event.target.dataset.number
+      }).set(update)
+      console.log(`Room ${event.target.dataset.number} updated`)
+    },
+    changed (event) {
+      clearTimeout(this.timeoutID)
+      // _self = this
+      this.timeoutID = setTimeout(function () {
+        console.log(event.target)
+      // _self.data = $(event.target).html().trim()
+      }, 1000)
     },
     async loadFile (filename) {
       let workbook = null
@@ -163,19 +189,32 @@ let module = {
       }
       // If workbook is defined, means that reading from filename is OK. Assign
       if (workbook) {
-        console.log(`Importing rooms from ${filename}`)
+        console.log(`Loading rooms from ${filename}`)
+        // let _self = this
         workbook.eachSheet((worksheet, sheetId) => {
           // TODO: Check if worksheet has a recognized name (ri_nomenclatures, ri_bilan_thermique/aéraulique, ri_synthèse...)
           if (worksheet.name === 'ri_locaux') {
             // Reset the rooms to display only the ones taken from file
             this.rooms = []
+            // Set isImporting to true to add a status column for all rooms in the file (loading, new, modified...)
+            this.isImporting = true
             // console.log(`Loaded rooms from ${filename}`)
-            worksheet.eachRow((row, rowNumber) => {
+            worksheet.eachRow(async (row, rowNumber) => {
               // console.log(row)
               if (rowNumber > 1) {
-                this.rooms.push({
-
-                })
+                let room = {
+                  _building: row.values[1],
+                  _floor: row.values[2],
+                  _number: row.values[3].toString(),
+                  _name: row.values[4],
+                  _length: row.values[5] || 0,
+                  _width: row.values[6] || 0,
+                  _surface: row.values[7],
+                  _height: row.values[8]
+                }
+                // room.status = room._number === 1121 ? 'done' : await this.getRoomStatus(room)
+                room.status = await this.getRoomStatus(room)
+                this.rooms.push(room)
               }
             })
             // this.worksheets.push(worksheet)
@@ -183,9 +222,7 @@ let module = {
             console.log(worksheet.name)
           }
           // console.log(sheetId)
-          // this.tabs.push(worksheet)
         })
-        // this.worksheet = workbook.worksheets[0]
       } else {
         console.log(`Could not load rooms from ${filename}`)
       }
@@ -207,40 +244,72 @@ let module = {
       _self.$electron.remote.dialog.showOpenDialog(dialog, async (filenames) => {
         let filename = filenames[0]
         await _self.loadFile(filename)
-        if (this.worksheet) {
-          console.log(this.worksheet)
-          // let col = this.worksheet.getColumn(1)
+        if (this.rooms.length) {
+          console.log(`${this.rooms.length} rooms loaded`)
+          // async.each(this.rooms, this.checkRoomStatus, (err) => {
+          //   console.log(err)
+          // })
           // col.eachCell((cell, rowNumber) => {
           //   console.log(cell)
           // })
         }
       })
+    },
+    async getRoomStatus (room) {
+      let status
+      let roomExists = await this.$DB.room.findOne({
+        where: {_number: room._number},
+        select: [
+          '_building',
+          '_floor',
+          '_number',
+          '_name',
+          '_length',
+          '_width',
+          '_surface',
+          '_height'
+        ]
+      })
+
+      if (!roomExists) {
+        status = 'new'
+      } else {
+        delete roomExists._id
+        if (diff(room, roomExists)) {
+          // TODO: Send diff result in view to display in rooms table
+          status = 'modified'
+        } else {
+          status = 'unchanged'
+        }
+      }
+      return status
+    },
+    roomStatusIcon (status) {
+      return {
+        'fa-spin fa-spinner': !status,
+        'fa-plus': status === 'new',
+        'fa-edit': status === 'modified',
+        'fa-check': status === 'unchanged'
+      }
+    },
+    async confirmStatus (room) {
+      // console.log(await _self.$DB.room.find({}))
+      switch (room.status) {
+        case 'new':
+          await this.addRoom(room)
+          break
+        case 'modified':
+          await this.$DB.room
+            .updateOne({ _number: room._number })
+            .set(room)
+          // await this.addRoom(room)
+          break
+        default:
+          alert('oho..')
+      }
     }
   }
 }
-
-// util.inherits(module.methods.ExcelTransform(), stream.Transform)
-//
-// module.methods.ExcelTransform.prototype._transform = (doc, encoding, callback) => {
-//   this.worksheet.addRow({ name: doc.name })
-//   callback()
-// }
-//
-// module.methods.ExcelTransform.prototype._flush = (callback) => {
-//   this.workbook.commit() // commit only when you're done
-//
-//   var that = this
-//   // bl drains the stream and create a Buffer object you can then push
-//   this.workbook.stream.pipe(bl((err, data) => {
-//     if (err) {
-//       console.log(err)
-//     }
-//     that.push(data)
-//     callback()
-//   }))
-// }
-
-export default module
 </script>
 
 <style lang="css">

@@ -11,21 +11,21 @@ export default Waterline.Collection.extend({
       autoMigrations: {autoIncrement: true}
     },
 
-    reference: {
+    _building: { type: 'string' },
+    _floor: { type: 'string' },
+    _number: {
       type: 'string',
       required: true
     },
-    building: { type: 'string' },
-    floor: { type: 'string' },
-    name: {
+    _name: {
       type: 'string',
       defaultsTo: '*Local sans nom*'
     },
 
-    surface: { type: 'number' },
-    height: { type: 'number' },
-    length: { type: 'number' },
-    width: { type: 'number' },
+    _length: { type: 'number' },
+    _width: { type: 'number' },
+    _surface: { type: 'number' },
+    _height: { type: 'number' },
 
     project: {
       model: 'project'

@@ -8,7 +8,7 @@
           </span>
         </a>
       </li>
-      <li v-for="tab in tabs" :class="{ 'is-active': activeTab === kebabCase(tab.name) || !activeTab && tab.name === defaultTab }">
+      <li v-for="tab in tabs" :class="{ 'is-active': activeTab === kebabCase(tab.name) || !activeTab && kebabCase(tab.name) === kebabCase(defaultTab) }">
         <router-link :to="tab.to || {}">
           <span v-if="tab.icon" class="icon is-small"><i class="fa" :class="`fa-${tab.icon}`" aria-hidden="true"></i></span>
           <span v-if="!tab.hideName">{{ tab.name }}</span>
