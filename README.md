@@ -44,6 +44,7 @@ https://caolan.github.io/async/docs.html
 https://github.com/fshost/node-dir
 https://github.com/balderdashy/waterline
 https://github.com/guyonroche/exceljs#readme
+https://github.com/flitbit/diff
 
 ## DESIGN
 https://bulma.io/
