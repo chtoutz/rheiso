@@ -1,5 +1,5 @@
 <template>
-  <div id="projects-filesets">
+  <section class="section" id="projects-filesets">
     <!-- <div class="level">
       <div class="level-left">
         <h2 class="title">Jeux de fichiers <small class="subtitle">{{filesets.length}} éléments</small></h2>
@@ -60,8 +60,7 @@
       </div>
     </div>
     <!-- <code>{{activeProject.files}}</code> -->
-
-  </div>
+  </section>
 </template>
 
 <script>

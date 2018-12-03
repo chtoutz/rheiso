@@ -14,7 +14,7 @@
         <div class="ri-top-bar" v-if="$route.meta.showTopBar">
           Barre du haut. Pour afficher outils de dessin dans les plans (cana/gaines), ou boutons importer/exporter (applicable dans pas mal de composants)
         </div>
-        <h1 class="title">Gérer les TODO !!</h1>
+        <!-- <h1 class="title">Gérer les TODO !!</h1> -->
 
         <!-- Loader. Displayed between each route changes. TODO: REALLY use it, doesn't really work for now. And place it on middle of page. -->
         <div v-if="loading" class="ri-loader loading has-text-centered">
@@ -34,9 +34,7 @@
         </div>
 
         <!-- Router view -->
-        <div>
-          <router-view :active-project="project"></router-view>
-        </div>
+        <router-view :active-project="project"></router-view>
 
         <code>
           Route: {{$route.fullPath}}

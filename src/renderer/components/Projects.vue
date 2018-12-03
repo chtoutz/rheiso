@@ -1,9 +1,5 @@
 <template>
-  <section class="section" id="projects">
-    <div v-if="activeProject">
-      <router-view :active-project="activeProject"></router-view>
-    </div>
-  </section>
+  <router-view :active-project="activeProject"></router-view>
 </template>
 
 <script>

@@ -79,7 +79,7 @@ export default {
     // },
     async fetchProject (projId = this.projectId) {
       // this.dede = await this.$DB.project.findOne(projId).populate('filetrees')
-      let proj = await this.$DB.project.findOne(projId).populate('filesets').populate('rooms')
+      let proj = await this.$DB.project.findOne(projId).populate('filesets')
       this.$settings.set('activeProject', proj)
 
       if (this.$route.params.fileset && this.$route.params.fileset.length) {

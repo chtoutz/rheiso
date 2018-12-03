@@ -1,5 +1,5 @@
 <template>
-  <div id="projects-files">
+  <section class="section" id="projects-files">
     <!-- <div class="level">
       <div class="level-left">
         <h2 class="title">Fichiers du projet : {{ $route.params.filetree }} <small class="subtitle">{{ activeProject.filesCount }} éléments</small></h2>
@@ -129,7 +129,7 @@
     <!-- <code>project:{{project}}</code> -->
     <!-- <code>{{$settings.get('activeProject')}}</code> -->
 
-  </div>
+  </section>
 </template>
 
 <script>
