@@ -1,12 +1,12 @@
 <template>
-  <div id="projects-rooms">
+  <section class="section" id="projects-rooms">
     <div class="second-menubar">
       <a class="button" @click="importRooms()">Importer</a>
     </div>
     <table class="table is-narrow is-hoverable is-fullwidth is-bordered" v-if="rooms.length">
       <thead>
         <tr>
-          <th v-if="isImporting">Statut</th>
+          <th v-if="isImporting">Action</th>
           <th>Bloc</th>
           <th>Niveau</th>
           <th>#</th>
@@ -15,31 +15,27 @@
           <th><abbr title="Largeur">l</abbr></th>
           <th><abbr title="Surface">S</abbr></th>
           <th><abbr title="Hauteur">H</abbr></th>
+          <th><abbr title="Volume">V</abbr></th>
           <th><abbr title="Ajouter des en-tête custom avec bilan aéraulique, thermique">TODO</abbr></th>
         </tr>
       </thead>
       <tbody>
-        <tr :class="{'has-text-success': room.status === 'new', 'has-text-warning has-text-weight-bold': room.status === 'modified'}" v-for="room in rooms">
-          <td v-if="isImporting" @click="confirmStatus(room)">
-            <span class="icon">
-              <i class="fa" :class="roomStatusIcon(room.status)"></i>
-            </span>
-          </td>
-          <td contenteditable="true" @blur="updateRoom" :data-number="room._number" data-param="_building">{{ room._building }}</td>
-          <td contenteditable="true" @blur="updateRoom" :data-number="room._number" data-param="_floor">{{ room._floor }}</td>
-          <td contenteditable="true" @blur="updateRoom" :data-number="room._number" data-param="_number">{{ room._number }}</td>
-          <td contenteditable="true" @blur="updateRoom" :data-number="room._number" data-param="_name">{{ room._name }}</td>
-          <td contenteditable="true" @blur="updateRoom" :data-number="room._number" data-param="_length">{{ room._length }}</td>
-          <td contenteditable="true" @blur="updateRoom" :data-number="room._number" data-param="_width">{{ room._width }}</td>
-          <td contenteditable="true" @blur="updateRoom" :data-number="room._number" data-param="_surface">{{ room._surface }}</td>
-          <td contenteditable="true" data="_building"
-            @keyup="changed"
-            @blur="changed"
-            @paste="changed"
-            @delete="changed"
-            @focus="changed">{{ room._height }}</td>
-          <td><a href="https://en.wikipedia.org/wiki/Arsenal_F.C." title="Arsenal F.C.">{{ room.status }}</a></td>
-        </tr>
+        <room-line
+          v-for="room in rooms"
+          :key="room._number"
+          :_building="room._building"
+          :_floor="room._floor"
+          :_number="room._number"
+          :_name="room._name"
+          :_length="room._length"
+          :_width="room._width"
+          :_surface="room._surface"
+          :_height="room._height"
+          :status="room.status"
+          :room="room"
+          :isImporting="isImporting"
+          @update-room="updateRoom">
+        </room-line>
       </tbody>
     </table>
 
@@ -54,7 +50,7 @@
     <bottom-tabs :tabs="tabs" :activeTab="$route.params.bottomTab" :defaultTab="'Locaux'" :canAddTab="true"></bottom-tabs>
     <!-- {{ worksheets }} -->
     <!-- {{ stream._readableState.pipes.jsZip.files['_rels/.rels']._data.compressedContent }} -->
-  </div>
+  </section>
 </template>
 
 <script>
@@ -68,11 +64,14 @@ import ProjectsMixin from '@/mixins/Projects'
 import Card from '@/components/Layout/Card'
 import BottomTabs from '@/components/Layout/BottomTabs'
 
+import RoomLine from '@/components/Projects/Rooms/RoomLine'
+
 export default {
   name: 'projects-rooms',
   components: {
     Card,
-    BottomTabs
+    BottomTabs,
+    RoomLine
   },
   computed: {
     cardTitle () {
@@ -117,10 +116,11 @@ export default {
       workbook: new Excel.Workbook(),
       isImporting: false,
       timeoutID: null,
-      rooms: this.activeProject.rooms
+      rooms: []
     }
   },
   mounted () {
+    this.loadProjectRooms()
     // let room1 = {_num: 12, _name: 'Local 1'}
     // let room2 = {_num: 12, _name: 'Local 1'}
     // console.log(diff(room1, room2))
@@ -147,7 +147,7 @@ export default {
     // })).pipe(process.stdout)
   },
   methods: {
-    async addRoom (room) {
+    async addRoom (room = {}) {
       room.project = this.activeProject._id
       await this.$DB.room.create(room)
       room.status = 'unchanged'
@@ -159,15 +159,12 @@ export default {
       await this.$DB.room.updateOne({
         _number: event.target.dataset.number
       }).set(update)
+      this.loadProjectRooms()
       console.log(`Room ${event.target.dataset.number} updated`)
     },
-    changed (event) {
-      clearTimeout(this.timeoutID)
-      // _self = this
-      this.timeoutID = setTimeout(function () {
-        console.log(event.target)
-      // _self.data = $(event.target).html().trim()
-      }, 1000)
+    // Dynamic function to load rooms from $DB based on activeProject
+    async loadProjectRooms () {
+      this.rooms = await this.$DB.room.find({project: this.activeProject._id})
     },
     async loadFile (filename) {
       let workbook = null
@@ -246,9 +243,6 @@ export default {
         await _self.loadFile(filename)
         if (this.rooms.length) {
           console.log(`${this.rooms.length} rooms loaded`)
-          // async.each(this.rooms, this.checkRoomStatus, (err) => {
-          //   console.log(err)
-          // })
           // col.eachCell((cell, rowNumber) => {
           //   console.log(cell)
           // })
@@ -284,14 +278,6 @@ export default {
       }
       return status
     },
-    roomStatusIcon (status) {
-      return {
-        'fa-spin fa-spinner': !status,
-        'fa-plus': status === 'new',
-        'fa-edit': status === 'modified',
-        'fa-check': status === 'unchanged'
-      }
-    },
     async confirmStatus (room) {
       // console.log(await _self.$DB.room.find({}))
       switch (room.status) {
@@ -307,6 +293,7 @@ export default {
         default:
           alert('oho..')
       }
+      await this.loadProjectRooms()
     }
   }
 }
