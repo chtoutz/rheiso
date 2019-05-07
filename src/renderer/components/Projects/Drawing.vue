@@ -1,75 +1,90 @@
 <template>
-  <div id="ri-drawing" class="ri-drawing">
-    Dessin
+  <div id="wrapper">
+    <top-toolbar @draw="initShape" @select="initSelect"></top-toolbar>
+    <!-- <left-toolbar v-on:draw="initShape"></left-toolbar> -->
+    <!-- <right-toolbar></right-toolbar> -->
+    <!-- <bottom-toolbar></bottom-toolbar> -->
+    <board id="ri-drawing" v-on:test="logTest"></board>
   </div>
 </template>
 
 <script>
-import ProjectsMixin from '@/mixins/Projects'
+// import ProjectsMixin from '@/mixins/Projects'
 
-import Modal from '@/components/Layout/Modal'
-import TreeMenu from '@/components/Layout/TreeMenu'
-import Filetree from '@/components/Projects/Filetree'
+import Board from './Draw/Board'
+import LeftToolbar from './Draw/LeftToolbar'
+import TopToolbar from './Draw/TopToolbar'
 
 export default {
   name: 'projects-drawing',
   components: {
-    Modal,
-    Filetree,
-    TreeMenu
+    Board,
+    LeftToolbar,
+    TopToolbar
   },
   data () {
     return {
-      tree: null,
-      filterFiles: null,
-      showModal: false
+      // tree: null,
+      // filterFiles: null,
+      // showModal: false
     }
   },
   mounted () {
-    let tree = {
-      name: this.activeProject.name,
-      path: '',
-      depth: 0,
-      type: 'directory'
-    }
-    this.tree = tree
+    // let tree = {
+    //   name: this.activeProject.name,
+    //   path: '',
+    //   depth: 0,
+    //   type: 'directory'
+    // }
+    // this.tree = tree
   },
   methods: {
-    toggleModal () {
-      this.showModal = !this.showModal
+    initShape (shape) {
+      console.log(`Start drawing ${shape}`)
+      this.$emit(`init-${shape}`)
     },
-    openModal () {
-      this.showModal = true
+    initSelect () {
+      console.log(`Start selecting shapes`)
+      this.$emit('start-select')
     },
-    closeModal () {
-      this.showModal = false
+    // insertBloc (bloc) {
+    //   console.log(`Inserting ${bloc}`)
+    // },
+    logTest (msg) {
+      console.log(msg)
     }
-  },
-  mixins: [ ProjectsMixin ]
+  }
+  // mixins: [ ProjectsMixin ]
 }
 </script>
 
 <style lang="sass">
   @import "~bulma/sass/utilities/_all"
-  .floor-divider
-    // border: 1px solid black
-    .drawings-column
-      overflow-x: auto
-    .box
-      min-height: 117px
-      min-width: 120px
-      margin-right: 12px
-    .create-box
-      color: $primary
-      padding-top: 50px
-      // float: left
-      // position: absolute
-      // position: fixed
-    .create-column
-      margin-right: 50px
-      float: left
-    hr
-      background-color: $primary
-      margin-bottom: 0.8rem
-      margin-top: 0.8rem
+  #board
+    height: 100%
+  #wrapper
+    height: 100%
+    margin: 0
+    padding: 0
+  // .floor-divider
+  //   // border: 1px solid black
+  //   .drawings-column
+  //     overflow-x: auto
+  //   .box
+  //     min-height: 117px
+  //     min-width: 120px
+  //     margin-right: 12px
+  //   .create-box
+  //     color: $primary
+  //     padding-top: 50px
+  //     // float: left
+  //     // position: absolute
+  //     // position: fixed
+  //   .create-column
+  //     margin-right: 50px
+  //     float: left
+  //   hr
+  //     background-color: $primary
+  //     margin-bottom: 0.8rem
+  //     margin-top: 0.8rem
 </style>

@@ -59,7 +59,6 @@ https://inkscape.org/
 
 ## DRAWING
 https://github.com/thomasdesmoulin/dxf-parsing
-
 http://svgjs.com/
 https://github.com/otm/svg.math.js
 https://github.com/svgdotjs/svg.topath.js

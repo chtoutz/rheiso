@@ -56,7 +56,7 @@
     }
   },
   "dependencies": {
-    "async": "^2.6.1",
+    "async": "^2.6.2",
     "axios": "^0.18.0",
     "babili-webpack-plugin": "^0.1.2",
     "bulma": "^0.7.1",
@@ -67,10 +67,11 @@
     "exceljs": "^1.6.2",
     "font-awesome": "^4.7.0",
     "lodash": "^4.17.11",
-    "moment": "^2.22.2",
+    "moment": "^2.24.0",
     "nedb": "^1.8.0",
     "node-dir": "^0.1.17",
     "sails-disk": "^1.0.1",
+    "svg.js": "^2.7.1",
     "vue": "^2.5.16",
     "vue-electron": "^1.0.6",
     "vue-router": "^3.0.1",

@@ -9,7 +9,19 @@
         <router-link
           :to="{ name: 'projects.explore', params: { id: $settings.get('activeProject._id') } }"
           :class="{'is-active': $route.name === 'projects.explore'}"
-        >Résumé</router-link>
+        >Informations</router-link>
+      </li>
+      <li>
+        <router-link
+          :to="{ name: 'projects.heat-balance', params: { id: $settings.get('activeProject._id') } }"
+          :class="{'is-active': $route.name === 'projects.heat-balance'}"
+        >Bilan thermique</router-link>
+      </li>
+      <li>
+        <router-link
+          :to="{ name: 'projects.aeraulic-balance', params: { id: $settings.get('activeProject._id') } }"
+          :class="{'is-active': $route.name === 'projects.aeraulic-balance'}"
+        >Bilan aéraulique</router-link>
       </li>
       <li>
         <router-link
@@ -25,6 +37,12 @@
       </li>
       <li>
         <router-link
+          :to="{ name: 'projects.networks', params: { id: $settings.get('activeProject._id') } }"
+          :class="{'is-active': $route.name === 'projects.networks'}"
+        >Réseaux</router-link>
+      </li>
+      <li>
+        <router-link
           :to="{ name: 'projects.files', params: {fileset: 'local', id: $settings.get('activeProject._id')} }"
           :class="{'is-active': $route.name === 'projects.files'}"
         >Fichiers</router-link>
@@ -36,12 +54,12 @@
         >Réglages</router-link>
         <ul>
           <!-- <li><a>{{$settings.get('activeProject')}}</a></li> -->
-          <li>
+          <!-- <li>
             <router-link
               :to="{ name: 'projects.filesets', params: { id: $settings.get('activeProject._id') } }"
               :class="{'is-active': $route.name === 'projects.filesets'}"
             >Jeux de fichiers</router-link>
-          </li>
+          </li> -->
         </ul>
       </li>
     </ul>

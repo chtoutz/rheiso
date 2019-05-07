@@ -20,14 +20,14 @@
 </template>
 
 <script>
-import kebabCase from 'lodash/kebabCase'
+import _ from 'lodash'
 
 export default {
   name: 'bottom-tabs',
   props: [ 'tabs', 'activeTab', 'defaultTab', 'canAddTab' ],
   data () {
     return {
-      kebabCase: kebabCase
+      kebabCase: _.kebabCase
       // activeTab: this.$route.params.bottomTab
     }
   }
