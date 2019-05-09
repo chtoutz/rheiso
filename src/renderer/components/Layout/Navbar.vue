@@ -1,12 +1,18 @@
 <template>
-  <nav class="navbar is-dark is-fixed-top is-transpZZarent" role="navigation" aria-label="main navigation">
+  <nav class="navbar is-dark is-fixed-top is-transparent" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
-      <router-link :to="{name: 'home'}" class="navbar-item">
+      <a role="buttn" class="navbar-item burger" aria-label="menu" aria-expanded="false" data-target="sidebar">
+        <span class="icon icon-large">
+          <i class="fa fa-bars"></i>
+        </span>
+      </a>
+
+      <!-- <router-link :to="{name: 'home'}" class="navbar-item">
         <span class="icon">
           <i class="fa fa-home"></i>
         </span>
         <span>Accueil</span>
-      </router-link>
+      </router-link> -->
 
       <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbar">
         <span aria-hidden="true"></span>
@@ -52,6 +58,12 @@
       </div>
 
       <div class="navbar-end">
+        <router-link :to="{name: 'home'}" class="navbar-item">
+          <span class="icon">
+            <i class="fa fa-dashboard"></i>
+          </span>
+          <span>Dashboard</span>
+        </router-link>
         <div class="navbar-item">
           <a class="has-text-light">
             <span class="icon">

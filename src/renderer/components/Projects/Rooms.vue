@@ -3,52 +3,202 @@
     <div class="second-menubar">
       <a class="button" @click="importRooms()">Importer</a>
     </div>
-    <table class="table is-narrow is-hoverable is-fullwidth is-bordered" v-if="rooms.length">
-      <thead>
-        <tr>
-          <th v-if="isImporting">Action</th>
-          <th>Bloc</th>
-          <th>Niveau</th>
-          <th>#</th>
-          <th>Nom</th>
-          <th><abbr title="Longueur">L</abbr></th>
-          <th><abbr title="Largeur">l</abbr></th>
-          <th><abbr title="Surface">S</abbr></th>
-          <th><abbr title="Hauteur">H</abbr></th>
-          <th><abbr title="Volume">V</abbr></th>
-          <th><abbr title="Ajouter des en-tête custom avec bilan aéraulique, thermique">TODO</abbr></th>
-        </tr>
-      </thead>
-      <tbody>
-        <room-line
-          v-for="room in rooms"
-          :key="room._number"
-          :_building="room._building"
-          :_floor="room._floor"
-          :_number="room._number"
-          :_name="room._name"
-          :_length="room._length"
-          :_width="room._width"
-          :_surface="room._surface"
-          :_height="room._height"
-          :status="room.status"
-          :room="room"
-          :isImporting="isImporting"
-          @update-room="updateRoom">
-        </room-line>
-      </tbody>
-    </table>
 
-    <article class="message is-primary" v-else>
-      <div class="message-body">
-        Ce projet ne contient pas encore de locaux. Vous pouvez en importer depuis un tableur à l'aide du bouton dans la barre de menu, ou les ajouter un par un.
+    <!-- <div class="tabs is-centered is-boxed">
+      <ul>
+        <li :class="{'is-active': $route.params.bottomTab === 'projects.heat-balance'}">
+          <router-link
+            :to="{ params: { bottomTab: 'projects.heat-balance' } }"
+          >Bilan thermique</router-link>
+        </li>
+        <li :class="{'is-active': $route.params.bottomTab === 'projects.aeraulic-balance'}">
+          <router-link
+            :to="{ params: { bottomTab: 'projects.aeraulic-balance' } }"
+          >Bilan aéraulique</router-link>
+        </li>
+      </ul>
+    </div> -->
+
+    <!-- <div class="card">
+      <header class="card-header">
+        <p class="card-header-title">
+          Filtrer les résultats
+        </p>
+        <a href="#" class="card-header-icon" aria-label="more options">
+          <span class="icon">
+            <i class="fa fa-angle-down" aria-hidden="true"></i>
+          </span>
+        </a>
+      </header>
+      <div class="card-content">
+
       </div>
-    </article>
-    <!-- <ul>
-      <li v-for="worksheet in worksheets">{{worksheet.name}}</li>
-    </ul> -->
-    <bottom-tabs :tabs="tabs" :activeTab="$route.params.bottomTab" :defaultTab="'Locaux'" :canAddTab="true"></bottom-tabs>
-    <!-- {{ worksheets }} -->
+    </div> -->
+
+    <div class="card">
+      <header class="card-header">
+        <p class="card-header-title">
+          Locaux
+        </p>
+        <a href="#" class="card-header-icon" aria-label="more options">
+          <nav class="level is-mobile">
+            <div class="level-left">
+
+            </div>
+            <div class="level-right">
+              <a class="level-item" @click="toggleSearch" :class="{'has-text-grey': !search}">
+                <span class="icon"><i class="fa fa-search"></i></span>
+              </a>
+              <a class="level-item" @click="toggleEditMode" :class="{'has-text-grey': !editMode}">
+                <span class="icon"><i class="fa fa-edit"></i></span>
+              </a>
+              <a class="level-item">
+                <span class="icon"><i class="fa fa-list"></i></span>
+              </a>
+            </div>
+          </nav>
+          <!-- <span class="icon">
+            <i class="fa fa-angle-down" aria-hidden="true"></i>
+          </span> -->
+        </a>
+      </header>
+      <div class="card-content">
+        <div class="content" v-if="search">
+          <!-- This form shall be used to filter rooms based on Block / level / name for main searchbar, and a "More criterias" button to search by temperature setpoints, or min flow rate, or adjacent rooms... -->
+          <form class="form" action="index.html" method="post">
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">From</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <p class="control is-expanded has-icons-left">
+                    <input class="input" type="text" placeholder="Name">
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-user"></i>
+                    </span>
+                  </p>
+                </div>
+                <div class="field">
+                  <p class="control is-expanded has-icons-left has-icons-right">
+                    <input class="input is-success" type="email" placeholder="Email" value="alex@smith.com">
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-envelope"></i>
+                    </span>
+                    <span class="icon is-small is-right">
+                      <i class="fas fa-check"></i>
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="field is-horizontal">
+              <div class="field-label"></div>
+              <div class="field-body">
+                <div class="field is-expanded">
+                  <div class="field has-addons">
+                    <p class="control">
+                      <a class="button is-static">
+                        +44
+                      </a>
+                    </p>
+                    <p class="control is-expanded">
+                      <input class="input" type="tel" placeholder="Your phone number">
+                    </p>
+                  </div>
+                  <p class="help">Do not enter the first zero</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Department</label>
+              </div>
+              <div class="field-body">
+                <div class="field is-narrow">
+                  <div class="control">
+                    <div class="select is-fullwidth">
+                      <select>
+                        <option>Business development</option>
+                        <option>Marketing</option>
+                        <option>Sales</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <table class="table is-narrow is-hoverable is-fullwidth is-bordered" id="rooms-list" v-if="rooms.length">
+          <thead>
+            <tr>
+              <th v-if="isImporting">Action</th>
+              <th>Bloc</th>
+              <th>Niveau</th>
+              <th>#</th>
+              <th>Nom</th>
+              <th><abbr title="Longueur">L</abbr></th>
+              <th><abbr title="Largeur">l</abbr></th>
+              <th><abbr title="Surface">S</abbr></th>
+              <th><abbr title="Hauteur">H</abbr></th>
+              <th><abbr title="Volume">V</abbr></th>
+              <th><abbr title="Ajouter des en-tête custom avec bilan aéraulique, thermique">TODO</abbr></th>
+            </tr>
+          </thead>
+          <tbody>
+            <room-line
+              v-for="room in rooms"
+              :key="room._number"
+              :room="room"
+              :isImporting="isImporting"
+              :editMode="editMode"
+              :selected="selectedIds.indexOf(room._id) > -1"
+              @update-room="updateRoom"
+              @select-room="selectRoom">
+            </room-line>
+          </tbody>
+        </table>
+
+        <article class="message is-primary" v-else>
+          <div class="message-body">
+            Ce projet ne contient pas encore de locaux. Vous pouvez en importer depuis un tableur à l'aide du bouton dans la barre de menu, ou les ajouter un par un.
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <br>
+
+    <div class="card" id="room-props-card">
+      <header class="card-header">
+        <p class="card-header-title">
+          {{ roomPropsTitle || 'Aucun local sélectionné' }}
+        </p>
+        <!-- <a href="#" class="card-header-icon" aria-label="more options" @click="toggleCardBody('heat')">
+          <span class="icon">
+            <i class="fa" :class="{'fa-angle-down': showHeatBalance, 'fa-angle-up': !showHeatBalance}" aria-hidden="true"></i>
+          </span>
+        </a> -->
+      </header>
+      <div class="card-content" v-if="showRoomProps">
+        <div class="content">
+          <heat-balance :selectedRooms="selectedRooms"></heat-balance>
+        </div>
+      </div>
+      <!-- <footer class="card-footer">
+        <a href="#" class="card-footer-item">Save</a>
+        <a href="#" class="card-footer-item">Edit</a>
+        <a href="#" class="card-footer-item">Delete</a>
+      </footer> -->
+    </div>
+
+    <br>
+
+    {{ selectedRooms }}
     <!-- {{ stream._readableState.pipes.jsZip.files['_rels/.rels']._data.compressedContent }} -->
   </section>
 </template>
@@ -65,17 +215,24 @@ import Card from '@/components/Layout/Card'
 import BottomTabs from '@/components/Layout/BottomTabs'
 
 import RoomLine from '@/components/Projects/Rooms/RoomLine'
+import HeatBalance from '@/components/Projects/HeatBalance'
+import AeraulicBalance from '@/components/Projects/AeraulicBalance'
 
 export default {
   name: 'projects-rooms',
   components: {
     Card,
     BottomTabs,
-    RoomLine
+    RoomLine,
+    HeatBalance,
+    AeraulicBalance
   },
   computed: {
-    cardTitle () {
-      return `Liste des locaux`
+    selectedRooms () {
+      let self = this
+      return _.filter(this.rooms, (o) => {
+        return self.selectedIds.indexOf(o._id) > -1
+      })
     },
     // activeTab () {
     //   return _.kebabCase(this.$route.params.bottomTab)
@@ -107,6 +264,24 @@ export default {
         })
       }
       return tabs
+    },
+    showRoomProps () {
+      return this.selectedIds.length > 0
+    },
+    roomPropsTitle () {
+      let title
+      let numberSelected = this.selectedIds.length
+
+      if (numberSelected === 1) {
+        let room = this.selectedRooms[0]
+        title = `#${room._number} - ${room._name}`
+      } else if (numberSelected > 1) {
+        title = `${numberSelected} locaux sélectionnés`
+      } else {
+        title = 'Aucun local sélectionné'
+      }
+      console.log(title)
+      return title
     }
   },
   mixins: [ ProjectsMixin ],
@@ -116,7 +291,12 @@ export default {
       workbook: new Excel.Workbook(),
       isImporting: false,
       timeoutID: null,
-      rooms: []
+      editMode: false,
+      search: false,
+      rooms: [],
+      selectedIds: [],
+      showHeatBalance: true
+      // roomPropsTitle: false
     }
   },
   mounted () {
@@ -147,6 +327,22 @@ export default {
     // })).pipe(process.stdout)
   },
   methods: {
+    toggleCardBody (card) {
+      if (card === 'heat') {
+        this.showHeatBalance = !this.showHeatBalance
+      } else if (card === 'aeraulic') {
+        this.showAeraulicBalance = !this.showAeraulicBalance
+      }
+    },
+    toggleRoomProps () {
+      this.showRoomProps = !this.showRoomProps
+    },
+    toggleEditMode () {
+      this.editMode = !this.editMode
+    },
+    toggleSearch () {
+      this.search = !this.search
+    },
     async addRoom (room = {}) {
       room.project = this.activeProject._id
       await this.$DB.room.create(room)
@@ -162,9 +358,29 @@ export default {
       this.loadProjectRooms()
       console.log(`Room ${event.target.dataset.number} updated`)
     },
+    selectRoom (roomNumber, keepSelection = false) {
+      // First, get index
+      let index = this.selectedIds.indexOf(roomNumber)
+      // If ctrl key is not pressed, consider that we want only one room selected
+      if (!keepSelection) {
+        this.selectedIds = []
+      }
+      // Toggle room clicked into selected rooms array
+      if (index > -1 && keepSelection) {
+        this.selectedIds.splice(index, 1)
+      } else {
+        this.selectedIds.push(roomNumber)
+      }
+    },
+    // getSelectedRooms () {
+    //
+    // },
     // Dynamic function to load rooms from $DB based on activeProject
     async loadProjectRooms () {
       this.rooms = await this.$DB.room.find({project: this.activeProject._id})
+      // .populate('walls')
+      // .populate('supply-air')
+      // .populate('return-air')
     },
     async loadFile (filename) {
       let workbook = null

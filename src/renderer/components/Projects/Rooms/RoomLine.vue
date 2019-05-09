@@ -1,18 +1,20 @@
 <template>
-  <tr :class="{'has-text-success': room.status === 'new', 'has-text-warning has-text-weight-bold': room.status === 'modified'}">
+  <tr
+    :class="roomLineClass"
+    @click="handleClick($event, room._id)">
     <td v-if="isImporting" @click="confirmStatus(room)">
       <span class="icon">
         <i class="fa" :class="roomStatusIcon"></i>
       </span>
     </td>
-    <td contenteditable="true" @blur="$emit('update-room', $event)" :data-number="room._number" data-param="_building">{{ room._building }}</td>
-    <td contenteditable="true" @blur="$emit('update-room', $event)" :data-number="room._number" data-param="_floor">{{ room._floor }}</td>
-    <td contenteditable="true" @blur="$emit('update-room', $event)" :data-number="room._number" data-param="_number">{{ room._number }}</td>
-    <td contenteditable="true" @blur="$emit('update-room', $event)" :data-number="room._number" data-param="_name">{{ room._name }}</td>
-    <td contenteditable="true" @blur="$emit('update-room', $event)" :data-number="room._number" data-param="_length">{{ room._length }}</td>
-    <td contenteditable="true" @blur="$emit('update-room', $event)" :data-number="room._number" data-param="_width">{{ room._width }}</td>
-    <td :contenteditable="!room._length && !room._width" @blur="$emit('update-room', $event)" :data-number="room._number" data-param="_surface">{{ _surface }}</td>
-    <td contenteditable="true" @blur="$emit('update-room', $event)" :data-number="room._number" data-param="_height">{{ room._height }}</td>
+    <td :contenteditable="editMode" @blur="$emit('update-room', $event)" :data-number="room._number" data-param="_building">{{ room._building }}</td>
+    <td :contenteditable="editMode" @blur="$emit('update-room', $event)" :data-number="room._number" data-param="_floor">{{ room._floor }}</td>
+    <td :contenteditable="editMode" @blur="$emit('update-room', $event)" :data-number="room._number" data-param="_number">{{ room._number }}</td>
+    <td :contenteditable="editMode" @blur="$emit('update-room', $event)" :data-number="room._number" data-param="_name">{{ room._name }}</td>
+    <td :contenteditable="editMode" @blur="$emit('update-room', $event)" :data-number="room._number" data-param="_length">{{ room._length }}</td>
+    <td :contenteditable="editMode" @blur="$emit('update-room', $event)" :data-number="room._number" data-param="_width">{{ room._width }}</td>
+    <td :contenteditable="editMode && !room._length && !room._width" @blur="$emit('update-room', $event)" :data-number="room._number" data-param="_surface">{{ _surface }}</td>
+    <td :contenteditable="editMode" @blur="$emit('update-room', $event)" :data-number="room._number" data-param="_height">{{ room._height }}</td>
     <td>{{ _volume }}</td>
     <!-- <td contenteditable="true"
       @keyup="changed"
@@ -33,16 +35,9 @@ export default {
   name: 'rooms-line',
   props: [
     'room',
-    'isImporting'
-    // 'status',
-    // '_building',
-    // '_floor',
-    // '_number',
-    // '_name',
-    // '_length',
-    // '_width',
-    // '_surface',
-    // '_height'
+    'isImporting',
+    'editMode',
+    'selected'
   ],
   computed: {
     roomStatusIcon () {
@@ -51,6 +46,13 @@ export default {
         'fa-plus': this.room.status === 'new',
         'fa-edit': this.room.status === 'modified',
         'fa-check': this.room.status === 'unchanged'
+      }
+    },
+    roomLineClass () {
+      return {
+        'has-text-warning has-text-weight-bold': this.room.status === 'modified',
+        'has-text-success': this.room.status === 'new',
+        'has-text-white has-background-primary': this.selected
       }
     },
     _surface () {
@@ -68,6 +70,11 @@ export default {
         console.log(event.target)
       // _self.data = $(event.target).html().trim()
       }, 1000)
+    },
+    handleClick (event, roomId) {
+      if (!this.editMode) {
+        this.$emit('select-room', roomId, event.ctrlKey)
+      }
     }
   }
 }
