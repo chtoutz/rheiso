@@ -186,7 +186,7 @@
       </header>
       <div class="card-content" v-if="showRoomProps">
         <div class="content">
-          <heat-balance :selectedRooms="selectedRooms"></heat-balance>
+          <room-props :selectedRooms="selectedRooms"></room-props>
         </div>
       </div>
       <!-- <footer class="card-footer">
@@ -215,8 +215,9 @@ import Card from '@/components/Layout/Card'
 import BottomTabs from '@/components/Layout/BottomTabs'
 
 import RoomLine from '@/components/Projects/Rooms/RoomLine'
-import HeatBalance from '@/components/Projects/HeatBalance'
-import AeraulicBalance from '@/components/Projects/AeraulicBalance'
+import RoomProps from '@/components/Projects/Rooms/RoomProps'
+// import HeatBalance from '@/components/Projects/HeatBalance'
+// import AeraulicBalance from '@/components/Projects/AeraulicBalance'
 
 export default {
   name: 'projects-rooms',
@@ -224,8 +225,8 @@ export default {
     Card,
     BottomTabs,
     RoomLine,
-    HeatBalance,
-    AeraulicBalance
+    // HeatBalance,
+    RoomProps
   },
   computed: {
     selectedRooms () {
@@ -280,7 +281,7 @@ export default {
       } else {
         title = 'Aucun local sélectionné'
       }
-      console.log(title)
+
       return title
     }
   },
@@ -294,8 +295,8 @@ export default {
       editMode: false,
       search: false,
       rooms: [],
-      selectedIds: [],
-      showHeatBalance: true
+      selectedIds: []
+      // showHeatBalance: true
       // roomPropsTitle: false
     }
   },
@@ -327,13 +328,13 @@ export default {
     // })).pipe(process.stdout)
   },
   methods: {
-    toggleCardBody (card) {
-      if (card === 'heat') {
-        this.showHeatBalance = !this.showHeatBalance
-      } else if (card === 'aeraulic') {
-        this.showAeraulicBalance = !this.showAeraulicBalance
-      }
-    },
+    // toggleCardBody (card) {
+    //   if (card === 'heat') {
+    //     this.showHeatBalance = !this.showHeatBalance
+    //   } else if (card === 'aeraulic') {
+    //     this.showAeraulicBalance = !this.showAeraulicBalance
+    //   }
+    // },
     toggleRoomProps () {
       this.showRoomProps = !this.showRoomProps
     },

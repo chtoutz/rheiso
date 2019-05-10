@@ -67,17 +67,17 @@ export default new Router({
           path: 'drawing',
           name: 'projects.drawing',
           component: require('@/components/Projects/Drawing').default
-        },
-        {
-          path: 'heat-balance',
-          name: 'projects.heat-balance',
-          component: require('@/components/Projects/HeatBalance').default
-        },
-        {
-          path: 'aeraulic-balance',
-          name: 'projects.aeraulic-balance',
-          component: require('@/components/Projects/AeraulicBalance').default
         }
+        // {
+        //   path: 'heat-balance',
+        //   name: 'projects.heat-balance',
+        //   component: require('@/components/Projects/HeatBalance').default
+        // },
+        // {
+        //   path: 'aeraulic-balance',
+        //   name: 'projects.aeraulic-balance',
+        //   component: require('@/components/Projects/AeraulicBalance').default
+        // }
       ]
     },
     {

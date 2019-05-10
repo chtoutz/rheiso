@@ -11,7 +11,7 @@
           :class="{'is-active': $route.name === 'projects.explore'}"
         >Informations</router-link>
       </li>
-      <li>
+      <!-- <li>
         <router-link
           :to="{ name: 'projects.heat-balance', params: { id: $settings.get('activeProject._id') } }"
           :class="{'is-active': $route.name === 'projects.heat-balance'}"
@@ -22,7 +22,7 @@
           :to="{ name: 'projects.aeraulic-balance', params: { id: $settings.get('activeProject._id') } }"
           :class="{'is-active': $route.name === 'projects.aeraulic-balance'}"
         >Bilan aéraulique</router-link>
-      </li>
+      </li> -->
       <li>
         <router-link
           :to="{ name: 'projects.drawing', params: { id: $settings.get('activeProject._id') } }"
