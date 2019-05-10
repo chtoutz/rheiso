@@ -8,58 +8,15 @@
         </div>
       </article>
     </div>
-    <div class="tile is-parent">
+    <div class="tile is-parent is-vertical">
+      <!-- Display tabs to switch between synthesis, walls, air flows or heat balance -->
       <article class="tile is-child">
-        <!-- <p class="title">Main column</p>
-        <p class="subtitle">With some content</p> -->
-        <div class="tabs is-boxed">
-          <ul>
-            <li :class="{'is-active': roomProp === 'synthesis'}">
-              <a @click="roomProps('synthesis')">
-                <span class="icon has-text-grey"><i class="fa fa-dashboard" aria-hidden="true"></i></span>
-                <span>Synthèse</span>
-              </a>
-            </li>
-            <li :class="{'is-active': roomProp === 'caracteristics'}">
-              <a @click="roomProps('caracteristics')">
-                <span class="icon has-text-grey"><i class="fa fa-building-o" aria-hidden="true"></i></span>
-                <span>Caractéristiques</span>
-              </a>
-            </li>
-            <li :class="{'is-active': roomProp === 'walls'}">
-              <a @click="roomProps('walls')">
-                <span class="icon has-text-grey"><i class="fa fa-music" aria-hidden="true"></i></span>
-                <span>Parois</span>
-              </a>
-            </li>
-            <li :class="{'is-active': roomProp === 'air-supply'}">
-              <a @click="roomProps('air-supply')">
-                <span class="icon has-text-success"><i class="fa fa-arrow-down" aria-hidden="true"></i></span>
-                <span>Flux entrants</span>
-              </a>
-            </li>
-            <li :class="{'is-active': roomProp === 'air-return'}">
-              <a @click="roomProps('air-return')">
-                <span class="icon has-text-primary"><i class="fa fa-arrow-up" aria-hidden="true"></i></span>
-                <span>Flux sortants</span>
-              </a>
-            </li>
-            <li :class="{'is-active': roomProp === 'heat-balance'}">
-              <a @click="roomProps('heat-balance')">
-                <span class="icon has-text-danger"><i class="fa fa-sun-o" aria-hidden="true"></i></span>
-                <span>Bilan été</span>
-              </a>
-            </li>
-            <li :class="{'is-active': roomProp === 'cool-balance'}">
-              <a @click="roomProps('cool-balance')">
-                <span class="icon has-text-info"><i class="fa fa-snowflake-o" aria-hidden="true"></i></span>
-                <span>Bilan hiver</span>
-              </a>
-            </li>
-          </ul>
-        </div>
-        <!-- <div class="cotent"> -->
-        <div class="box" v-if="roomProp === 'synthesis' || roomProp === 'caracteristics'">
+        <props-tabs :roomProps="roomProps" @set-room-props="setRoomProps"></props-tabs>
+      </article>
+
+      <article class="tile is-child box">
+        <!-- Display tabs to switch between synthesis, walls, air flows or heat balance -->
+        <div class="bx" v-if="roomProps === 'synthesis'">
           <p class="subtitle">Caractéristiques</p>
 
           <div class="tile is-ancestor">
@@ -119,6 +76,7 @@
           </div>
 
         </div>
+
       </article>
     </div>
   </div>
@@ -127,8 +85,13 @@
 <script>
 import SVG from 'svg.js'
 
+import PropsTabs from '@/components/Projects/Rooms/_RoomPropsTabs'
+
 export default {
   name: 'room-props',
+  components: {
+    PropsTabs
+  },
   props: [
     'selectedRooms'
   ],
@@ -157,12 +120,17 @@ export default {
   data () {
     return {
       drawing: null,
-      // TODO: get roomProp from entry in user.prefs.ui.roomProp
-      roomProp: 'synthesis'
+      roomProps: null
     }
   },
   methods: {
     drawRoomShape (walls = this.drawing.get('layer-walls'), room = this.selectedRoom) {
+      // if (!walls) {
+      //   walls = this.drawing.get('layer-walls')
+      // }
+      // if (!room && this.selectRoom) {
+      //   room = this.selectedRoom
+      // }
       if (!walls || !room) {
         console.log('no walls or room to generate shape')
         return false
@@ -195,21 +163,25 @@ export default {
         rect.center(root.clientWidth / 2, root.clientHeight / 2)
       }
     },
-    roomProps (property) {
-      if (!property || ['synthesis', 'caracteristics', 'walls', 'air-supply', 'air-return', 'heat-balance', 'cool-balance'].indexOf(property) < 0) {
+    setRoomProps (property = 'synthesis') {
+      if (['synthesis', 'caracteristics', 'walls', 'air-supply', 'air-return', 'heat-balance', 'cool-balance'].indexOf(property) < 0) {
         property = 'synthesis'
       }
-      this.roomProp = property
+      this.roomProps = property
     }
   },
   mounted () {
-    // this.de()
+    // TODO: get roomProps from entry in user.prefs.ui.roomProps
+    this.roomProps = 'synthesis'
     this.drawing = SVG('drawing-zone').size('100%', '100%')
     let walls = this.drawing.group().attr({id: 'layer-walls'})
     // console.log(this, walls)
     this.drawRoomShape(walls)
     this.$watch('selectedRoom', (val, oldValue) => {
       this.drawRoomShape(walls, val)
+    })
+    this.$watch('roomProps', (val, oldValue) => {
+      this.drawRoomShape(walls, this.selectedRoom)
     })
   }
 }

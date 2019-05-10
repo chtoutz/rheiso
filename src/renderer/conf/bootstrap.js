@@ -10,6 +10,7 @@ let initDatabase = (next) => {
   waterline.registerModel(models.Project)
   waterline.registerModel(models.Fileset)
   waterline.registerModel(models.Room)
+  waterline.registerModel(models.Network)
 
   waterline.initialize(conf, (err, ontology) => {
     return next(err, ontology)

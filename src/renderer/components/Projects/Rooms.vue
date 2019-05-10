@@ -185,9 +185,7 @@
         </a> -->
       </header>
       <div class="card-content" v-if="showRoomProps">
-        <div class="content">
-          <room-props :selectedRooms="selectedRooms"></room-props>
-        </div>
+        <room-props :selectedRooms="selectedRooms"></room-props>
       </div>
       <!-- <footer class="card-footer">
         <a href="#" class="card-footer-item">Save</a>
@@ -216,8 +214,6 @@ import BottomTabs from '@/components/Layout/BottomTabs'
 
 import RoomLine from '@/components/Projects/Rooms/RoomLine'
 import RoomProps from '@/components/Projects/Rooms/RoomProps'
-// import HeatBalance from '@/components/Projects/HeatBalance'
-// import AeraulicBalance from '@/components/Projects/AeraulicBalance'
 
 export default {
   name: 'projects-rooms',
@@ -225,7 +221,6 @@ export default {
     Card,
     BottomTabs,
     RoomLine,
-    // HeatBalance,
     RoomProps
   },
   computed: {
