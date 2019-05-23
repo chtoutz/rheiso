@@ -26,7 +26,14 @@ export default Waterline.Collection.extend({
     _width: { type: 'number' },
     _surface: { type: 'number' },
     _height: { type: 'number' },
+    _volume: { type: 'number' },
 
+    _airSupply: { type: 'number' },
+    _airReturn: { type: 'number' },
+    _airInTransfer: { type: 'number' },
+    _airExtTransfer: { type: 'number' },
+
+    // TODO: Add relation to many HeatBalance and AeraulicBalance model entities
     project: {
       model: 'project'
     }

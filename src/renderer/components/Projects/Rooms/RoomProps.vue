@@ -9,74 +9,39 @@
       </article>
     </div>
     <div class="tile is-parent is-vertical">
-      <!-- Display tabs to switch between synthesis, walls, air flows or heat balance -->
+      <!-- Display tabs to switch between synthesis, structure, air flows or heat balance -->
       <article class="tile is-child">
         <props-tabs :roomProps="roomProps" @set-room-props="setRoomProps"></props-tabs>
       </article>
 
-      <article class="tile is-child box">
-        <!-- Display tabs to switch between synthesis, walls, air flows or heat balance -->
-        <div class="bx" v-if="roomProps === 'synthesis'">
-          <p class="subtitle">Caractéristiques</p>
+      <article class="tile is-child" v-if="roomProps === 'synthesis'">
+        <!-- Display tabs to switch between synthesis, structure, air flows or heat balance -->
+        <synthesis :selectedRoom="selectedRoom" :selectedMany="selectedMany"></synthesis>
+      </article>
 
-          <div class="tile is-ancestor">
-            <div class="tile is-parent is-3">
-              <article class="tile is-child">
-                <div class="field">
-                  <label class="label">Longueur</label>
-                  <div class="control">
-                    <input class="input" type="text" :placeholder="selectedMany ? '* Varie *' : 'Longueur du local'" v-model="selectedRoom._length">
-                  </div>
-                </div>
-              </article>
-            </div>
-            <div class="tile is-parent is-3">
-              <article class="tile is-child">
-                <div class="field">
-                  <label class="label">Largeur</label>
-                  <div class="control">
-                    <input class="input" type="text"  :placeholder="selectedMany ? '* Varie *' : 'Largeur du local'" v-model="selectedRoom._width">
-                  </div>
-                </div>
-              </article>
-            </div>
-            <div class="tile is-parent is-3">
-              <article class="tile is-child">
-                <div class="field">
-                  <label class="label">Hauteur</label>
-                  <div class="control">
-                    <input class="input" type="text"  :placeholder="selectedMany ? '* Varie *' : 'Hauteur du local'" v-model="selectedRoom._height">
-                  </div>
-                </div>
-              </article>
-            </div>
-          </div>
+      <article class="tile is-child" v-if="roomProps === 'structure' || roomProps === 'synthesis'">
+        <!-- Display tabs to switch between synthesis, structure, air flows or heat balance -->
+        <structure :roomProps="roomProps" :selectedRoom="selectedRoom" :selectedMany="selectedMany"></structure>
+      </article>
 
-          <div class="tile is-ancestor">
-            <div class="tile is-parent">
-              <article class="tile is-child">
-                <div class="field">
-                  <label class="label">Surface</label>
-                  <div class="control">
-                    <input class="input" :class="{'is-static': selectedRoom._height}" type="text" :placeholder="selectedMany ? '* Varie *' : 'Surface du local'" v-model="selectedRoom._surface">
-                  </div>
-                </div>
-              </article>
-            </div>
-            <div class="tile is-parent">
-              <article class="tile is-child">
-                <div class="field">
-                  <label class="label">Volume</label>
-                  <div class="control">
-                    <input class="input" :class="{'is-static': selectedRoom._height}" type="text"  :placeholder="selectedMany ? '* Varie *' : 'Volume du local'" v-model="selectedRoom._volume">
-                  </div>
-                </div>
-              </article>
-            </div>
-          </div>
+      <article class="tile is-child" v-if="roomProps === 'air-supply'">
+        <!-- Display tabs to switch between synthesis, structure, air flows or heat balance -->
+        <span></span>
+      </article>
 
-        </div>
+      <article class="tile is-child" v-if="roomProps === 'air-return'">
+        <!-- Display tabs to switch between synthesis, structure, air flows or heat balance -->
+        <span></span>
+      </article>
 
+      <article class="tile is-child" v-if="roomProps === 'heat-balance'">
+        <!-- Display tabs to switch between synthesis, structure, air flows or heat balance -->
+        <span></span>
+      </article>
+
+      <article class="tile is-child" v-if="roomProps === 'cool-balance'">
+        <!-- Display tabs to switch between synthesis, structure, air flows or heat balance -->
+        <span></span>
       </article>
     </div>
   </div>
@@ -86,11 +51,13 @@
 import SVG from 'svg.js'
 
 import PropsTabs from '@/components/Projects/Rooms/_RoomPropsTabs'
+import Synthesis from '@/components/Projects/Rooms/Props/Synthesis'
+import Structure from '@/components/Projects/Rooms/Props/Structure'
 
 export default {
   name: 'room-props',
   components: {
-    PropsTabs
+    PropsTabs, Synthesis, Structure
   },
   props: [
     'selectedRooms'
@@ -164,7 +131,7 @@ export default {
       }
     },
     setRoomProps (property = 'synthesis') {
-      if (['synthesis', 'caracteristics', 'walls', 'air-supply', 'air-return', 'heat-balance', 'cool-balance'].indexOf(property) < 0) {
+      if (['synthesis', 'caracteristics', 'structure', 'air-supply', 'air-return', 'heat-balance', 'cool-balance'].indexOf(property) < 0) {
         property = 'synthesis'
       }
       this.roomProps = property

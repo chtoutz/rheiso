@@ -7,8 +7,8 @@
           <span>Synthèse</span>
         </a>
       </li>
-      <li :class="{'is-active': roomProps === 'walls'}">
-        <a @click="$emit('set-room-props', 'walls')">
+      <li :class="{'is-active': roomProps === 'structure'}">
+        <a @click="$emit('set-room-props', 'structure')">
           <span class="icon has-text-grey"><i class="fa fa-building-o" aria-hidden="true"></i></span>
           <span>Structure</span>
         </a>
