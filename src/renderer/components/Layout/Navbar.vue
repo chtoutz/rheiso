@@ -7,12 +7,12 @@
         </span>
       </a>
 
-      <!-- <router-link :to="{name: 'home'}" class="navbar-item">
+      <router-link :to="{name: 'home'}" class="navbar-item">
         <span class="icon">
           <i class="fa fa-home"></i>
         </span>
         <span>Accueil</span>
-      </router-link> -->
+      </router-link>
 
       <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbar">
         <span aria-hidden="true"></span>
@@ -21,7 +21,7 @@
       </a>
     </div>
 
-    <div id="navbar" class="navbar-menu" v-if="activeProject">
+    <div id="navbar" class="navbar-menu" v-if="$settings.get('activeProject')">
       <div class="navbar-start">
         <!-- <a class="navbar-item">
           <div class="field">
@@ -31,12 +31,13 @@
           </div>
         </a> -->
 
-        <projects-dropdown :active-project="activeProject" @switch-project="switchProject"></projects-dropdown>
-        <filesets-dropdown :active-project="activeProject" @switch-fileset="switchFileset"></filesets-dropdown>
+        <projects-dropdown :active-project="$settings.get('activeProject')" @switch-project="switchProject"></projects-dropdown>
+        <!-- <filesets-dropdown :active-project="$settings.get('activeProject')" @switch-fileset="switchFileset"></filesets-dropdown> -->
 
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link">
-            {{activeProject.filesCount}}
+            <!-- {{activeProject.filesCount}} -->
+            dede
           </a>
 
           <div class="navbar-dropdown">
@@ -58,12 +59,12 @@
       </div>
 
       <div class="navbar-end">
-        <router-link :to="{name: 'home'}" class="navbar-item">
+        <!-- <router-link :to="{name: 'home'}" class="navbar-item">
           <span class="icon">
             <i class="fa fa-dashboard"></i>
           </span>
           <span>Dashboard</span>
-        </router-link>
+        </router-link> -->
         <div class="navbar-item">
           <a class="has-text-light">
             <span class="icon">

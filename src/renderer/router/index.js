@@ -59,7 +59,7 @@ export default new Router({
           component: require('@/components/Projects/Filesets').default
         },
         {
-          path: 'files/:fileset',
+          path: 'files',
           name: 'projects.files',
           component: require('@/components/Projects/Files').default
         },

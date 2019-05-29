@@ -25,16 +25,6 @@
     </div>
     <!-- Card footer slot (optionnal) -->
     <slot name="footer"></slot>
-    <!-- <footer class="card-footer">
-      <a class="card-footer-item" @click="importFiles">
-        <span class="icon">
-          <i class="fa fa-download"></i>
-        </span>
-        Importer les fichiers
-      </a>
-      <a class="card-footer-item">Edit</a>
-      <a class="card-footer-item">Delete</a>
-    </footer> -->
   </div>
 </template>
 

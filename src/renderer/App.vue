@@ -91,7 +91,7 @@
         this.loading = true
         // If the project id changes (selected from navbar projects dropdown), refresh the data for all components
         if (to.name.match(/projects/)) {
-          if (to.params.id && to.params.id.toString() !== this.project._id.toString()) {
+          if (to.params.id && to.params.id.toString() !== this.$settings.get('activeProject.id').toString()) {
             console.log('Changing project...')
             try {
               await this.fetchProject(to.params.id)
@@ -100,9 +100,9 @@
               this.error = e.toString()
             }
           }
-          if (to.params.fileset && to.params.fileset !== this.project.fileset.id) {
-            console.log('Changing fileset...')
-          }
+          // if (to.params.fileset && to.params.fileset !== this.project.fileset.id) {
+          //   console.log('Changing fileset...')
+          // }
           // console.log(to.params.id, from.params.id)
         }
         this.loading = false
@@ -119,7 +119,7 @@
     mixins: [ ProjectsMixin ],
     async mounted () {
       // await this.test()
-      await this.fetchProject(this.$settings.get('activeProject._id'))
+      await this.fetchProject(this.$settings.get('activeProject.id'))
       // await this.loadProjectFiles()
     }
     // methods: {

@@ -13,7 +13,7 @@
           </div>
           <div class="dropdown-menu" id="projects-list" role="menu">
             <div class="dropdown-content">
-              <a class="dropdown-item project-item" v-for="project in projects" :key="project._id"  @click="setActiveProject(project)">
+              <a class="dropdown-item project-item" v-for="project in projects" :key="project.id"  @click="setActiveProject(project)">
                 <!-- <span class="icon is-smal has-text-info project-action" @click="setActiveProject(project)">
                   <i class="fa fa-bolt"></i>
                 </span> -->

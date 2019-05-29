@@ -2,16 +2,16 @@
   <div id="projects-navbar-dropdown" class="navbar-item has-dropdown is-hoverable">
     <a class="navbar-link">
       <!-- {{ $settings.get('activeProject.name', 'Sélectionner un projet') }} -->
-      {{ activeProject._id ? activeProject.name : 'Sélectionner un projet' }}
+      {{ activeProject.id ? activeProject.name : 'Sélectionner un projet' }}
     </a>
 
     <div class="navbar-dropdown">
       <a
         class="navbar-item"
-        :class="{'is-active': activeProject._id === project._id}"
+        :class="{'is-active': activeProject.id === project.id}"
         v-for="project in projects"
-        :key="project._id"
-        @click="$emit('switch-project', project._id)"
+        :key="project.id"
+        @click="$emit('switch-project', project.id)"
         >
         {{project.name || '???'}}
       </a>

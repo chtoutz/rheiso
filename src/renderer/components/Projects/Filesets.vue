@@ -16,7 +16,7 @@
         </div>
       </div>
       <div class="has-text-centered">
-        <a class="button is-medium" @click="importFiles">
+        <a class="button is-medium">
           <span class="icon">
             <i class="fa fa-plus"></i>
           </span>

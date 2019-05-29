@@ -56,27 +56,43 @@
       </div>
     </div> -->
 
-    <div v-if="!activeProject.filesCount">
+    <div v-if="!files.length">
       <div class="message is-info">
         <div class="message-body">
           Il semblerait que les fichiers de ce projet n'aient pas encore été importés. Vous pouvez essayer de scanner le dossier du projet actif à l'aide du bouton ci-dessous : <br>
         </div>
       </div>
-      <div class="has-text-centered">
+
+      <div class="control has-text-centered">
         <a class="button is-medium" @click="importFiles">
           <span class="icon">
             <i class="fa fa-download"></i>
           </span>
-          <span>Importer</span>
+          <span>Importer les fichiers</span>
         </a>
       </div>
+
+      <!-- <span class="label">Importer les fichiers depuis le répertoire</span>
+      <div class="field has-addons">
+        <div class="control is-expanded">
+          <input class="input is-medium" type="text" v-model="importFrom" :title="$settings.get('activeProject.path')" :placeholder="importFromPlaceholder">
+        </div>
+        <div class="control">
+          <a class="button is-medium" @click="importFiles">
+            <span class="icon">
+              <i class="fa fa-download"></i>
+            </span>
+            <span>Importer</span>
+          </a>
+        </div>
+      </div> -->
     </div>
 
     <div id="files" v-else>
       <div class="columns">
         <aside class="column is-8" id="files-filetrees">
           <!-- {{activeProject.files}} -->
-          <card :cardTitle="cardTitle" :card-menu="true" v-if="rootFolder">
+          <card :cardTitle="cardTitle" :card-menu="true">
             <!-- Card menu -->
             <div slot="menu" class="dropdown-content">
               <a class="dropdown-item">
@@ -108,21 +124,6 @@
       </div>
     </div>
 
-    <div v-if="!rootFolder">
-      <div class="message is-info">
-        <div class="message-body">
-          Il semblerait qu'aucun "filetree" ne soit configuré. Vous pouvez essayer d'en créer un basé sur les fichiers locaux contenus dans la base de données, à l'aide du bouton ci-dessous : <br>
-        </div>
-      </div>
-      <div class="has-text-centered">
-        <a class="button is-medium" @click="importFiles">
-          <span class="icon">
-            <i class="fa fa-plus"></i>
-          </span>
-          <span>Créer un filetree</span>
-        </a>
-      </div>
-    </div>
     <!-- <code>activeProject:{{activeProject}}</code> -->
     <!-- <code>activeProject:{{activeProject}}</code> -->
     <!-- <code>filesCount:{{filesCount}}</code> -->
@@ -136,6 +137,11 @@
 // import _ from 'lodash'
 // import dirTree from 'directory-tree'
 import fs from 'fs'
+import path from 'path'
+import async from 'async'
+import dir from 'node-dir'
+import moment from 'moment'
+
 import TreeMenu from '@/components/Layout/TreeMenu'
 import Props from '@/components/Projects/Props'
 import Filetree from '@/components/Projects/Filetree'
@@ -153,32 +159,45 @@ export default {
   // props: [ 'filesCount' ],
   data () {
     return {
-      rootFolder: null,
+      // rootFolder: null,
       // filesCount: 0,
+      // importFrom: null,
+      files: [],
       selectedFiles: [],
       localDirs: []
     }
   },
   computed: {
     cardTitle () {
-      return `${this.activeProject.fileset.name} du projet (${this.activeProject.filesCount} éléments)`
+      return 'title de mort'
+      // return `${this.activeProject.fileset.name} du projet (${this.activeProject.filesCount} éléments)`
+    },
+    // importFromPlaceholder () {
+    //   return this.$settings.get('activeProject.path') ? `Par défaut: répertoire du projet ${this.$settings.get('activeProject.reference')}` : 'Sélectionnez le répertoire source du projet'
+    // },
+    rootFolder () {
+      return {
+        name: this.$settings.get('activeProject.name'),
+        path: '',
+        // path: this.activeProject.path,
+        depth: 0,
+        type: 'directory'
+        // children: [],
+        // expanded: false
+        // selected: false
+      }
     }
   },
   async mounted () {
     // console.log(this.activeProject)
-    let rootFolder = {
-      name: this.activeProject.name,
-      path: '',
-      // path: this.activeProject.path,
-      depth: 0,
-      type: 'directory'
-      // children: [],
-      // expanded: false
-      // selected: false
-    }
-    this.rootFolder = rootFolder
+    this.loadProjectFiles()
   },
   methods: {
+    async loadProjectFiles () {
+      const projectId = this.$settings.get('activeProject.id')
+      const response = await this.$http.get(`http://localhost:1337/project/${projectId}/files`)
+      this.rooms = response.data
+    },
     loadTree (filetreePath) {
       let _self = this
       fs.readFile(filetreePath, 'utf8', (err, file) => {
@@ -198,18 +217,92 @@ export default {
           _self.tree = JSON.parse(file)
         }
       })
+    },
+    async getFileInfos (filepath, next) {
+      // Set an object with useful infos
+      // let dbFile = null
+      let _self = this
+      let stats
+      let regex
+      let file
+      // console.log(filepath)
+      try {
+        stats = fs.statSync(filepath)
+        regex = new RegExp(`${this.$settings.get('activeProject.path')}/`)
+        filepath = filepath.replace(regex, '')
+        file = {
+          path: filepath,
+          size: stats.size,
+          name: path.basename(filepath, path.extname(filepath)),
+          // name: path.basename(filepath)
+          extension: path.extname(filepath),
+          depth: filepath.split('/').length,
+          mtime: moment(stats.mtime).format(),
+          type: stats.isFile() ? 'file' : 'directory',
+          project: _self.$settings.get('activeProject.id')
+        }
+        // Then, check for edited, added or removed files if needed
+        // _self.updateOrCreate({
+        //   project: _self.$settings.get('activeProject.id'),
+        //   path: filepath
+        // }, file)
+        return next(null, file)
+        // console.log(`Imported ${files.length} project files successfully`)
+      } catch (e) {
+        // console.log(e)
+        return next(e)
+      }
+      // console.log(fs.statSync(item))
+    },
+    async importFiles () {
+      console.log(`Importing project files to database...`)
+      // let _self = this
+      // Get an array of simple folders and files paths in the project
+      let projectDirectory = this.$settings.get('activeProject.path')
+      if (!projectDirectory) {
+        // TODO: Throw error (notification or static message ?) with no valid path
+      }
+      projectDirectory = path.resolve(projectDirectory, '3-Etudes', '04-Catalogue méthodique')
+      dir.paths(projectDirectory, true, (err, paths) => {
+        // paths = null
+        // Display error notification if needed
+        if (paths && paths.length > 500) {
+          this.$openNotification({
+            title: 'Erreur',
+            message: ('Trop de fichiers'),
+            type: 'danger',
+            direction: 'Down',
+            duration: 4500,
+            container: '.notifications'
+          })
+        }
+        if (err) {
+          this.$openNotification({
+            title: 'Erreur',
+            message: (err || 'Erreur lors de l\'ajout des fichiers'),
+            type: 'danger',
+            direction: 'Down',
+            duration: 4500,
+            container: '.notifications'
+          })
+        } else {
+          // For each files and folder found in project
+          async.mapLimit(paths, 100, this.getFileInfos, async (err, result) => {
+            if (err) {
+              console.log(err)
+            } else {
+              // await this.$http.post(`http://localhost:1337/files`, results)
+              console.log(`Imported ${result.length} files successfully`)
+            }
+          })
+          // console.log(paths)
+        }
+        // files.push(paths)
+      })
+      // TODO: In the filetrees, allow to keep the structure of current treefile : which folders are expanded, which files are selected... To do this (alert user here), the filetree is created with the name, path and id of the $DB.file, and an optionnal boolean field "expanded" and "selected". This allows dynamic tree construction (if this.expanded, loadChildren...)
+      // TODO: a deep comparison can be done between each entry of the database file and the current project filetree : this.checkAddedFiles() and this.checkDeletedFiles() in mixin which loops into $DB.file to check if path or id exists in current filetree ; and this.checkEditedFiles() which compares size and mdate of $DB.file. Maybe use _.difference on each two BIG arrays (DB and fs.readDir)
+      // Use https://github.com/fshost/node-dir to get all files paths from current project folder, and DB as last saved localfiles. Then use _.difference() on both sens to see what file is created or removed
     }
   }
 }
 </script>
-
-<style lang="sass" scoped>
-@import "~bulma/sass/utilities/_all"
-.panel-menu
-  max-height: 600px
-  overflow: auto
-  padding: 1em
-  border-left: 1px solid $border
-  border-right: 1px solid $border
-  border-bottom: 1px solid $border
-</style>

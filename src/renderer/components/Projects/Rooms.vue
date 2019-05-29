@@ -156,7 +156,7 @@
               :room="room"
               :isImporting="isImporting"
               :editMode="editMode"
-              :selected="selectedIds.indexOf(room._id) > -1"
+              :selected="selectedIds.indexOf(room.id) > -1"
               @update-room="updateRoom"
               @select-room="selectRoom">
             </room-line>
@@ -227,7 +227,7 @@ export default {
     selectedRooms () {
       let self = this
       return _.filter(this.rooms, (o) => {
-        return self.selectedIds.indexOf(o._id) > -1
+        return self.selectedIds.indexOf(o.id) > -1
       })
     },
     // activeTab () {
@@ -340,7 +340,7 @@ export default {
       this.search = !this.search
     },
     async addRoom (room = {}) {
-      room.project = this.activeProject._id
+      room.project = this.activeProject.id
       await this.$DB.room.create(room)
       room.status = 'unchanged'
     },
@@ -373,7 +373,9 @@ export default {
     // },
     // Dynamic function to load rooms from $DB based on activeProject
     async loadProjectRooms () {
-      this.rooms = await this.$DB.room.find({project: this.activeProject._id})
+      const projectId = this.$settings.get('activeProject.id')
+      const response = await this.$http.get(`http://localhost:1337/project/${projectId}/rooms`)
+      this.rooms = response.data
       // .populate('walls')
       // .populate('supply-air')
       // .populate('return-air')
@@ -480,7 +482,7 @@ export default {
       if (!roomExists) {
         status = 'new'
       } else {
-        delete roomExists._id
+        delete roomExists.id
         if (diff(room, roomExists)) {
           // TODO: Send diff result in view to display in rooms table
           status = 'modified'

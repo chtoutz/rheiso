@@ -16,7 +16,7 @@
       <tbody>
         <network-line
           v-for="network in networks"
-          :key="network._id"
+          :key="network.id"
           :_building="network._building"
           :_floor="network._floor"
           :_number="network._number"
@@ -118,7 +118,7 @@ export default {
   },
   methods: {
     async addRoom (network = {}) {
-      network.project = this.activeProject._id
+      network.project = this.activeProject.id
       await this.$DB.network.create(network)
       network.status = 'unchanged'
     },
@@ -134,7 +134,7 @@ export default {
     },
     // Dynamic function to load networks from $DB based on activeProject
     async loadProjectNetworks () {
-      this.networks = await this.$DB.network.find({project: this.activeProject._id})
+      this.networks = await this.$DB.network.find({project: this.$settings.get('activeProject.id')})
     },
     async loadFile (filename) {
       let workbook = null

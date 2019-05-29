@@ -1,7 +1,7 @@
 <template>
   <tr
     :class="roomLineClass"
-    @click="handleClick($event, room._id)">
+    @click="handleClick($event, room.id)">
     <td v-if="isImporting" @click="confirmStatus(room)">
       <span class="icon">
         <i class="fa" :class="roomStatusIcon"></i>
