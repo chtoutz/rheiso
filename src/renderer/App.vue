@@ -118,8 +118,17 @@
     // },
     mixins: [ ProjectsMixin ],
     async mounted () {
+      if (!this.$settings.get('activeProject.id')) {
+        // console.log('okokok')
+        return
+      }
       // await this.test()
-      await this.fetchProject(this.$settings.get('activeProject.id'))
+      try {
+        await this.fetchProject(this.$settings.get('activeProject.id'))
+      } catch (e) {
+        console.log('Projet actif introuvable, reset')
+        this.$settings.set('activeProject', null)
+      }
       // await this.loadProjectFiles()
     }
     // methods: {

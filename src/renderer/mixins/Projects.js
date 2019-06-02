@@ -78,8 +78,19 @@ export default {
       if (!projId) {
         projId = this.projectId
       }
-      const resp = await this.$http.get(`http://localhost:1337/project/${projId}`)
-      this.$settings.set('activeProject', resp.data)
+      try {
+        const resp = await this.$http.get(`http://localhost:1337/project/${projId}`)
+        this.$settings.set('activeProject', resp.data)
+        console.log(`Loaded project ${resp.data.reference}`)
+      } catch (e) {
+        console.log('Projet actif introuvable, reset', e)
+        this.$settings.set('activeProject', null)
+      }
+      // const resp = await this.$http.get(`http://localhost:1337/project/${projId}`)
+      // console.log(await this.$http.get(`http://localhost:1337/project/${projId}`))
+      // if (!resp) {
+      //   return alert('ok')
+      // }
       // console.log(`Loaded project "${proj.name}"`)
     },
     // async useFileset (fileset = {}) {

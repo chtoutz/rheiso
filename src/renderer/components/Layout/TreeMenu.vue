@@ -50,6 +50,7 @@ export default {
     childrenQuery () {
       return {
         'project': this.$route.params.id,
+        'name': { '!': '' },
         'path': { startsWith: this.path },
         'depth': this.depth + 1
       }
@@ -72,7 +73,10 @@ export default {
     async loadChildren () {
       if (this.type === 'directory') {
         if (!this.children) {
-          this.children = await this.$DB.file.find(this.childrenQuery).sort([{type: 'ASC'}, {path: 'ASC'}])
+          const response = await this.$http.get(`http://localhost:1337/projectfile`, this.childrenQuery)
+          // console.log(response.data)
+          this.children = response.data
+          // this.children = await this.$DB.file.find(this.childrenQuery).sort([{type: 'ASC'}, {path: 'ASC'}])
         }
         // console.log(this.children)
       }

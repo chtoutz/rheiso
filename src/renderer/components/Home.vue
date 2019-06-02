@@ -18,13 +18,13 @@
     <div class="container is-fluid content">
       <div class="columns">
         <div v-if="hasProjects" class="column is-half is-offset-one-quarter">
-          <projects-panel
+          <home-panel
           :active-project="$settings.get('activeProject')"
           :projects="projects"
           @switch-project="switchProject"
           @add-project="addProject"
           @show-api="openLink('http://localhost:1337/project')"
-          ></projects-panel>
+          ></home-panel>
           <code>{{ $settings.get() }}</code>
 
         </div>
@@ -57,8 +57,7 @@
 // import fs from 'fs'
 // import path from 'path'
 
-// import ProjectsPanel from '@/components/Projects/Panel'
-import ProjectsPanel from '@/components/Home/ProjectsPanel'
+import HomePanel from '@/components/Home/HomePanel'
 import CreateProject from '@/components/Home/CreateProject'
 
 import Tasks from '@/components/Projects/Tasks'
@@ -67,7 +66,7 @@ import Modal from '@/components/Layout/Modal'
 export default {
   name: 'home',
   components: {
-    ProjectsPanel,
+    HomePanel,
     CreateProject,
     Modal,
     Tasks
@@ -82,39 +81,59 @@ export default {
       return this.projects.length > 0
     }
   },
-  mounted () {
-    this.loadProjects()
+  async mounted () {
+    await this.loadProjects()
   },
   methods: {
     openLink (link) {
       this.$electron.shell.openExternal(link)
     },
-    switchProject (projectId) {
+    async switchProject (projectId) {
       // console.log(projectId)
-      // TODO: Handle errors
       // TODO: In API, hydrate project with fileCount prop
-      this.$http.get(`http://localhost:1337/project/${projectId}`).then((resp) => {
+      try {
+        const resp = await this.$http.get(`http://localhost:1337/project/${projectId}`)
         // console.log(resp.data)
         this.$settings.set('activeProject', resp.data)
-      })
+        await this.loadProjects()
+      } catch (e) {
+        console.log('Error while loading active project')
+        this.$settings.set('activeProject', null)
+      }
     },
     async createProject (project) {
       let options = project.options || {}
       delete project.options
-      console.log(project, options)
+      // console.log(project, options)
+      if (options.syncServer) {
+        try {
+          const resp = await this.$http.post(`http://localhost:1337/projects/create`, project)
+          if (!resp.status === 200) {
+            throw new Error(resp.statusText)
+          }
+          console.log(`Created project on API`, resp)
+          await this.loadProjects()
+        } catch (e) {
+          console.log('Failed creating project', e)
+        }
+      }
       // Try to create folder containing future project data (drawings, database, libs, reports...)
       // let datapath = path.join(this.$settings.get('general.projectsSaving'), project.reference)
       // fs.mkdir(datapath, (err) => {
       //   if (err && err.code !== 'EEXIST') console.log('err')
       // })
-      // let { data } = await this.$http.get(`http://localhost:1337/project/${params.id}`)
-      let { data } = await this.$http.post(`http://localhost:1337/project`, project)
-      console.log(data)
     },
     async loadProjects () {
       // TODO: Depending on if connected to API (RasPi or local server) or not, grab data from localhost:1337 or from encrypted archive export file.
-      const response = await this.$http.get('http://localhost:1337/project')
-      this.projects = response.data
+      // TODO: Generate info notification if no project found
+      try {
+        const resp = await this.$http.get('http://localhost:1337/projects')
+        if (!resp.data.length) throw new Error('noProject')
+        this.projects = resp.data
+        console.log(`Loaded projects from API`)
+      } catch (e) {
+        console.log('Aucun projet enregistré')
+      }
     },
     addProject () {
       console.log('show modal to create project')

@@ -16,6 +16,26 @@
       <a>serveur</a>
       <a>serveur distant</a>
     </p> -->
+    <div class="panel-block">
+      <!-- <p class="control has-text-black"> -->
+        <i>Outils</i>
+      <!-- </p> -->
+    </div>
+    <router-link class="panel-block" :to="{name: 'aeraulic-balance'}">
+      <span class="panel-icon"></span>
+      <span>Bilan thermique</span>
+    </router-link>
+    <router-link class="panel-block" :to="{name: 'aeraulic-balance'}">
+      <span class="panel-icon"></span>
+      <span>Bilan aéraulique</span>
+    </router-link>
+    <!-- <a class="panel-block">
+      <span class="panel-icon"></span>
+      <span>Bilan aéraulique</span>
+    </a> -->
+    <div class="panel-block">
+      <i>Projets</i>
+    </div>
     <a
       v-for="project in projects"
       :key="project.id"
@@ -26,13 +46,14 @@
       <span class="panel-icon" v-if="isActive(project.id)">
         <i class="fa fa-bolt" aria-hidden="true"></i>
       </span>
+      <strong>{{ project.reference }}</strong> &nbsp;
       {{ project.name || '???' }}
     </a>
     <div class="panel-block" v-if="!hasProjects">
       Aucun fichier récent.
     </div>
     <div class="panel-block">
-      <button class="button is-link is-outlined is-fullwidth" @click="addProject">
+      <button class="button is-link is-outlined is-fullwidth" @click="$emit('add-project')">
         <span class="icon"><i class="fa fa-plus"></i></span>
       </button>
     </div>
@@ -43,7 +64,7 @@
 <script>
 
 export default {
-  name: 'projects-panel',
+  name: 'home-panel',
   // data () {
   //   return {
   //     projects: []
@@ -59,15 +80,6 @@ export default {
   //   this.loadProjects()
   // },
   methods: {
-    setActiveProject (project) {
-      this.$emit('switch-project', project.id)
-      // if (event) event.preventDefault()
-      // console.log(project)
-      // this.$store.commit('setActiveProject', project)
-    },
-    addProject () {
-      this.$emit('add-project')
-    },
     isActive (projectId) {
       return this.$settings.get('activeProject.id') === projectId
     }

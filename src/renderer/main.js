@@ -63,7 +63,7 @@ conf.bootstrap._init((err, data) => {
     console.log(`Error wile bootstrapping: ${err}`)
   } else {
     console.log('Bootstrap ended successfully')
-    Vue.DB = Vue.prototype.$DB = data.collections
+    // Vue.DB = Vue.prototype.$DB = data.collections
 
     /* eslint-disable no-new */
     new Vue({

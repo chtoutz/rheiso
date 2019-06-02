@@ -195,8 +195,9 @@ export default {
   methods: {
     async loadProjectFiles () {
       const projectId = this.$settings.get('activeProject.id')
-      const response = await this.$http.get(`http://localhost:1337/project/${projectId}/files`)
-      this.rooms = response.data
+      const response = await this.$http.get(`http://localhost:1337/projectfile?project=${projectId}`)
+      // console.log(response.data)
+      this.files = response.data
     },
     loadTree (filetreePath) {
       let _self = this
@@ -287,12 +288,22 @@ export default {
           })
         } else {
           // For each files and folder found in project
-          async.mapLimit(paths, 100, this.getFileInfos, async (err, result) => {
+          async.mapLimit(paths, 100, this.getFileInfos, async (err, projectFiles) => {
+            // console.log(projectFiles)
             if (err) {
               console.log(err)
             } else {
-              // await this.$http.post(`http://localhost:1337/files`, results)
-              console.log(`Imported ${result.length} files successfully`)
+              // await this.$http.post(`http://localhost:1337/projectfile`, projectFiles)
+              const response = await this.$http.post(`http://localhost:1337/project/${this.$settings.get('activeProject.id')}/import-files`, projectFiles)
+              console.log(response)
+              // this.$http.post(`http://localhost:1337/project/create-many`, result)
+              //   .then(function (response) {
+              //     console.log(response.config.data)
+              //   })
+              //   .catch(function (error) {
+              //     console.log(error)
+              //   })
+              console.log(`Imported ${projectFiles.length} files successfully`)
             }
           })
           // console.log(paths)

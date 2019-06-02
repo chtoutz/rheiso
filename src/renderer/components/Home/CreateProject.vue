@@ -11,11 +11,11 @@
         </a>
       </p>
       <p class="control is-expanded">
-        <input class="input" type="text" :placeholder="$settings.get('general.projectsSource')" v-model="project.path">
+        <input class="input" type="text" :placeholder="$settings.get('general.projectsSource')" v-model="project.path" readonly>
       </p>
     </div>
 
-    <label class="label">Identifiants</label>
+    <label class="label">Référence et nom</label>
     <div class="field has-addons">
       <p class="control">
         <input class="input" type="text" placeholder="Référence" v-model="project.reference">
@@ -33,7 +33,7 @@
       <div class="control">
         <label class="checkbox">
           <input type="checkbox" v-model="project.options.syncServer">
-          Synchroniser le serveur
+          Enregistrer dans l'API RheIso
         </label>
       </div>
       <div class="control">
@@ -78,7 +78,9 @@ export default {
       project: {
         name: '',
         reference: '',
-        options: {}
+        options: {
+          syncServer: true
+        }
       }
     }
   },
@@ -101,9 +103,10 @@ export default {
           let _tmpName = path.basename(projectPath)
           // let project = { path: projectPath }
           _self.project.path = projectPath
-          _self.project.lastOpened = new Date()
+          _self.project.lastOpened = Date.now()
+          // _self.project.lastOpened = new Date()
           _self.project.reference = _tmpName.match(/\w+/)[0]
-          let regex = new RegExp(`${_self.project.reference}[- ]`, 'g')
+          let regex = new RegExp(`${_self.project.reference} ?-? ?`, 'g')
           _self.project.name = _tmpName.replace(regex, '')
 
           // _self.project = project

@@ -81,6 +81,11 @@ export default new Router({
       ]
     },
     {
+      path: '/aeraulic-balance/:projectId?',
+      name: 'aeraulic-balance',
+      component: require('@/components/AeraulicBalance').default
+    },
+    {
       path: '/liraries',
       name: 'libraries',
       component: require('@/components/Projects').default,

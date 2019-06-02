@@ -46,7 +46,9 @@ export default {
   },
   methods: {
     async loadProjects () {
-      this.projects = await this.$DB.project.find({}).sort('lastOpened DESC').limit(10)
+      const response = await this.$http.get('http://localhost:1337/project')
+      this.projects = response.data
+      // this.projects = await this.$DB.project.find({}).sort('lastOpened DESC').limit(10)
     }
   }
 }
