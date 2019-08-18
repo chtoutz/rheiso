@@ -8,7 +8,7 @@
 
       <sidebar></sidebar>
 
-      <main class="column ri-main-view">
+      <main class="column ri-main-view" id="main">
 
         <!-- Top bar. Displays submenu tools (ducts/pipes on Drawing.vue, import/export buttons on several components) -->
         <div class="ri-top-bar" v-if="$route.meta.showTopBar">
@@ -43,7 +43,7 @@
         </code>
         <br>
         <code>
-          Projet: {{project}}
+          Projet: {{$settings.get('activeProject')}}
         </code>
 
         <!-- <router-view></router-view> -->

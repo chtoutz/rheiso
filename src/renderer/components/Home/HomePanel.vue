@@ -21,11 +21,11 @@
         <i>Outils</i>
       <!-- </p> -->
     </div>
-    <router-link class="panel-block" :to="{name: 'aeraulic-balance'}">
+    <router-link class="panel-block" :to="{name: 'rheo-balances'}">
       <span class="panel-icon"></span>
       <span>Bilan thermique</span>
     </router-link>
-    <router-link class="panel-block" :to="{name: 'aeraulic-balance'}">
+    <router-link class="panel-block" :to="{name: 'rheo-balances'}">
       <span class="panel-icon"></span>
       <span>Bilan aéraulique</span>
     </router-link>

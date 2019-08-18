@@ -107,7 +107,7 @@ export default {
       // console.log(project, options)
       if (options.syncServer) {
         try {
-          const resp = await this.$http.post(`http://localhost:1337/projects/create`, project)
+          const resp = await this.$http.post(`http://localhost:1337/project/create`, project)
           if (!resp.status === 200) {
             throw new Error(resp.statusText)
           }

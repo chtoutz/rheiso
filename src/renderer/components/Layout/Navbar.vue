@@ -21,7 +21,7 @@
       </a>
     </div>
 
-    <div id="navbar" class="navbar-menu" v-if="$settings.get('activeProject')">
+    <div id="navbar" class="navbar-menu">
       <div class="navbar-start">
         <!-- <a class="navbar-item">
           <div class="field">
@@ -31,7 +31,7 @@
           </div>
         </a> -->
 
-        <projects-dropdown :active-project="$settings.get('activeProject')" @switch-project="switchProject"></projects-dropdown>
+        <projects-dropdown v-if="$settings.get('activeProject')" @switch-project="switchProject"></projects-dropdown>
         <!-- <filesets-dropdown :active-project="$settings.get('activeProject')" @switch-fileset="switchFileset"></filesets-dropdown> -->
 
         <div class="navbar-item has-dropdown is-hoverable">
@@ -41,19 +41,36 @@
           </a>
 
           <div class="navbar-dropdown">
-            <a class="navbar-item">
-              About
-            </a>
-            <a class="navbar-item">
-              Jobs
-            </a>
-            <a class="navbar-item">
-              Contact
-            </a>
-            <hr class="navbar-divider">
-            <a class="navbar-item">
-              Report an issue
-            </a>
+            <router-link
+              :to="{ name: 'projects.explore', params: { id: $settings.get('activeProject.id') } }"
+              class="navbar-item"
+              :class="{'is-active': $route.name === 'projects.explore'}"
+            >Informations</router-link>
+            <router-link
+              :to="{ name: 'drawing' }"
+              class="navbar-item"
+              :class="{'is-active': $route.name === 'drawing'}"
+            >Plans</router-link>
+            <router-link
+              :to="{ name: 'projects.rooms', params: { id: $settings.get('activeProject.id') } }"
+              class="navbar-item"
+              :class="{'is-active': $route.name === 'projects.rooms'}"
+            >Locaux</router-link>
+            <!-- <router-link
+              :to="{ name: 'projects.networks', params: { id: $settings.get('activeProject.id') } }"
+              class="navbar-item"
+              :class="{'is-active': $route.name === 'projects.networks'}"
+            >Réseaux</router-link> -->
+            <router-link
+              :to="{ name: 'projects.files', params: { fileset: 'local', id: $settings.get('activeProject.id') } }"
+              class="navbar-item"
+              :class="{'is-active': $route.name === 'projects.files'}"
+            >Fichiers</router-link>
+            <router-link
+              :to="{ name: 'rheo-balances' }"
+              class="navbar-item"
+              :class="{'is-active': $route.name === 'rheo-balances'}"
+            >Bilan aéraulique</router-link>
           </div>
         </div>
       </div>

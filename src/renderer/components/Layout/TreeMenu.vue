@@ -1,14 +1,14 @@
 <template>
   <li>
-    <a :class="itemClasses" @click="toggleChildren" @click.ctrl="toggleSelected">
-      <i v-if="type === 'directory'" class="fa" :class="iconClasses"></i>
-      {{ name }}
+    <a :class="itemClasses" @click="toggleChildren">
+      <span class="icon" v-if="type === 'directory'"><i class="fa" :class="iconClasses"></i></span>
+      {{ filename(path) }}
+      <!-- {{ name }} -->
     </a>
-    <ul v-if="children && children.length && showChildren">
+    <ul v-if="children && children.length" v-show="showChildren">
       <tree-menu
         v-for="child in children"
-        :key="child.name"
-        :name="child.name"
+        :key="child.id"
         :type="child.type"
         :path="child.path"
         :depth="child.depth"
@@ -22,11 +22,13 @@
 </template>
 
 <script>
-// TODO: Move this file into components/Layout/ and use it to generale the main left sidebar
+import path from 'path'
+// TODO: Use this to generale the main left sidebar
 export default {
   name: 'tree-menu',
   // props: [ 'children', 'name', 'selected', 'type', 'path', 'root', 'depth' ],
-  props: [ 'name', 'type', 'path', 'depth' ],
+  // props: [ 'name', 'type', 'path', 'depth' ],
+  props: [ 'type', 'path', 'depth' ],
   data () {
     return {
       showChildren: false,
@@ -48,9 +50,10 @@ export default {
       }
     },
     childrenQuery () {
+      // TODO: use infos from activeProject for now, but later from archive.rhe (e.g project.xml file in archive)
       return {
-        'project': this.$route.params.id,
-        'name': { '!': '' },
+        'project': this.$settings.get('activeProject.id'),
+        // 'name': { '!': '' },
         'path': { startsWith: this.path },
         'depth': this.depth + 1
       }
@@ -62,21 +65,41 @@ export default {
   //   }
   // },
   methods: {
-    toggleChildren () {
-      this.loadChildren()
-      this.showChildren = !this.showChildren
+    toggleChildren (e) {
+      // console.log(e)
+      if (e.ctrlKey) {
+        this.selected = !this.selected
+      } else {
+        if (!this.children) {
+          this.loadChildren()
+        }
+        this.showChildren = !this.showChildren
+      }
     },
-    toggleSelected () {
-      this.showChildren = !this.showChildren
-      this.selected = !this.selected
+    // toggleSelected () {
+    //   this.showChildren = !this.showChildren
+    //   this.selected = !this.selected
+    // },
+    filename (filepath) {
+      if (!filepath) {
+        filepath = this.$settings.get('activeProject.path')
+      }
+      return name || path.basename(filepath, path.extname(filepath))
     },
     async loadChildren () {
       if (this.type === 'directory') {
-        if (!this.children) {
-          const response = await this.$http.get(`http://localhost:1337/projectfile`, this.childrenQuery)
-          // console.log(response.data)
-          this.children = response.data
-          // this.children = await this.$DB.file.find(this.childrenQuery).sort([{type: 'ASC'}, {path: 'ASC'}])
+        // Filter projectfiles to get only those contained in clicked directory
+        let options = {
+          params: {
+            where: this.childrenQuery
+          }
+        }
+        try {
+          const resp = await this.$http.get(`http://localhost:1337/projectfile/find`, options)
+          // console.log(resp)
+          this.children = resp.data
+        } catch (e) {
+          console.error('::Error while loading directory files', e)
         }
         // console.log(this.children)
       }

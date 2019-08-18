@@ -4,37 +4,6 @@
       <a class="button" @click="importRooms()">Importer</a>
     </div>
 
-    <!-- <div class="tabs is-centered is-boxed">
-      <ul>
-        <li :class="{'is-active': $route.params.bottomTab === 'projects.heat-balance'}">
-          <router-link
-            :to="{ params: { bottomTab: 'projects.heat-balance' } }"
-          >Bilan thermique</router-link>
-        </li>
-        <li :class="{'is-active': $route.params.bottomTab === 'projects.aeraulic-balance'}">
-          <router-link
-            :to="{ params: { bottomTab: 'projects.aeraulic-balance' } }"
-          >Bilan aéraulique</router-link>
-        </li>
-      </ul>
-    </div> -->
-
-    <!-- <div class="card">
-      <header class="card-header">
-        <p class="card-header-title">
-          Filtrer les résultats
-        </p>
-        <a href="#" class="card-header-icon" aria-label="more options">
-          <span class="icon">
-            <i class="fa fa-angle-down" aria-hidden="true"></i>
-          </span>
-        </a>
-      </header>
-      <div class="card-content">
-
-      </div>
-    </div> -->
-
     <div class="card">
       <header class="card-header">
         <p class="card-header-title">

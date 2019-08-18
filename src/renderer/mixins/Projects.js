@@ -86,12 +86,6 @@ export default {
         console.log('Projet actif introuvable, reset', e)
         this.$settings.set('activeProject', null)
       }
-      // const resp = await this.$http.get(`http://localhost:1337/project/${projId}`)
-      // console.log(await this.$http.get(`http://localhost:1337/project/${projId}`))
-      // if (!resp) {
-      //   return alert('ok')
-      // }
-      // console.log(`Loaded project "${proj.name}"`)
     },
     // async useFileset (fileset = {}) {
     //   // TODO: Move this into Filesets.vue when saving a new fileset to $DB

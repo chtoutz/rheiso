@@ -21,10 +21,9 @@
           <span class="icon has-text-primary is-large"><i class="fa fa-folder-open fa-3x"></i></span>
           <p class="heading">Fichiers locaux</p>
         </router-link>
-      </div> -->
+      </div>
 
-      <!-- Keep in ming for apps specific icons -->
-      <!-- <div class="tile is-parent is-2">
+      <div class="tile is-parent is-2">
         <a class="tile is-child box">
           <span class="icon has-text-grey is-large"><i class="fa fa-folder-o fa-3x"></i></span>
           <span class="heading">Dossiers</span>
@@ -106,7 +105,7 @@
             <!-- Filetree -->
             <filetree :tree="rootFolder"></filetree>
             <!-- Card footer -->
-            <footer slot="footer" class="card-footer">
+            <!-- <footer slot="footer" class="card-footer">
               <a class="card-footer-item" @click="importFiles">
                 <span class="icon">
                   <i class="fa fa-download"></i>
@@ -115,7 +114,7 @@
               </a>
               <a class="card-footer-item">Edit</a>
               <a class="card-footer-item">Delete</a>
-            </footer>
+            </footer> -->
           </card>
         </aside>
         <main class="column props" id="files-props">
@@ -179,7 +178,7 @@ export default {
       return {
         name: this.$settings.get('activeProject.name'),
         path: '',
-        // path: this.activeProject.path,
+        // path: this.$settings.get('activeProject.path'),
         depth: 0,
         type: 'directory'
         // children: [],
@@ -234,7 +233,7 @@ export default {
         file = {
           path: filepath,
           size: stats.size,
-          name: path.basename(filepath, path.extname(filepath)),
+          // name: path.basename(filepath, path.extname(filepath)),
           // name: path.basename(filepath)
           extension: path.extname(filepath),
           depth: filepath.split('/').length,
@@ -263,7 +262,7 @@ export default {
       if (!projectDirectory) {
         // TODO: Throw error (notification or static message ?) with no valid path
       }
-      projectDirectory = path.resolve(projectDirectory, '3-Etudes', '04-Catalogue méthodique')
+      // projectDirectory = path.resolve(projectDirectory, '3-Etudes', '04-Catalogue méthodique')
       dir.paths(projectDirectory, true, (err, paths) => {
         // paths = null
         // Display error notification if needed

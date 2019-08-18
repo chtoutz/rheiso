@@ -37,17 +37,17 @@ export default new Router({
       component: require('@/components/Projects').default,
       children: [
         {
-          path: 'rooms/:bottomTab?',
+          path: 'rooms',
           name: 'projects.rooms',
           component: require('@/components/Projects/Rooms').default,
           meta: { showTopBar: true }
         },
-        {
-          path: 'networks',
-          name: 'projects.networks',
-          component: require('@/components/Projects/Networks').default,
-          meta: { showTopBar: true }
-        },
+        // {
+        //   path: 'networks',
+        //   name: 'projects.networks',
+        //   component: require('@/components/Projects/Networks').default,
+        //   meta: { showTopBar: true }
+        // },
         {
           path: 'explore',
           name: 'projects.explore',
@@ -62,28 +62,29 @@ export default new Router({
           path: 'files',
           name: 'projects.files',
           component: require('@/components/Projects/Files').default
-        },
-        {
-          path: 'drawing',
-          name: 'projects.drawing',
-          component: require('@/components/Projects/Drawing').default
         }
         // {
         //   path: 'heat-balance',
         //   name: 'projects.heat-balance',
         //   component: require('@/components/Projects/HeatBalance').default
-        // },
-        // {
-        //   path: 'aeraulic-balance',
-        //   name: 'projects.aeraulic-balance',
-        //   component: require('@/components/Projects/AeraulicBalance').default
         // }
       ]
     },
     {
-      path: '/aeraulic-balance/:projectId?',
-      name: 'aeraulic-balance',
-      component: require('@/components/AeraulicBalance').default
+      path: 'drawing',
+      name: 'drawing',
+      component: require('@/components/Projects/Drawing').default
+      // component: require('@/components/Drawing').default
+    },
+    {
+      path: '/rheo-balances',
+      name: 'rheo-balances',
+      component: require('@/components/RheoBalance').default
+    },
+    {
+      path: '/rheo-balance/:balanceId',
+      name: 'rheo-balance',
+      component: require('@/components/RheoBalance').default
     },
     {
       path: '/liraries',

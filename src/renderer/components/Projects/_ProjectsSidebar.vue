@@ -11,22 +11,10 @@
           :class="{'is-active': $route.name === 'projects.explore'}"
         >Informations</router-link>
       </li>
-      <!-- <li>
-        <router-link
-          :to="{ name: 'projects.heat-balance', params: { id: $settings.get('activeProject.id') } }"
-          :class="{'is-active': $route.name === 'projects.heat-balance'}"
-        >Bilan thermique</router-link>
-      </li>
       <li>
         <router-link
-          :to="{ name: 'projects.aeraulic-balance', params: { id: $settings.get('activeProject.id') } }"
-          :class="{'is-active': $route.name === 'projects.aeraulic-balance'}"
-        >Bilan aéraulique</router-link>
-      </li> -->
-      <li>
-        <router-link
-          :to="{ name: 'projects.drawing', params: { id: $settings.get('activeProject.id') } }"
-          :class="{'is-active': $route.name === 'projects.drawing'}"
+          :to="{ name: 'drawing' }"
+          :class="{'is-active': $route.name === 'drawing'}"
         >Plans</router-link>
       </li>
       <li>
@@ -35,17 +23,23 @@
           :class="{'is-active': $route.name === 'projects.rooms'}"
         >Locaux</router-link>
       </li>
-      <li>
+      <!-- <li>
         <router-link
           :to="{ name: 'projects.networks', params: { id: $settings.get('activeProject.id') } }"
           :class="{'is-active': $route.name === 'projects.networks'}"
         >Réseaux</router-link>
+      </li> -->
+      <li>
+        <router-link
+          :to="{ name: 'projects.files', params: { fileset: 'local', id: $settings.get('activeProject.id') } }"
+          :class="{'is-active': $route.name === 'projects.files'}"
+        >Fichiers</router-link>
       </li>
       <li>
         <router-link
-          :to="{ name: 'projects.files', params: {fileset: 'local', id: $settings.get('activeProject.id')} }"
-          :class="{'is-active': $route.name === 'projects.files'}"
-        >Fichiers</router-link>
+          :to="{ name: 'rheo-balances' }"
+          :class="{'is-active': $route.name === 'rheo-balances'}"
+        >Bilan aéraulique</router-link>
       </li>
       <li>
         <router-link
